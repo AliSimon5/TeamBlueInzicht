@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HDSignatures.Logic
+{
+    internal partial class LogicManager
+    {
+        public static string GetRtfUnicodeEscapedString(string argTekst)
+        {
+            var sb = new StringBuilder();
+            foreach (var c in argTekst)
+            {
+                if (c <= 0x7f)
+                    sb.Append(c);
+                else
+                    sb.Append("\\u" + Convert.ToUInt32(c) + "?");
+            }
+            return sb.ToString();
+        }
+    }
+}

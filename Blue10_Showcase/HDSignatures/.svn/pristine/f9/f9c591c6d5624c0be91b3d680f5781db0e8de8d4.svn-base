@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HDSignatures.Data
+{
+    internal partial class DataManager
+    {
+        public static void DeleteSignaturesOfInactiveUsers(List<UserData> tempInactiveUserList, List<UserData> tempAllUserList)
+        {
+            /*
+            foreach (var tempInactiveUser in tempInactiveUserList)
+            {
+                try
+                {
+                    if (tempInactiveUser.Description == null || !tempInactiveUser.Description.Contains("Naam="))
+                        continue;
+
+                    Log.Information($"SIGNATURES VAN {tempInactiveUser.UserName} WORDEN VERWIJDERD");
+
+                    // Pakt de naam van de User
+
+                    // Voor elke User gaat hij checken of er signatures van de disabled user in de bestand zit zowel verwijderd hij hem zo niet doet hij niks
+                    foreach (var tempUser in tempAllUserList)
+                    {
+                        bool tempDeleted = false;
+
+                        // Het pad naar de User met de signature van de disabled user
+                        tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}.txt") ? true : tempDeleted;
+                        tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}.rtf") ? true : tempDeleted;
+                        tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}.htm") ? true : tempDeleted;
+                        tempDeleted = DeleteIfDirectoryExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}_files") ? true : tempDeleted;
+                        tempDeleted = DeleteIfDirectoryExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}_bestanden") ? true : tempDeleted;
+
+                        if (tempDeleted) Log.Verbose($"{tempNaamInactiveUser} - Signatures zijn verwijderd bij -> {tempUser.UserName}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+            }
+            */
+        }
+        private static bool DeleteIfFileExists(string argpath)
+        {
+            if (File.Exists(argpath))
+            {
+                File.Delete(argpath);
+                return true;
+            }
+            return false;
+        }
+        private static bool DeleteIfDirectoryExists(string argpath)
+        {
+            if (Directory.Exists(argpath))
+            {
+                Directory.Delete(argpath, true);
+                return true;
+            }
+            return false;
+        }
+    }
+}

@@ -1,0 +1,202 @@
+﻿using M.Core.Application.Settings;
+using Serilog;
+using System.Diagnostics;
+using System.DirectoryServices;
+using System.DirectoryServices.ActiveDirectory;
+using System.DirectoryServices.AccountManagement;
+using System.Management;
+using System.Reflection;
+using System.Text;
+using System.Web;
+using System.Management.Automation.Language;
+using HDSignatures.Data;
+using HDSignatures.Logic;
+
+namespace HDSignatures;
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        AutoSettings.CreateDefaultOrLoadSettingsForAllAutoSettingsClasses();
+
+        //zoekt waar de applicatie is opgestart en maakt een bestand aan die "HDSignatures_Logs" heet
+        var startupPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+        var logPath = Path.Combine(startupPath, "HDSignatures_Logs");
+
+        //Logger
+#if DEBUG
+
+        Log.Logger = new LoggerConfiguration()
+                        //Wat de bestanden hun naam zijn en waar ze naartoe moeten
+                        .WriteTo.Console()
+                        .WriteTo.File(Path.Combine(logPath, $"[{DateTime.Now:yyyy-MM-dd}] HDSignatures.log"),
+                            rollingInterval: RollingInterval.Day,
+                            fileSizeLimitBytes: 10000000,
+                            retainedFileCountLimit: 10,
+                            rollOnFileSizeLimit: true,
+                            buffered: true,
+                            flushToDiskInterval: TimeSpan.FromMilliseconds(150))
+                        .MinimumLevel.Verbose()
+                        //maakt de .log bestand aan
+                        .CreateLogger();
+#else
+        Log.Logger = new LoggerConfiguration()
+                        //Wat de bestanden hun naam zijn en waar ze naartoe moeten
+                        .WriteTo.Console()
+                        .WriteTo.File(Path.Combine(logPath, $"[{DateTime.Now:yyyy-MM-dd}] HDSignatures.log"),
+                            rollingInterval: RollingInterval.Day,
+                            fileSizeLimitBytes: 10000000,
+                            retainedFileCountLimit: 10,
+                            rollOnFileSizeLimit: true,
+                            buffered: true,
+                            flushToDiskInterval: TimeSpan.FromMilliseconds(150))
+                        .MinimumLevel.Information()
+                        //maakt de .log bestand aan
+                        .CreateLogger();
+#endif
+        try
+        {
+            string test = "213";
+            if (!Settings.blnUsersInAD)
+            {
+                // Lokaal gebruikers
+                // Pakt de volle lijst met Users
+                List<UserData> tempAllUsersList = DataManager.GetLocalUserList();
+                Log.Information("ALLE USERS");
+                Log.Information($"{tempAllUsersList.Count} User(s)");
+                foreach (UserData User in tempAllUsersList) Log.Verbose($"{User.UserName}");
+                Console.WriteLine("\n\r");
+
+                // Pakt alle Inactive Users
+                List<UserData> tempInactiveUserList = DataManager.GetInactiveLocalUsers(tempAllUsersList);
+                Log.Information("INACTiVE USERS");
+                Log.Information($"{tempInactiveUserList.Count} Inactive user(s)");
+                foreach (UserData User in tempInactiveUserList) Log.Verbose($"INACTIVE: {User.UserName}");
+                Console.WriteLine("\n\r");
+
+                // Pakt alle Active Users
+                List<UserData> tempActiveUserList = DataManager.GetActiveLocalUsers(tempAllUsersList);
+                Log.Information("ACTIVE USERS");
+                Log.Information($"{tempActiveUserList.Count} Active user(s)");
+                foreach (UserData User in tempActiveUserList) Log.Verbose($"ACTIVE: {User.UserName}");
+                Console.WriteLine("\n\r");
+
+                // Gebruikt die Beschrijving en zet het om in Info met Regex
+                List<UserData> tempProcessedUserDataList = LogicManager.ParseUserDescription(tempActiveUserList);
+
+                bool blnIsSignatureFolderFound = false;
+                if (CheckLocationOfDirectory(Settings.strSignaturesFolderName))
+                {
+                    Log.Information("SIGNATURES FOLDER GEVONDEN");
+                    Settings.strSignatureFolderName = Settings.strSignaturesFolderName;
+                    // Verwijderd alle signatures van de inactive Users
+                    DataManager.DeleteSignaturesOfInactiveUsers(tempInactiveUserList, tempAllUsersList);
+                    if (!Settings.blnAdminOnly)
+                        // Past de Users zijn signature aan met de gegeven Info
+                        DataManager.ModifySignatures(tempProcessedUserDataList, tempActiveUserList);
+                    else
+                        // Past aleen de Administrators zijn signatures aan
+                        DataManager.ModifySignaturesOfAdmin(tempProcessedUserDataList);
+                    blnIsSignatureFolderFound = true;
+                }
+                if (!blnIsSignatureFolderFound)
+                {
+                    Log.Error("\\SIGNATURES\\ FOLDER NIET KUNNEN VINDEN");
+                }
+                if (CheckLocationOfDirectory(Settings.strHandtekeningenFolderName))
+                {
+                    Log.Verbose("HANDTEKENINGEN FOLDER GEVONDEN");
+                    Settings.strSignatureFolderName = Settings.strHandtekeningenFolderName;
+                    // Verwijderd alle signatures van de inactive Users
+                    DataManager.DeleteSignaturesOfInactiveUsers(tempInactiveUserList, tempAllUsersList);
+                    // Past de Users zijn signature aan met de gegeven Info
+                    DataManager.ModifySignatures(tempProcessedUserDataList, tempActiveUserList);
+                    blnIsSignatureFolderFound = true;
+                }
+                if (!blnIsSignatureFolderFound)
+                {
+                    Log.Error("\\HANDTEKENINGEN\\ FOLDER NIET KUNNEN VINDEN\n\r");
+                    Log.Error("GEEN SIGNATURES KUNNEN MAKEN OF VERWIJDEREN");
+                    Log.Error($"CHECK OF DE PAD: \n\r");
+                    Log.Information($"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strHandtekeningenFolderName} OF {Settings.strSignaturesFolderName}\n\r");
+                    Log.Error($"BESTAAT");
+
+                }
+            }
+            else
+            {
+                // Active Directory gebruikers
+
+
+                List<UserData> tempAllUsersList = DataManager.GetAllADUsersList();
+                Log.Information("ALLE USERS");
+                Log.Information($"{tempAllUsersList.Count} User(s)");
+                foreach (UserData User in tempAllUsersList) Log.Verbose($"{User.UserName}");
+                Console.WriteLine("\n\r");
+
+                List<UserData> tempInactiveADUserList = DataManager.GetInactiveADUserList();
+                Log.Information("INACTiVE USERS");
+                Log.Information($"{tempInactiveADUserList.Count} Inactive user(s)");
+                foreach (UserData User in tempInactiveADUserList) Log.Verbose($"{User.UserName}");
+                Console.WriteLine("\n\r");
+
+                List<UserData> tempActiveADUsersWithDescriptionList = DataManager.GetActiveADUsersWithDescriptionList();
+                Log.Information("DESCRIPTION OF ACTIVE USERS");
+                Log.Information($"{tempActiveADUsersWithDescriptionList.Count} Correcte description(s)");
+                foreach (UserData User in tempActiveADUsersWithDescriptionList) Log.Verbose($"{User.Description}");
+                Console.WriteLine("\n\r");
+
+                // Gebruikt die Beschrijving en zet het om in Info met Regex
+                List<UserData> tempProcessedUserDataList = LogicManager.ParseUserDescription(tempActiveADUsersWithDescriptionList);
+
+                bool blnIsSignatureFolderFound = false;
+                if (CheckLocationOfDirectory(Settings.strSignaturesFolderName))
+                {
+                    Log.Verbose("Signatures folder gevonden");
+                    Settings.strSignatureFolderName = Settings.strSignaturesFolderName;
+                    // Verwijderd alle signatures van de inactive Users
+                    DataManager.DeleteSignaturesOfInactiveUsers(tempInactiveADUserList, tempAllUsersList);
+                    // Past de Users zijn signature aan met de gegeven Info
+                    DataManager.ModifySignatures(tempProcessedUserDataList, tempActiveADUsersWithDescriptionList);
+                    blnIsSignatureFolderFound = true;
+                }
+                if (!blnIsSignatureFolderFound)
+                {
+                    Log.Error("\\Signatures\\ FOLDER NIET KUNNEN VINDEN");
+                    Log.Information("Probeert \\Handtekeningen\\");
+                }
+                if (CheckLocationOfDirectory(Settings.strHandtekeningenFolderName))
+                {
+                    Log.Verbose("Handtekeningen folder gevonden");
+                    Settings.strSignatureFolderName = Settings.strHandtekeningenFolderName;
+                    DataManager.DeleteSignaturesOfInactiveUsers(tempInactiveADUserList, tempAllUsersList);
+                    // Past de Users zijn signature aan met de gegeven Info
+                    DataManager.ModifySignatures(tempProcessedUserDataList, tempActiveADUsersWithDescriptionList);
+                    blnIsSignatureFolderFound = true;
+                }
+                if (!blnIsSignatureFolderFound)
+                {
+                    Log.Error("\\Handtekeningen\\ FOLDER NIET KUNNEN VINDEN");
+                    Log.Error("GEEN SIGNATURES KUNNEN MAKEN OF VERWIJDEREN");
+                    Log.Error("CHECK OF DE FOLDER BESTAAT");
+                    Log.Error($"CHECK OF DE PAD: \n\r");
+                    Log.Verbose($"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strHandtekeningenFolderName} OF {Settings.strSignaturesFolderName}\n\r");
+                    Log.Information($"BESTAAT");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+            Environment.Exit(1);
+        }
+        Environment.Exit(0);
+    }
+    public static bool CheckLocationOfDirectory(string argPathToSignatures)
+    {
+        if (Directory.Exists($"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{argPathToSignatures}"))
+            return true;
+        else
+            return false;
+    }
+}

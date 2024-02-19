@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HDSignatures
+{
+    internal interface IRegexUsers
+    {
+        public string regexNaam { get; set; }
+        public string regexNaamVL { get; set; }
+        public string regexMail { get; set; }
+        public string regexFunctie { get; set; }
+
+
+        public string GetNaam(string argInput);
+        public string GetNaamVL(string argInput);
+        public string GetMail(string argInput);
+        public string GetFunctie(string argInput);
+    }
+}

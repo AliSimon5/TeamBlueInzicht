@@ -1,0 +1,61 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace HDSignatures
+{
+    internal class ReadUserDescription
+    {
+        public string regexNaam { get; set; } = @"(?<=Naam=)(.*?)(?=\;)";
+        public string regexNaamVL { get; set; } = @"(?<=Naamvl=)(.*?)(?=\;)";
+        public string regexMail { get; set; } = @"(?<=Mail=)(.*?)(?=\@)";
+        public string regexFunctie { get; set; } = @"(?<=Functie=)(.*?)(?=\;)";
+
+        public string GetNaam(string argInput)
+        {  
+            //voert de Regex uit op argInput/PDF en negeert hoofdletters
+            var tempMatch = Regex.Match(argInput, regexNaam, RegexOptions.IgnoreCase);
+
+            //Als het niet gelukt is met matchen dan returned hij null
+            if (!tempMatch.Success) return null;
+
+            return tempMatch.Value;
+        }
+
+        public string GetNaamVL(string argInput)
+        {
+            //voert de Regex uit op argInput/PDF en negeert hoofdletters
+            var tempMatch = Regex.Match(argInput, regexNaamVL, RegexOptions.IgnoreCase);
+
+            //Als het niet gelukt is met matchen dan returned hij null
+            if (!tempMatch.Success) return null;
+
+            return tempMatch.Value;
+        }
+
+        public string GetMail(string argInput)
+        {
+            //voert de Regex uit op argInput/PDF en negeert hoofdletters
+            var tempMatch = Regex.Match(argInput, regexMail, RegexOptions.IgnoreCase);
+
+            //Als het niet gelukt is met matchen dan returned hij null
+            if (!tempMatch.Success) return null;
+
+            return tempMatch.Value;
+        }
+
+        public string GetFunctie(string argInput)
+        {
+            //voert de Regex uit op argInput/PDF en negeert hoofdletters
+            var tempMatch = Regex.Match(argInput, regexFunctie, RegexOptions.IgnoreCase);
+
+            //Als het niet gelukt is met matchen dan returned hij null
+            if (!tempMatch.Success) return null;
+
+            return tempMatch.Value;
+        }
+    }
+}

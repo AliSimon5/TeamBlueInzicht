@@ -1,0 +1,38 @@
+HDSignatures HandLeiding
+
+Dit is een voorbeeld van de correcte beschrijving/description van de user.
+
+ Naam=Jan Piet;Naamvl=J.P.;Mail=Jan@hdservices.com;Functie=Werknemer;
+
+De applicatie maakt handtekeningen aan voor in outlook voor elke actieve gebruiker volgens het onderstaande formaat.
+Ook verwijderd de applicatie de handtekeningen van alle inactieve gebruikers.
+
+
+settings.ini
+
+
+blnUsersInAD = True/False
+    (True als de Users in AD zijn, False als de Users in lokaal zijn)
+
+strSchijf = C
+    (De schijf waar alle Signatures staan)
+
+strAdminNaam = Administrator
+    (De naam waar alle Signatures in zitten)
+
+blnUserGetsAllSignatures = True/False
+    (True als alle users alle Signatures moeten krijgen)
+
+strFilePrefix = HD-
+    (Afkorting van de Signature Bestanden)
+
+strOrigineleFile = HDServices
+    (De naam van het Basis/Orginele bestand)
+
+blnCreateFolderFiles = True/False
+    (True als het gemaakt moet worden)
+
+blnCreateFolderBestanden = True/False
+    (True als het gemaakt moet worden)
+
+

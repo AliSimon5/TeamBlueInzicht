@@ -1,0 +1,25 @@
+﻿<Window x:Class="HDListFolders.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HDListFolders"
+        mc:Ignorable="d"
+        Title="HDListFolders" Height="522" Width="1414">
+    <Grid>
+        <Label Content="HDListFolders" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold" FontSize="22"/>
+        <TextBox x:Name="tbMainPath" HorizontalAlignment="Left" Margin="19,75,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="348"/>
+        <TextBox x:Name="tbFilterOne" Margin="19,134,0,0" TextWrapping="Wrap" Height="18" VerticalAlignment="Top" HorizontalAlignment="Left" Width="134"/>
+        <Label Content="Hoofd Pad" HorizontalAlignment="Left" Margin="19,49,0,0" VerticalAlignment="Top"/>
+        <Label Content="Zoek Filter" Margin="19,108,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="66"/>
+        <ListBox x:Name="lbFilesOne" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="19,157,946,26"/>
+        <TextBox x:Name="tbFilterTwo" Margin="482,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="135"/>
+        <Label Content="Zoek Filter" Margin="482,108,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="66"/>
+        <ListBox x:Name="lbFilesTwo" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="482,157,482,26"/>
+        <TextBox x:Name="tbFilterThree" Margin="947,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="135"/>
+        <Label Content="Zoek Filter" Margin="947,108,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="66"/>
+        <ListBox x:Name="lbFilesThree" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="947,157,18,26"/>
+        <Button x:Name="btnSearch" Content="Zoek" HorizontalAlignment="Left" Margin="377,71,0,0" VerticalAlignment="Top" Height="25" Width="46" Click="btnSearch_Click"/>
+
+    </Grid>
+</Window>

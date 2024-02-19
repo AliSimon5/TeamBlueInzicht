@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{75A8785E-A2F4-4119-A010-58BF200918B4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>HDSignaturesTool</RootNamespace>
+    <AssemblyName>HDSignaturesTool</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\HDSignaturesIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.10.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.10\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="M.Core.Application.AssemblyInspector, Version=2021.7.10.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.Core.Application.AssemblyInspector.2021.7.10.4\lib\net48\M.Core.Application.AssemblyInspector.dll</HintPath>
+    </Reference>
+    <Reference Include="M.Core.Application.ControlHelpers, Version=2022.11.3.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.Core.Application.ControlHelpers.2022.11.3.1\lib\net48\M.Core.Application.ControlHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="M.Core.Application.Helpers, Version=2021.7.16.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.Core.Application.Helpers.2021.7.16.2\lib\net48\M.Core.Application.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="M.Core.Application.Logging, Version=2021.7.10.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.Core.Application.Logging.2021.7.10.1\lib\net48\M.Core.Application.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="M.Core.Application.Settings, Version=2021.7.10.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.Core.Application.Settings.2021.7.10.1\lib\net462\M.Core.Application.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="M.Core.Application.SystemTray, Version=2022.8.4.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.Core.Application.SystemTray.2022.8.4.1\lib\net48\M.Core.Application.SystemTray.dll</HintPath>
+    </Reference>
+    <Reference Include="M.Core.Application.TimeHelpers, Version=2021.7.16.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.Core.Application.TimeHelpers.2021.7.16.1\lib\net48\M.Core.Application.TimeHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="M.Core.Application.WPF.MessageBox, Version=2021.8.30.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.Core.Application.WPF.MessageBox.2021.8.30.2\lib\net48\M.Core.Application.WPF.MessageBox.dll</HintPath>
+    </Reference>
+    <Reference Include="M.Core.Mail, Version=2022.5.9.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.Core.Mail.2022.5.9.1\lib\net472\M.Core.Mail.dll</HintPath>
+    </Reference>
+    <Reference Include="M.NetStandard.AssemblyInspector, Version=2022.2.18.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.NetStandard.AssemblyInspector.2022.2.18.1\lib\netstandard2.0\M.NetStandard.AssemblyInspector.dll</HintPath>
+    </Reference>
+    <Reference Include="M.NetStandard.CommonInterfaces, Version=2021.10.19.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.NetStandard.CommonInterfaces.2021.10.19.1\lib\netstandard2.0\M.NetStandard.CommonInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="M.NetStandard.Logging, Version=2022.2.17.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.NetStandard.Logging.2022.2.17.2\lib\netstandard2.0\M.NetStandard.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="M.NetStandard.Settings, Version=2022.6.28.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.NetStandard.Settings.2022.6.28.1\lib\netstandard2.0\M.NetStandard.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="M.NetStandard.SinkToAction, Version=2022.12.13.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.NetStandard.SinkToAction.2022.12.13.1\lib\netstandard2.0\M.NetStandard.SinkToAction.dll</HintPath>
+    </Reference>
+    <Reference Include="M.NetStandard.Windows.SingletonApp, Version=2023.1.30.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M.NetStandard.Windows.SingletonApp.2023.1.30.1\lib\netstandard2.0\M.NetStandard.Windows.SingletonApp.dll</HintPath>
+    </Reference>
+    <Reference Include="MailKit, Version=2.13.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
+      <HintPath>..\packages\MailKit.2.13.0\lib\net47\MailKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+    </Reference>
+    <Reference Include="MimeKit, Version=2.13.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
+      <HintPath>..\packages\MimeKit.2.13.0\lib\net47\MimeKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.12.0\lib\net47\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=5.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.5.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.7.0.0\lib\net462\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.7.0.0\lib\net462\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.5.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.7.0.0\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Helpers\ActiveDirectoryManager.cs" />
+    <Compile Include="Data\DataManager.CreateDirectory.cs" />
+    <Compile Include="Data\DataManager.StartupManager.cs" />
+    <Compile Include="Data\DataManager.UserPath.cs" />
+    <Compile Include="Helpers\DeleteIfExists.cs" />
+    <Compile Include="Helpers\RtfUnicode.cs" />
+    <Compile Include="Helpers\StrCI.cs" />
+    <Compile Include="Logic\LogicManager.Mail.cs" />
+    <Compile Include="Logic\LogicManager.ParseUsers.cs" />
+    <Compile Include="Logic\LogicManager.SignaturesForDomain.cs" />
+    <Compile Include="Logic\LogicManager.SignaturesForLocal.cs" />
+    <Compile Include="Types\BackupType.cs" />
+    <Compile Include="Types\LoggingReport.cs" />
+    <Compile Include="Types\Settings.cs" />
+    <Compile Include="Types\UserData.cs" />
+    <Page Include="Windows\BackupsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Types\UserDataWrapper.cs" />
+    <Compile Include="Types\UserLists.cs" />
+    <Compile Include="Windows\BackupsWindow.xaml.cs">
+      <DependentUpon>BackupsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DataManager.ActiveDirectoryUsers.cs" />
+    <Compile Include="Data\DataManager.BackupSignatures.cs" />
+    <Compile Include="Data\DataManager.CopySignatures.cs" />
+    <Compile Include="Data\DataManager.DeleteSignatures.cs" />
+    <Compile Include="Data\DataManager.LocalUsers.cs" />
+    <Compile Include="Data\DataManager.ModifySignatures.cs" />
+    <Compile Include="Data\DataManager.ModifySignaturesAdminOnly.cs" />
+    <Compile Include="Data\DataManager.UpdateSignatures.cs" />
+    <Compile Include="Data\DataManager.UpdateSignaturesAdminOnly.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="HDSignaturesIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\HDSignaturesIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="HDSignaturesLogo.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,1114 @@
+﻿using M.Core.Application.Settings;
+using Microsoft.PowerShell.Commands;
+using Serilog;
+using System.Diagnostics;
+using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
+using System.Management;
+using System.Reflection;
+using System.Text;
+using System.Web;
+
+namespace HDSignatures;
+internal class Program
+{
+    public static string Domein;
+    static void Main(string[] args)
+    {
+        AutoSettings.CreateDefaultOrLoadSettingsForAllAutoSettingsClasses();
+
+        //settings.ini Opties
+        if (Settings.blnUsersInAD)
+            Domein = "/domain";
+
+        //zoekt waar de applicatie is opgestart en maakt een bestand aan die "HDSignatures_Logs" heet
+        var startupPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+        var logPath = Path.Combine(startupPath, "HDSignatures_Logs");
+
+        //Logger
+#if DEBUG
+
+        Log.Logger = new LoggerConfiguration()
+                        //Wat de bestanden hun naam zijn en waar ze naartoe moeten
+                        .WriteTo.Console()
+                        .WriteTo.File(Path.Combine(logPath, $"[{DateTime.Now:yyyy-MM-dd}] HDSignatures.log"),
+                            rollingInterval: RollingInterval.Day,
+                            fileSizeLimitBytes: 10000000,
+                            retainedFileCountLimit: 10,
+                            rollOnFileSizeLimit: true,
+                            buffered: true,
+                            flushToDiskInterval: TimeSpan.FromMilliseconds(150))
+                        .MinimumLevel.Verbose()
+                        //maakt de .log bestand aan
+                        .CreateLogger();
+#else
+        Log.Logger = new LoggerConfiguration()
+                        //Wat de bestanden hun naam zijn en waar ze naartoe moeten
+                        .WriteTo.Console()
+                        .WriteTo.File(Path.Combine(logPath, $"[{DateTime.Now:yyyy-MM-dd}] HDSignatures.log"),
+                            rollingInterval: RollingInterval.Day,
+                            fileSizeLimitBytes: 10000000,
+                            retainedFileCountLimit: 10,
+                            rollOnFileSizeLimit: true,
+                            buffered: true,
+                            flushToDiskInterval: TimeSpan.FromMilliseconds(150))
+                        .MinimumLevel.Information()
+                        //maakt de .log bestand aan
+                        .CreateLogger();
+#endif
+        try
+        {
+            if (!Settings.blnUsersInAD)
+            {
+                // Lokaal gebruikers
+
+                // Pakt de volle lijst met Users
+                List<UserData> tempAllUsersList = GetLocalUserList();
+                Log.Information("ALLE USERS");
+                Log.Information($"{tempAllUsersList.Count} User(s)");
+                foreach (UserData User in tempAllUsersList) Log.Verbose($"{User.UserName}");
+                Console.WriteLine("\n\r");
+
+                // Pakt alle Inactive Users
+                List<UserData> tempInactiveUserList = GetInactiveLocalUsers(tempAllUsersList);
+                Log.Information("INACTiVE USERS");
+                Log.Information($"{tempInactiveUserList.Count} Inactive user(s)");
+                foreach (UserData User in tempInactiveUserList) Log.Verbose($"INACTIVE: {User.UserName}");
+                Console.WriteLine("\n\r");
+
+                // Pakt alle Active Users
+                List<UserData> tempActiveUserList = GetActiveLocalUsers(tempAllUsersList);
+                Log.Information("ACTIVE USERS");
+                Log.Information($"{tempActiveUserList.Count} Active user(s)");
+                foreach (UserData User in tempActiveUserList) Log.Verbose($"ACTIVE: {User.UserName}");
+                Console.WriteLine("\n\r");
+
+                // Pakt de Beschijving van de Active Users
+                List<UserData> tempDescriptionOfUsersList = GetInfoOfActiveUser(tempActiveUserList);
+                Log.Information("DESCRIPTION OF ACTIVE USERS");
+                Log.Information($"{tempDescriptionOfUsersList.Count} Correcte description(s)");
+                foreach (UserData User in tempDescriptionOfUsersList) Log.Verbose($"{User.Description}");
+                Console.WriteLine("\n\r");
+
+                // Gebruikt die Beschrijving en zet het om in Info met Regex
+                List<UserData> tempProcessedUserDataList = ParseUserDescription(tempDescriptionOfUsersList);
+
+                bool blnIsSignatureFolderFound = false;
+                if (CheckLocationOfDirectory(Settings.strSignaturesFolderName))
+                {
+                    Log.Information("SIGNATURES FOLDER GEVONDEN");
+                    Settings.strSignatureFolderName = Settings.strSignaturesFolderName;
+                    // Verwijderd alle signatures van de inactive Users
+                    DeleteSignaturesOfInactiveUsers(tempInactiveUserList, tempAllUsersList);
+                    // Past de Users zijn signature aan met de gegeven Info
+                    ModifySignatures(tempProcessedUserDataList, tempDescriptionOfUsersList);
+                    blnIsSignatureFolderFound = true;
+                }
+                if (!blnIsSignatureFolderFound)
+                {
+                    Log.Error("\\SIGNATURES\\ FOLDER NIET KUNNEN VINDEN");
+                }
+                if (CheckLocationOfDirectory(Settings.strHandtekeningenFolderName))
+                {
+                    Log.Verbose("HANDTEKENINGEN FOLDER GEVONDEN");
+                    Settings.strSignatureFolderName = Settings.strHandtekeningenFolderName;
+                    // Verwijderd alle signatures van de inactive Users
+                    DeleteSignaturesOfInactiveUsers(tempInactiveUserList, tempAllUsersList);
+                    // Past de Users zijn signature aan met de gegeven Info
+                    ModifySignatures(tempProcessedUserDataList, tempDescriptionOfUsersList);
+                    blnIsSignatureFolderFound = true;
+                }
+                if (!blnIsSignatureFolderFound)
+                {
+                    Log.Error("\\HANDTEKENINGEN\\ FOLDER NIET KUNNEN VINDEN\n\r");
+                    Log.Error("GEEN SIGNATURES KUNNEN MAKEN OF VERWIJDEREN");
+                    Log.Error($"CHECK OF DE PAD: \n\r");
+                    Log.Information($"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strHandtekeningenFolderName} OF {Settings.strSignaturesFolderName}\n\r");
+                    Log.Error($"BESTAAT");
+
+                }
+            }
+            else
+            {
+                // Active Directory gebruikers
+
+                string tempDomain = GetADDomain();
+                Log.Information($"Domain = {tempDomain}");
+                Console.WriteLine("\n\r");
+
+                List<UserData> tempAllUsersList = GetAllADUsersList(tempDomain);
+                Log.Information("ALLE USERS");
+                Log.Information($"{tempAllUsersList.Count} User(s)");
+                foreach (UserData User in tempAllUsersList) Log.Verbose($"{User.UserName}");
+                Console.WriteLine("\n\r");
+
+                List<UserData> tempActiveADUserList = GetActiveADUserList(tempDomain);
+                Log.Information("ACTIVE USERS");
+                Log.Information($"{tempActiveADUserList.Count} Active user(s)");
+                foreach (UserData User in tempActiveADUserList) Log.Verbose($"{User.UserName}");
+                Console.WriteLine("\n\r");
+                
+                List<UserData> tempInactiveADUserList = GetInactiveADUserList(tempDomain);
+                Log.Information("INACTiVE USERS");
+                Log.Information($"{tempInactiveADUserList.Count} Inactive user(s)");
+                foreach (UserData User in tempInactiveADUserList) Log.Verbose($"{User.UserName}");
+                Console.WriteLine("\n\r");
+
+                List<UserData> tempActiveADUsersWithDescriptionList = GetActiveADUsersWithDescriptionList(tempDomain);
+                Log.Information("DESCRIPTION OF ACTIVE USERS");
+                Log.Information($"{tempActiveADUsersWithDescriptionList.Count} Correcte description(s)");
+                foreach (UserData User in tempActiveADUsersWithDescriptionList) Log.Verbose($"{User.Description}");
+                Console.WriteLine("\n\r");
+
+                // Gebruikt die Beschrijving en zet het om in Info met Regex
+                ParseUserDescription(tempActiveADUsersWithDescriptionList);
+
+                bool blnIsSignatureFolderFound = false;
+                if (CheckLocationOfDirectory(Settings.strSignaturesFolderName))
+                {
+                    Log.Verbose("Signatures folder gevonden");
+                    Settings.strSignatureFolderName = Settings.strSignaturesFolderName;
+                    // Verwijderd alle signatures van de inactive Users
+                    DeleteSignaturesOfInactiveUsers(tempInactiveADUserList, tempAllUsersList);
+                    // Past de Users zijn signature aan met de gegeven Info
+                    ModifySignatures(tempActiveADUsersWithDescriptionList, tempActiveADUserList);
+                    blnIsSignatureFolderFound = true;
+                }
+                if (!blnIsSignatureFolderFound)
+                {
+                    Log.Error("\\Signatures\\ FOLDER NIET KUNNEN VINDEN");
+                    Log.Information("Probeert \\Handtekeningen\\");
+                }
+                if (CheckLocationOfDirectory(Settings.strHandtekeningenFolderName))
+                {
+                    Log.Verbose("Handtekeningen folder gevonden");
+                    Settings.strSignatureFolderName = Settings.strHandtekeningenFolderName;
+                    DeleteSignaturesOfInactiveUsers(tempInactiveADUserList, tempAllUsersList);
+                    // Past de Users zijn signature aan met de gegeven Info
+                    ModifySignatures(tempActiveADUsersWithDescriptionList, tempActiveADUserList);
+                    blnIsSignatureFolderFound = true;
+                }
+                if (!blnIsSignatureFolderFound)
+                {
+                    Log.Error("\\Handtekeningen\\ FOLDER NIET KUNNEN VINDEN");
+                    Log.Error("GEEN SIGNATURES KUNNEN MAKEN OF VERWIJDEREN");
+                    Log.Error("CHECK OF DE FOLDER BESTAAT"); 
+                    Log.Error($"CHECK OF DE PAD: \n\r");
+                    Log.Verbose($"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strHandtekeningenFolderName} OF {Settings.strSignaturesFolderName}\n\r");
+                    Log.Information($"BESTAAT");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+            Environment.Exit(1);
+        }
+        Environment.Exit(0);
+    }
+    #region
+    /// <summary>
+    /// Pakt alle local Users en voegt ze toe aan een list
+    /// </summary>
+    /// <returns></returns>
+    public static List<UserData> GetLocalUserList()
+    {
+        // maakt die list een variable
+        var tempAllUserList = new List<UserData>();
+        // zorgt ervoor dat hij alle users zoekt
+        SelectQuery query = new SelectQuery("Win32_UserAccount");
+        // pakt alle users en zet ze in searcher
+        ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
+        // voor elke User die hij vindt voegt hij hem toe aan tempAllUsersList
+        foreach (ManagementObject User in searcher.Get())
+        {
+            // slaat de Username en Description op
+            UserData userData = new UserData();
+            userData.UserName = (string)User["Name"];
+            tempAllUserList.Add(userData);
+        }
+        return tempAllUserList;
+    }
+
+    /// <summary>
+    /// Scheid de inactive Users en zet ze in een aparte list
+    /// </summary>
+    /// <param name="tempAllUserList">Alle Users</param>
+    /// <returns></returns>
+    public static List<UserData> GetInactiveLocalUsers(List<UserData> tempAllUserList)
+    {
+        var tempInactiveUserList = new List<UserData>();
+        // Voor elke tempUserData die hij heeft gevonden in searcher pakt hij
+        foreach (var tempUser in tempAllUserList)
+        {
+            try
+            {
+                Process PS = new Process();
+                //lijst van opties
+                // zorgt ervoor dat de Arguments in Powershell komt te staan
+                PS.StartInfo.FileName = $@"powershell ";
+                // Powershell command die info krijgt van een User
+                PS.StartInfo.Arguments = $@"(Get-LocalUser -Name {tempUser.UserName})";
+                PS.StartInfo.RedirectStandardInput = true;
+                PS.StartInfo.RedirectStandardOutput = true;
+                // zorgt ervoor dat er niet extra Command Prompt windows open komen te staan
+                PS.StartInfo.CreateNoWindow = true;
+                // er wordt geen Shell gebruikt
+                PS.StartInfo.UseShellExecute = false;
+                // start de PS met de opties
+                PS.Start();
+                // Wacht tot hij alle info van de User compleet heeft gepakt
+                PS.WaitForExit();
+                // Na het wachten gaat hij kijken en lezen naar wat er net werd uitgevoerd
+                StreamReader reader = PS.StandardOutput;
+                string output = reader.ReadToEnd();
+
+                // Checkt of de User Disabled(False) is
+                if (output.Contains("False"))
+                {
+                    tempInactiveUserList.Add(tempUser);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                Environment.Exit(1);
+            }
+        }
+        return tempInactiveUserList;
+    }
+
+    /// <summary>
+    /// Scheid de Active Users en zet ze in een aparte list
+    /// </summary>
+    /// <param name="tempAllUserList">Alle Users</param>
+    /// <returns></returns>
+    public static List<UserData> GetActiveLocalUsers(List<UserData> tempAllUserList)
+    {
+        var tempActiveUserList = new List<UserData>();
+
+        foreach (var User in tempAllUserList)
+        {
+            try
+            {
+                Process PS = new Process();
+                //lijst van opties
+                //zorgt ervoor dat de Arguments in Powershell komt te staan
+                PS.StartInfo.FileName = $"powershell ";
+                //Command line die de info pakt van de user
+                PS.StartInfo.Arguments = $"(Get-LocalUser -Name {User.UserName})";
+                PS.StartInfo.RedirectStandardInput = true;
+                PS.StartInfo.RedirectStandardOutput = true;
+                //zorgt ervoor dat er niet extra Command Prompt windows open komen te staan
+                PS.StartInfo.CreateNoWindow = true;
+                //er wordt geen Shell gebruikt
+                PS.StartInfo.UseShellExecute = false;
+                //start de PS met de opties
+                PS.Start();
+                // Wacht tot hij de info compleet heeft gepakt
+                PS.WaitForExit();
+                // Na het wachten gaat hij kijken en lezen naar wat er net werd uitgevoerd
+                StreamReader reader = PS.StandardOutput;
+                string output = reader.ReadToEnd();
+
+                // Checkt of de User Enabled(True) is
+                if (output.Contains("True"))
+                {
+                    // Checkt of de user de correcte Beschrijving heeft
+                    if (output == null || !output.Contains("Naam="))
+                        continue;
+                    // Voegt de Users die enabled zijn aan het lijstje
+                    tempActiveUserList.Add(User);
+                    Log.Information(output);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+        }
+        return tempActiveUserList;
+    }
+
+    public static void DeleteSignaturesOfInactiveUsers(List<UserData> tempInactiveUserList, List<UserData> tempAllUserList)
+    {
+        foreach (var tempInactiveUser in tempInactiveUserList)
+        {
+            try
+            {
+                if (!Settings.blnUsersInAD)
+                {
+                    Process cmd2 = new Process();
+                    // lijst met opties
+                    // zorgt ervoor dat de Arguments in Powershell komt te staan
+                    cmd2.StartInfo.FileName = $@"powershell ";
+                    // Powershell command die de Description pakt van de tempInactiveUser
+                    cmd2.StartInfo.Arguments = $@"(Get-LocalUser -Name {tempInactiveUser.UserName}).Description";
+                    cmd2.StartInfo.RedirectStandardInput = true;
+                    cmd2.StartInfo.RedirectStandardOutput = true;
+                    // zorgt ervoor dat er niet extra Command Prompt windows open komen te staan
+                    cmd2.StartInfo.CreateNoWindow = true;
+                    // er wordt geen Shell gebruikt
+                    cmd2.StartInfo.UseShellExecute = false;
+                    // start de PS met de opties
+                    cmd2.Start();
+                    // Wacht tot hij de Description compleet heeft gepakt
+                    cmd2.WaitForExit();
+                    StreamReader reader = cmd2.StandardOutput;
+                    string output = reader.ReadToEnd();
+                    // Checkt of de user de correcte Beschrijving heeft
+                    if (output == null || !output.Contains("Naam="))
+                        continue;
+
+                    Log.Information($"SIGNATURES VAN {tempInactiveUser.UserName} WORDEN VERWIJDERD");
+
+                    ReadUserDescription tempRegexDescType = new ReadUserDescription();
+                    // Pakt de naam van de User
+                    string tempNaamInactiveUser = tempRegexDescType.GetNaam(output);
+
+                    // Voor elke User gaat hij checken of er signatures van de disabled user in de bestand zit zowel verwijderd hij hem zo niet doet hij niks
+                    foreach (var tempUser in tempAllUserList)
+                    {
+                        bool tempDeleted = false;
+                        // Het pad naar de User met de signature van de disabled user
+                        tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}.txt") ? true : tempDeleted;
+                        tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}.rtf") ? true : tempDeleted;
+                        tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}.htm") ? true : tempDeleted;
+                        tempDeleted = DeleteIfDirectoryExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}_files") ? true : tempDeleted;
+                        tempDeleted = DeleteIfDirectoryExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}_bestanden") ? true : tempDeleted;
+
+                        if (tempDeleted) Log.Verbose($"{tempNaamInactiveUser} - Signatures zijn verwijderd bij -> {tempUser.UserName}");
+                    }
+                }
+                else
+                {
+                    ReadUserDescription tempRegexDescType = new ReadUserDescription();
+                    // Pakt de naam van de User
+                    if (tempInactiveUser.Description == null || !tempInactiveUser.Description.Contains("Naam="))
+                        continue;
+
+                    string tempNaamInactiveUser = tempRegexDescType.GetNaam(tempInactiveUser.Description);
+                    Console.WriteLine(tempNaamInactiveUser);
+                    // Voor elke User gaat hij checken of er signatures van de disabled user in de bestand zit zowel verwijderd hij hem zo niet doet hij niks
+                    foreach (var tempUser in tempAllUserList)
+                    {
+                        bool tempDeleted = false;
+
+                        // Het pad naar de User met de signature van de disabled user
+                        tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}.txt") ? true : tempDeleted;
+                        tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}.rtf") ? true : tempDeleted;
+                        tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}.htm") ? true : tempDeleted;
+                        tempDeleted = DeleteIfDirectoryExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}_files") ? true : tempDeleted;
+                        tempDeleted = DeleteIfDirectoryExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempNaamInactiveUser.Replace(" ", "")}_bestanden") ? true : tempDeleted;
+
+                        if (tempDeleted) Log.Verbose($"{tempNaamInactiveUser} - Signatures zijn verwijderd bij - {tempUser.UserName}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+        }
+    }
+    private static bool DeleteIfFileExists(string argpath)
+    {
+        if (File.Exists(argpath))
+        {
+            File.Delete(argpath);
+            return true;
+        }
+        return false;
+    }
+    private static bool DeleteIfDirectoryExists(string argpath)
+    {
+        if (Directory.Exists(argpath))
+        {
+            Directory.Delete(argpath, true);
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Checkt alle Active Users of ze de goede Beschrijving/Description hebben zowel pakt hij hun Beschrijving zo niet doet hij niks
+    /// </summary>
+    /// <param name="tempActiveUserList">Alle Active Users</param>
+    /// <returns></returns>
+    public static List<UserData> GetInfoOfActiveUser(List<UserData> tempActiveUserList)
+    {
+        var tempDescOfUsers = new List<UserData>();
+
+        // Voor elke tempUserData die hij heeft gevonden in searcher pakt hij
+        foreach (var User in tempActiveUserList)
+        {
+            try
+            {
+                Process PS2 = new Process();
+                // lijst met opties
+                // zorgt ervoor dat de Arguments in Powershell komt te staan
+                PS2.StartInfo.FileName = $@"powershell ";
+                // Powershell command die de description pakt van de User
+                PS2.StartInfo.Arguments = $@"(Get-LocalUser -Name {User.UserName}).Description";
+                PS2.StartInfo.RedirectStandardInput = true;
+                PS2.StartInfo.RedirectStandardOutput = true;
+                // zorgt ervoor dat er niet extra Command Prompt windows open komen te staan
+                PS2.StartInfo.CreateNoWindow = true;
+                // er wordt geen Shell gebruikt
+                PS2.StartInfo.UseShellExecute = false;
+                // start de PS met de opties
+                PS2.Start();
+                // Wacht tot hij de Description compleet heeft gepakt
+                PS2.WaitForExit();
+                // Na het wachten gaat hij kijken en lezen naar wat er net werd uitgevoerd
+                StreamReader reader2 = PS2.StandardOutput;
+                string output2 = reader2.ReadToEnd();
+                // als de beschrijving geen Naam= erin heeft dan is deze User ongeldig 
+                if (output2 == null || !output2.Contains("Naam="))
+                    continue;
+
+                // slaat de Description op
+                UserData userData = new UserData();
+                userData.UserName = User.UserName;
+                userData.Description = output2;
+
+                //voegt het toe aan de list
+                tempDescOfUsers.Add(userData);
+                Log.Information(output2);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+        }
+        return tempDescOfUsers;
+    }
+    #endregion
+
+
+    /// <summary>
+    /// Pakt de domain zodat alle user info kan opgehaald worden
+    /// </summary>
+    /// <returns></returns>
+    public static string GetADDomain()
+    {
+        Process cmd = new Process();
+        //lijst van opties
+        // Command line start met net
+        cmd.StartInfo.FileName = "wmic";
+        // Command line die de Inactive User delete
+        cmd.StartInfo.Arguments = $@"computersystem get domain";
+        cmd.StartInfo.RedirectStandardInput = true;
+        cmd.StartInfo.RedirectStandardOutput = true;
+        //zorgt ervoor dat er niet extra Command Prompt windows open komen te staan
+        cmd.StartInfo.CreateNoWindow = true;
+        //er wordt geen Shell gebruikt
+        cmd.StartInfo.UseShellExecute = false;
+        //start de cmd met de opties
+        cmd.Start();
+        // Wacht tot hij de Command heeft uitgevoerd
+        cmd.WaitForExit();
+        StreamReader reader2 = cmd.StandardOutput;
+        string output2 = reader2.ReadToEnd();
+        // Haalt alle onnodige dingen weg zodat aleen de domain wordt returned
+        string output3 = output2.Replace("Domain", "");
+        string output4 = output3.Replace("\n", "");
+        string output5 = output4.Replace("\r", "");
+        string output = output5.Replace(" ", "");
+        return output;
+    }
+    /// <summary>
+    /// Pakt alle local Users en voegt ze toe aan een list
+    /// </summary>
+    /// <param name="Domain">de domain van de server</param>
+    /// <returns></returns>
+    public static List<UserData> GetAllADUsersList(string Domain)
+    {
+        // Maakt een UserData list aan die alle Users pakt
+        List<UserData> tempAllUsersList = new List<UserData>();
+
+        // Zorgt ervoor dat hij gaat zoeken tussen alle users in domain
+        using (var context = new PrincipalContext(ContextType.Domain, Domain))
+        {
+            // zoekt alle Users
+            using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+            {
+                // loopje voor elke user in de searcher
+                foreach (var tempUserPrincipals in searcher.FindAll())
+                {
+                    DirectoryEntry de = tempUserPrincipals.GetUnderlyingObject() as DirectoryEntry;
+
+                    // Zorgt ervoor dat UserData kan gebruikt worden
+                    UserData userData = new UserData();
+
+                    // zet de samAccountname value in userData.UserName
+                    userData.UserName = (string)de.Properties["samAccountName"].Value;
+                    // voegt hem toe aan de list
+                    tempAllUsersList.Add(userData);
+                }
+            }
+        }
+        return tempAllUsersList;
+    }
+    /// <summary>
+    /// Scheid de Active Users en zet ze in een aparte list
+    /// </summary>
+    /// <param name="Domain">de domain van de server</param>
+    /// <returns></returns>
+    public static List<UserData> GetActiveADUserList(string Domain)
+    {
+        // Maakt een UserData list aan die alle active Users pakt
+        List<UserData> tempActiveADUserList = new List<UserData>();
+
+        // Zorgt ervoor dat hij gaat zoeken tussen alle users in domain
+        using (var context = new PrincipalContext(ContextType.Domain, Domain))
+        {
+            // zoekt alle Users
+            using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+            {
+                // loopje voor elke user in de searcher
+                foreach (var tempUserPrincipals in searcher.FindAll())
+                {
+                    DirectoryEntry de = tempUserPrincipals.GetUnderlyingObject() as DirectoryEntry;
+
+                    // Zorgt ervoor dat UserData kan gebruikt worden
+                    UserData userData = new UserData();
+                    userData.UserName = (string)de.Properties["samAccountName"].Value;
+                    userData.Description = (string)de.Properties["description"].Value;
+                    // gaat checken op de userAccountControl of de User actief is met het gebruik van flags
+                    var tempUserAccountControlNumber = de.Properties["userAccountControl"].Value;
+                    var tempEnumUserAccountControl = (UserAccountControlFlag)tempUserAccountControlNumber;
+                    if (!tempEnumUserAccountControl.HasFlag(UserAccountControlFlag.ACCOUNTDISABLE))
+                    {
+                        // voegt hem toe aan de list
+                        tempActiveADUserList.Add(userData);
+                    }
+                }
+            }
+        }
+        return tempActiveADUserList;
+    }
+    /// <summary>
+    /// Scheid de inactive Users en zet ze in een aparte list
+    /// </summary>
+    /// <param name="Domain">de domain van de server</param>
+    /// <returns></returns>
+    public static List<UserData> GetInactiveADUserList(string Domain)
+    {
+        // Maakt een UserData list aan die alle inactive Users pakt
+        List<UserData> tempInactiveADUserList = new List<UserData>();
+
+        // Zorgt ervoor dat hij gaat zoeken tussen alle users in domain
+        using (var context = new PrincipalContext(ContextType.Domain, Domain))
+        {
+            // zoekt alle Users
+            using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+            {
+                // loopje voor elke user in de searcher
+                foreach (var tempUserPrincipals in searcher.FindAll())
+                {
+                    DirectoryEntry de = tempUserPrincipals.GetUnderlyingObject() as DirectoryEntry;
+
+                    // Zorgt ervoor dat UserData kan gebruikt worden
+                    UserData userData = new UserData();
+                    userData.UserName = (string)de.Properties["samAccountName"].Value;
+                    userData.Description = (string)de.Properties["description"].Value;
+                    // gaat checken op de userAccountControl of de User inactief is met het gebruik van flags
+                    var tempUserAccountControlNumber = de.Properties["userAccountControl"].Value;
+                    var tempEnumUserAccountControl = (UserAccountControlFlag)tempUserAccountControlNumber;
+                    if (tempEnumUserAccountControl.HasFlag(UserAccountControlFlag.ACCOUNTDISABLE))
+                    {
+                        // voegt hem toe aan de list
+                        tempInactiveADUserList.Add(userData);
+                    }
+                }
+            }
+        }
+        return tempInactiveADUserList;
+    }
+    /// <summary>
+    /// Pakt van elke user de description en filtert of hij de correcte description heeft
+    /// </summary>
+    /// <param name="Domain">de domain van de server</param>
+    /// <returns></returns>
+    public static List<UserData> GetActiveADUsersWithDescriptionList(string Domain)
+    {
+        // Maakt een UserData list aan die alle descriptions van de Users pakt
+        List<UserData> tempDescriptionOfADUsersList = new List<UserData>();
+
+
+        // Zorgt ervoor dat hij gaat zoeken tussen alle users in domain
+        using (var context = new PrincipalContext(ContextType.Domain, Domain))
+        {
+            // zoekt alle Users
+            using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+            {
+
+                // loopje voor elke user in de searcher
+                foreach (var tempUserPrincipals in searcher.FindAll())
+                {
+
+                    DirectoryEntry de = tempUserPrincipals.GetUnderlyingObject() as DirectoryEntry;
+
+                    // Zorgt ervoor dat UserData kan gebruikt worden
+                    UserData userData = new UserData();
+                    userData.UserName = (string)de.Properties["samAccountName"].Value;
+
+                    // gaat checken op de userAccountControl of de User actief is met het gebruik van flags
+                    var tempUserAccountControlNumber = de.Properties["userAccountControl"].Value;
+
+                    var tempEnumUserAccountControl = (UserAccountControlFlag)tempUserAccountControlNumber;
+
+                    if (!tempEnumUserAccountControl.HasFlag(UserAccountControlFlag.ACCOUNTDISABLE))
+                    {
+                        userData.Description = (string)de.Properties["description"].Value;
+                        if (userData.Description == null || !userData.Description.Contains("Naam="))
+                            continue;
+
+                        // voegt hem toe aan de list
+                        tempDescriptionOfADUsersList.Add(userData);
+                    }
+                }
+            }
+        }
+        return tempDescriptionOfADUsersList;
+    }
+
+    /// <summary>
+    /// Parsed de beschrijving/description van elke User die de correcte volgorde heeft
+    /// </summary>
+    /// <param name="argUserDataList">List met alle goedgekeurde beschrijvingen/descriptions</param>
+    /// <returns></returns>
+    public static List<UserData> ParseUserDescription(List<UserData> argUserDataList)
+    {
+        Log.Verbose("PARSING OF USERS");
+        // voor elke beschrijving/description gaat hij langs alle regex functies
+        foreach (UserData tempUserData in argUserDataList)
+        {
+            try
+            {
+                // Zorgt ervoor dat de functies in ReadUserdescription kunnen gebruikt worden
+                ReadUserDescription tempRegexDescType = new ReadUserDescription();
+
+                Log.Verbose("USER = " + tempUserData.UserName);
+
+                // Zorgt ervoor dat de uitkomst van de Regex functies in de variables komen
+                //Naam
+                tempUserData.Naam = tempRegexDescType.GetNaam(tempUserData.Description);
+                Log.Verbose("NAAM = " + tempUserData.Naam);
+                //Naam Voor Letters
+                tempUserData.NaamVL = tempRegexDescType.GetNaamVL(tempUserData.Description);
+                Log.Verbose("NAAMVL = " + tempUserData.NaamVL);
+                //Mail
+                tempUserData.Mail = tempRegexDescType.GetMail(tempUserData.Description);
+                Log.Verbose("MAIL = " + tempUserData.Mail);
+                //Functie
+                tempUserData.Functie = tempRegexDescType.GetFunctie(tempUserData.Description);
+                Log.Verbose("FUNCTIE = " + tempUserData.Functie);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+        }
+        return argUserDataList;
+    }
+
+    public static bool CheckLocationOfDirectory(string argPathToSignatures)
+    {
+        if (Directory.Exists($"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{argPathToSignatures}"))
+            return true;
+        else
+            return false;
+    }
+
+    public static string GetRtfUnicodeEscapedString(string argTekst)
+    {
+        var sb = new StringBuilder();
+        foreach (var c in argTekst)
+        {
+            if (c <= 0x7f)
+                sb.Append(c);
+            else
+                sb.Append("\\u" + Convert.ToUInt32(c) + "?");
+        }
+        return sb.ToString();
+    }
+    /// <summary>
+    /// Pakt alle variables waar de info in zit en gebruikt ze om Nieuwe Signatures te maken voor elke User
+    /// </summary>
+    /// <param name="tempDescOfUsers">Een list met alle Info over de Users</param>
+    /// <param name="tempActiveUserList">Alle Active Users</param>
+    public static void ModifySignatures(List<UserData> tempDescOfUsers, List<UserData> tempActiveUserList)
+    {
+        foreach (UserData tempUserData in tempDescOfUsers)
+        {
+            bool blnSignatureCopied = false;
+            bool blnComma = false;
+            bool blnTxtCreated = false;
+            bool blnRtfCreated = false;
+            bool blnHtmlCreated = false;
+            bool blnBestanden_filesCreated = false;
+            bool blnBestanden_bestandenCreated = false;
+            try
+            {
+                //TXT bestanden
+                // Pad naar het Admin bestand
+                string tempAdminPathTxt = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.txt";
+                // Pad naar de users zijn Signature bestand
+                string tempUserPathTxt = $"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.txt";
+                // Pad naar het orginele bestand
+                string tempOriginelePathTxt = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strOrigineleFile}.txt";
+                if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                    continue;
+                if (!File.Exists(tempOriginelePathTxt))
+                {
+                    Log.Error("Orginele .txt Bestand niet kunnen vinden");
+                    break;
+                }
+
+                // Als het bestand niet bestaat maakt hij hem aan en voegt hij de orginele data erin
+                if (!File.Exists(tempUserPathTxt))
+                {
+                    Console.WriteLine("\n\r");
+                    Log.Information($"SIGNATURE VOOR {tempUserData.UserName} WORDT GEMAAKT");
+                    File.Copy(tempOriginelePathTxt, tempUserPathTxt);
+                    // Leest alle text die in het bestand zit
+                    string tempSignatureContextTxt = File.ReadAllText(tempUserPathTxt);
+                    // Veranderd de Naam, Voorletters, Mail en Functie in het bestand
+                    tempSignatureContextTxt = tempSignatureContextTxt.Replace("Basisnaam", tempUserData.Naam);
+                    tempSignatureContextTxt = tempSignatureContextTxt.Replace("Naamvl", tempUserData.NaamVL);
+                    tempSignatureContextTxt = tempSignatureContextTxt.Replace("basis", tempUserData.Mail.ToLower());
+                    tempSignatureContextTxt = tempSignatureContextTxt.Replace("Basisfunctie", tempUserData.Functie);
+                    File.WriteAllText(tempUserPathTxt, tempSignatureContextTxt);
+                    blnTxtCreated = true;
+                }
+                if (!File.Exists(tempAdminPathTxt))
+                    File.Copy(tempUserPathTxt, tempAdminPathTxt);
+
+                if (Settings.blnUserGetsAllSignatures)
+                {
+                    // Checkt voor elke active User of er signatures missen van andere Users
+                    foreach (var tempActiveUser in tempActiveUserList)
+                    {
+                        if (tempActiveUser.Description == null || !tempActiveUser.Description.Contains("Naam="))
+                            continue;
+                        // pad naar de Directory waar de tempActiveUser zijn signatures opslaat
+                        string tempActiveUserPath = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}";
+                        if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                            continue;
+                        if (!Directory.Exists(tempActiveUserPath))
+                        {
+                            // Als het niet bestaat maakt hij een nieuwe aan
+                            Directory.CreateDirectory(tempActiveUserPath);
+                        }
+
+                        // pad naar de Users signature
+                        string tempActiveUserPathTxt = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.txt";
+                        if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                            continue;
+                        if (!File.Exists(tempActiveUserPathTxt))
+                        {
+                            Log.Information($"{tempUserData.UserName} Signature.txt is toegevoegd -> {tempActiveUser.UserName}");
+                            blnSignatureCopied = true;
+                            // Als hij niet bestaat bij de User dan kopieert hij hem
+                            File.Copy(tempAdminPathTxt, $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.txt");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+
+            try
+            {
+                //RTF bestanden
+                // Pad naar het Admin bestand
+                string tempAdminPathRTF = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.rtf";
+                // Pad naar de users zijn Signature bestand
+                string tempUserPathRtf = $"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.rtf";
+                // Pad naar het orginele bestand
+                string tempOriginelePathRtf = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strOrigineleFile}.rtf";
+                if (!File.Exists(tempOriginelePathRtf))
+                {
+                    Log.Error("Orginele .rtf Bestand niet kunenn vinden");
+                    break;
+                }
+                if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                    continue;
+                // Als het bestand niet bestaat maakt hij hem aan en voegt hij de orginele data erin
+                if (!File.Exists(tempUserPathRtf))
+                {
+                    File.Copy(tempOriginelePathRtf, tempUserPathRtf);
+                    // Leest alle text die in het bestand zit
+                    string tempSignatureContextRtf = File.ReadAllText(tempUserPathRtf);
+                    // Veranderd de Naam, Voorletters, Mail en Functie in het bestand
+                    tempSignatureContextRtf = tempSignatureContextRtf.Replace("Basisnaam", GetRtfUnicodeEscapedString(tempUserData.Naam));
+                    tempSignatureContextRtf = tempSignatureContextRtf.Replace("Naamvl", GetRtfUnicodeEscapedString(tempUserData.NaamVL));
+                    tempSignatureContextRtf = tempSignatureContextRtf.Replace("basis", GetRtfUnicodeEscapedString(tempUserData.Mail));
+                    tempSignatureContextRtf = tempSignatureContextRtf.Replace("Basisfunctie", GetRtfUnicodeEscapedString(tempUserData.Functie));
+
+                    File.WriteAllText(tempUserPathRtf, tempSignatureContextRtf); 
+                    blnRtfCreated = true;
+
+                }
+                if (!File.Exists(tempAdminPathRTF))
+                    File.Copy(tempUserPathRtf, tempAdminPathRTF);
+
+                if (Settings.blnUserGetsAllSignatures)
+                {
+                    // Checkt voor elke active tempActiveUser of er signatures missen van andere Users
+                    foreach (var tempActiveUser in tempActiveUserList)
+                    {
+                        if (tempActiveUser.Description == null || !tempActiveUser.Description.Contains("Naam="))
+                            continue;
+                        // pad naar de Users signature
+                        string tempActiveUserPathRtf = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.rtf";
+                        if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                            continue;
+                        if (!File.Exists(tempActiveUserPathRtf))
+                        {
+                            Log.Information($"{tempUserData.UserName} Signature.rtf is toegevoegd -> {tempActiveUser.UserName}");
+                            blnSignatureCopied = true;
+                            // Als hij niet bestaat bij de tempActiveUser dan kopieert hij hem
+                            File.Copy(tempAdminPathRTF, $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.rtf");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+
+            try
+            {
+                //HTM bestanden
+                // Pad naar het Admin bestand
+                string tempAdminPathHTM = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.htm";
+                // Pad naar de users zijn Signature bestand
+                string tempUserPathHtm = $"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.htm";
+                // Pad naar het orginele bestand
+                string tempOriginelePathHtm = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strOrigineleFile}.htm";
+                if (!File.Exists(tempOriginelePathHtm))
+                {
+                    Log.Error("Orginele .htm Bestand niet kunenn vinden");
+                    break;
+                }
+                if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                    continue;
+                // Als het bestand niet bestaat maakt hij hem aan en voegt hij de orginele data erin
+                if (!File.Exists(tempUserPathHtm))
+                {
+                    File.Copy(tempOriginelePathHtm, tempUserPathHtm);
+                    // Leest alle text die in het bestand zit
+                    string tempSignatureContextHtm = File.ReadAllText(tempUserPathHtm);
+                    // Veranderd de Naam, Voorletters, Mail en Functie in het bestand
+                    tempSignatureContextHtm = tempSignatureContextHtm.Replace("Basisnaam", HttpUtility.HtmlEncode((tempUserData.Naam)));
+                    tempSignatureContextHtm = tempSignatureContextHtm.Replace("Naamvl", HttpUtility.HtmlEncode((tempUserData.NaamVL)));
+                    tempSignatureContextHtm = tempSignatureContextHtm.Replace("basis", HttpUtility.HtmlEncode((tempUserData.Mail)));
+                    tempSignatureContextHtm = tempSignatureContextHtm.Replace("Basisfunctie", HttpUtility.HtmlEncode((tempUserData.Functie)));
+                    if (Settings.blnCreateFolderFiles)
+                        tempSignatureContextHtm = tempSignatureContextHtm.Replace($"{Settings.strOrigineleFile}_files", $"{Settings.strFilePrefix}{HttpUtility.HtmlEncode(tempUserData.Naam).Replace(" ", "")}_files");
+                    if (Settings.blnCreateFolderBestanden)
+                        tempSignatureContextHtm = tempSignatureContextHtm.Replace($"{Settings.strOrigineleFile}_bestanden", $"{Settings.strFilePrefix}{HttpUtility.HtmlEncode(tempUserData.Naam).Replace(" ", "")}_bestanden");
+                    File.WriteAllText(tempUserPathHtm, tempSignatureContextHtm);
+                    blnHtmlCreated = true;
+                }
+                if (!File.Exists(tempAdminPathHTM))
+                    File.Copy(tempUserPathHtm, tempAdminPathHTM);
+
+                if (Settings.blnUserGetsAllSignatures)
+                {
+                    // Checkt voor elke active User of er signatures missen van andere Users
+                    foreach (var tempActiveUser in tempActiveUserList)
+                    {
+                        if (tempActiveUser.Description == null || !tempActiveUser.Description.Contains("Naam="))
+                            continue;
+                        // pad naar de Users signature
+                        string tempActiveUserPathHtm = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.htm";
+                        if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                            continue;
+                        if (!File.Exists(tempActiveUserPathHtm))
+                        {
+                            Log.Information($"{tempUserData.UserName} Signature.htm is toegevoegd -> {tempActiveUser.UserName}");
+                            blnSignatureCopied = true;
+                            // Als hij niet bestaat bij de tempActiveUser dan kopieert hij hem
+                            File.Copy(tempAdminPathHTM, $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.htm");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+
+            try
+            {
+                //_files/_bestanden directories
+                // Het pad naar de signatures zelf
+                string tempOriginalPath = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}";
+                // Het Orginele pad naar _files bestand/directory
+                string tempOriginalFolderPath = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strOrigineleFile}_files";
+                // Het pad met de Users _files bestand/directory
+                string tempUserPathFile = $"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_files";
+                // het pad met de Users _bestanden bestand/directory
+                string tempUserPathBestand = $"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_bestanden";
+                if (!Directory.Exists(tempOriginalFolderPath))
+                {
+                    Log.Error("Orginele _files Bestand niet kunenn vinden");
+                    break;
+                }
+                if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                    continue;
+                // Checkt in de Settings.ini of Deze functie op True staat
+                if (Settings.blnCreateFolderFiles)
+                {
+                    // Checkt of de bestand bestaast zo niet maakt hij een nieuwe aan met alle files erin
+                    if (!Directory.Exists(tempUserPathFile))
+                    {
+                        // Maakt de Directory
+                        Directory.CreateDirectory(tempUserPathFile);
+                        // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                        foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                        {
+                            File.Copy(file, file.Replace(tempOriginalFolderPath, tempUserPathFile), true);
+                        }
+                        blnBestanden_filesCreated = true;
+                    }
+                    if (Settings.blnUserGetsAllSignatures)
+                    {
+                        foreach (var tempActiveUser in tempActiveUserList)
+                        {
+                            if (tempActiveUser.Description == null || !tempActiveUser.Description.Contains("Naam="))
+                                continue;
+                            // Pad naar de bestand in de tempActiveUser folder
+                            string tempActiveUserPathFile = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_files";
+                            if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                continue;
+                            if (!Directory.Exists(tempActiveUserPathFile))
+                            {
+                                Directory.CreateDirectory(tempActiveUserPathFile);
+                                // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                                foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                                {
+                                    File.Copy(file, file.Replace(tempOriginalFolderPath, tempActiveUserPathFile), true);
+                                }
+                                Log.Information($"{tempUserData.UserName} Signature_files is toegevoegd -> {tempActiveUser.UserName}");
+                                blnSignatureCopied = true;
+                            }
+                            // Pad naar de bestand in de Admin folder
+                            string tempAdminPathFile = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_files";
+                            if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                continue;
+                            if (!Directory.Exists(tempAdminPathFile))
+                            {
+                                Directory.CreateDirectory(tempAdminPathFile);
+                                // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                                foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                                {
+                                    File.Copy(file, file.Replace(tempOriginalFolderPath, tempAdminPathFile), true);
+                                }
+                            }
+                        }
+                    }
+                }
+                // Checkt in de Settings.ini of Deze functie op True staat
+                if (Settings.blnCreateFolderBestanden)
+                {
+
+                    if (!Directory.Exists(tempUserPathBestand))
+                    {
+                        // Maakt de Directory
+                        Directory.CreateDirectory(tempUserPathBestand);
+                        // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                        foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                        {
+                            File.Copy(file, file.Replace(tempOriginalFolderPath, tempUserPathBestand), true);
+                        }
+                        blnBestanden_bestandenCreated = true;
+                    }
+                    if (Settings.blnUserGetsAllSignatures)
+                    {
+                        foreach (var tempActiveUser in tempActiveUserList)
+                        {
+                            if (tempActiveUser.Description == null || !tempActiveUser.Description.Contains("Naam="))
+                                continue;
+                            // Pad naar de bestand in de tempActiveUser folder
+                            string tempActiveUserPathBestand = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_bestanden";
+                            if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                continue;
+                            if (!Directory.Exists(tempActiveUserPathBestand))
+                            {
+                                Directory.CreateDirectory(tempActiveUserPathBestand);
+                                // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                                foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                                {
+                                    File.Copy(file, file.Replace(tempOriginalFolderPath, tempActiveUserPathBestand), true);
+                                }
+                                Log.Information($"{tempUserData.UserName} Signature_bestanden is toegevoegd -> {tempActiveUser.UserName}");
+                                blnSignatureCopied = true;
+                            }
+                            // Pad naar de bestand in de Admin folder
+                            string tempAdminPathBestand = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_bestanden";
+                            if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                continue;
+                            if (!Directory.Exists(tempAdminPathBestand))
+                            {
+                                Directory.CreateDirectory(tempAdminPathBestand);
+                                // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                                foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                                {
+                                    File.Copy(file, file.Replace(tempOriginalFolderPath, tempAdminPathBestand), true);
+                                }
+                            }
+                        }
+                    }
+                }
+                var tempTest = $"{tempUserData.UserName} - Volgende bestanden zijn aangemaakt: ";
+                if (blnTxtCreated)
+                {
+                    tempTest += ".txt";
+                    blnComma = true;
+                }
+                if (blnRtfCreated)
+                {
+                    if (blnComma) tempTest += ", ";
+                    tempTest += ".rtf";
+                    blnComma = true;
+                }
+                if (blnHtmlCreated)
+                {
+                    if (blnComma) tempTest += ", ";
+                    tempTest += $".htm";
+                    blnComma = true;
+                }
+                if (blnBestanden_filesCreated)
+                {
+                    if (blnComma) tempTest += ", ";
+                    tempTest += $"_files";
+                    blnComma = true;
+                }
+                if (blnBestanden_bestandenCreated)
+                {
+                    if (blnComma) tempTest += ", ";
+                    tempTest += $"_bestanden";
+                    blnComma = true;
+                }
+                if (blnTxtCreated || blnRtfCreated || blnHtmlCreated || blnBestanden_filesCreated || blnBestanden_bestandenCreated)
+                    Log.Information(tempTest);
+                else if (!blnSignatureCopied)
+                    Log.Information($"Geen nieuwe Signatures gemaakt - {tempUserData.UserName}");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+        }
+        // Sluit de Log functie
+        Log.CloseAndFlush();
+    }
+}

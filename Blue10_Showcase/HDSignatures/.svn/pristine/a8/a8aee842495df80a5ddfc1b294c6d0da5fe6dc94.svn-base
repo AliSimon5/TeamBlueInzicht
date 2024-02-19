@@ -1,0 +1,23 @@
+﻿<Window x:Class="HDSignaturesTool.BackupsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HDSignaturesTool"
+        mc:Ignorable="d"
+        Title="Backups" Height="349" Width="646" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="17,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="92" FontFamily="Segoe UI Semibold" FontSize="21" Text="Backups"/>
+        <ListBox x:Name="lbTempBackups" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="16,75,0,0" IsSynchronizedWithCurrentItem="True" HorizontalAlignment="Left" Width="186" Height="202" VerticalAlignment="Top"/>
+        <ListBox x:Name="lbPermBackups" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="325,75,0,0" HorizontalAlignment="Left" Width="186" Height="202" VerticalAlignment="Top"/>
+        <Label Content="Tijdelijke Backups" HorizontalAlignment="Left" Margin="16,49,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold"/>
+        <Label Content="Opgeslagen Backups" HorizontalAlignment="Left" Margin="325,49,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold"/>
+        <Label Content="Hier worden elke dag backups opgeslagen&#xD;&#xA;voor elke keer dat de applicatie heeft gedraait" HorizontalAlignment="Left" Margin="16,278,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Symbol" FontSize="9" FontStyle="Italic" Foreground="#FF6D6D6D" Height="39" Width="201"/>
+        <Label Content="Hier zijn de backups die permanent opgeslagen zijn" HorizontalAlignment="Left" Margin="325,278,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Symbol" FontSize="9" FontStyle="Italic" Foreground="#FF6D6D6D" Height="25" Width="233"/>
+        <Button x:Name="btnTempBackup" Content="Open" HorizontalAlignment="Left" Margin="207,75,0,0" VerticalAlignment="Top" Height="25" Width="98" Click="btnTempBackup_Click"/>
+        <Button x:Name="btnDeletePermanentBackup" Content="Verwijder Backup" HorizontalAlignment="Left" Margin="516,105,0,0" VerticalAlignment="Top" Height="25" Width="98" Click="btnDeletePermanentBackup_Click"/>
+        <Button x:Name="btnMakeBackupPermanent_Copy" Content="Maak Permanent" HorizontalAlignment="Left" Margin="207,105,0,0" VerticalAlignment="Top" Height="25" Width="98" Click="btnMakeBackupPermanent_Copy_Click"/>
+        <Button x:Name="btnPermBackup" Content="Open" HorizontalAlignment="Left" Margin="516,75,0,0" VerticalAlignment="Top" Height="25" Width="98" Click="btnPermBackup_Click"/>
+
+    </Grid>
+</Window>

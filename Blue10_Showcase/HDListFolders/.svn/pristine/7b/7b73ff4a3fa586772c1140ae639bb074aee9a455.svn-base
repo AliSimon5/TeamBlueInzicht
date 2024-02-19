@@ -1,0 +1,32 @@
+﻿using M.Core.Application.WPF.MessageBox;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HDListFolders.Data
+{
+    internal partial class DataManager
+    {
+        public static DirectoryInfo[] GetAllSubDirectoriesFromPath(string argPath)
+        {
+
+            DirectoryInfo tempDirInfo = new DirectoryInfo(argPath);
+
+            var tempAllSubDirectories = tempDirInfo.GetDirectories("*.*", SearchOption.AllDirectories); //Getting Text files
+
+            return tempAllSubDirectories;
+        }
+        public static FileInfo[] GetAllFilesFromPath(string argPath)
+        {
+
+            DirectoryInfo tempDirInfo = new DirectoryInfo(argPath);
+
+            FileInfo[] tempAllFiles = tempDirInfo.GetFiles("*.*"); //Getting Text files
+
+            return tempAllFiles;
+        }
+    }
+}

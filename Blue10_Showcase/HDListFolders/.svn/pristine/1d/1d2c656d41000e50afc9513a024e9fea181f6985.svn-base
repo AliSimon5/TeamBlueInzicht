@@ -1,0 +1,126 @@
+﻿using HDListFolders.Data;
+using HDListFolders.Logic;
+using HDListFolders.Types;
+using M.Core.Application.ControlHelpers;
+using M.Core.Application.Settings;
+using M.Core.Application.WPF.MessageBox;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+
+namespace HDListFolders
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        private DataGridControl<FileData> _dgAllFilesAndDirectories;
+        public MainWindow()
+        {
+            AutoSettings.LoadAllSettings();
+            InitializeComponent();
+
+            _dgAllFilesAndDirectories = new DataGridControl<FileData>(dgResultsOfSearch, true);
+            _dgAllFilesAndDirectories.CreateTextColumn($"Naam", nameof(FileData.FileName), 230);
+            _dgAllFilesAndDirectories.CreateTextColumn($"Gewijzigd op", nameof(FileData.FileDate), 123);
+            _dgAllFilesAndDirectories.CreateTextColumn($"Pad", nameof(FileData.Path), 350);
+            _dgAllFilesAndDirectories.CreateTextColumn($"Type", nameof(FileData.Type), 120);
+            _dgAllFilesAndDirectories.UseVisualTemplateLines();
+
+            _dgAllFilesAndDirectories.EventDoubleClick += _lbAllFilesAndDirectories_EventDoubleClick;
+
+            LoadSettings();
+
+            if (tbMainPath.Text != "" && tbFilterOne.Text != "")
+                btnSearch_Click(null, null);
+        }
+
+        private void _lbAllFilesAndDirectories_EventDoubleClick(object sender, FileData e)
+        {
+            if (e != null)
+                Process.Start("explorer.exe", $"{tbMainPath.Text}{e.Path}");
+        }
+        private void SetFilesAndDirectoryInListBox()
+        {
+            List<FileData> tempFileDataList = new List<FileData>();
+
+            
+            var tempAllFiles = DataManager.GetAllFilesFromPath(tbMainPath.Text);
+
+            var tempFilteredFiles = LogicManager.FilterFilesWithPrefix(tempAllFiles, tbFilterOne.Text);
+
+            foreach (var tempFile in tempFilteredFiles)
+            {
+                tempFileDataList.Add(new FileData() { FileName = tempFile.Name, Path = tempFile.FullName.Replace(tbMainPath.Text, ""), MainPath = tbMainPath.Text, FileDate = tempFile.LastWriteTime.ToString(), Type = tempFile.Extension });
+            }
+
+            var tempAllFoundSubDirectories = DataManager.GetAllSubDirectoriesFromPath(tbMainPath.Text);
+
+            var tempFilteredDirectories = LogicManager.FilterSubDirectoriesWithPrefix(tempAllFoundSubDirectories, tbFilterOne.Text);
+
+            foreach (var tempSubDir in tempFilteredDirectories)
+            {
+                tempFileDataList.Add(new FileData() { FileName = tempSubDir.Name, Path = tempSubDir.FullName.Replace(tbMainPath.Text, ""), MainPath = tbMainPath.Text, FileDate = tempSubDir.LastWriteTime.ToString(), Type = "Bestands Map" });
+            }
+
+            _dgAllFilesAndDirectories.SetDataSource(tempFileDataList);
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            btnSearch_Click(null, null);
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            if (tbMainPath.Text == null)
+            {
+                MBox.ShowWarning("Vul eerst een Pad in");
+                return;
+            }
+            if (!Directory.Exists(tbMainPath.Text))
+            {
+                MBox.ShowWarning($"{tbMainPath.Text}\nBestaat niet of is niet gevonden.");
+                return;
+            }
+
+            SaveSettings();
+
+            SetFilesAndDirectoryInListBox();
+        }
+        public void SaveSettings()
+        {
+            if (!string.IsNullOrEmpty(tbMainPath.Text))
+                Settings.Path = tbMainPath.Text;
+
+            if (!string.IsNullOrEmpty(tbFilterOne.Text))
+                Settings.FilterOne = tbFilterOne.Text;
+
+
+            AutoSettings.SaveAllSettings();
+        }
+        public void LoadSettings()
+        {
+            if (!string.IsNullOrEmpty(Settings.Path))
+                tbMainPath.Text = Settings.Path;
+
+            if (!string.IsNullOrEmpty(Settings.FilterOne))
+                tbFilterOne.Text = Settings.FilterOne;
+        }
+    }
+}

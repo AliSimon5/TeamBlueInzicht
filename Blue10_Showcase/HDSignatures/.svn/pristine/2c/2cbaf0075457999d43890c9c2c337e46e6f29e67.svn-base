@@ -1,0 +1,60 @@
+﻿using HDSignaturesTool.Types;
+using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Shell;
+
+namespace HDSignaturesTool.Data
+{
+    internal partial class DataManager
+    {
+        public static void CopyTempBackupToPermBackup(string argPath)
+        {
+            try
+            {
+                var startupPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+
+                // Maakt een Backups folder aan als die nog niet bestaat
+                var tempBackupPath = Path.Combine(startupPath, "HDSignatures_PermBackups");
+                if (!Directory.Exists(tempBackupPath))
+                    Directory.CreateDirectory(tempBackupPath);
+
+                // Maakt de backups van vandaag folder aan als die nog niet bestaat
+                string tempPathName = Path.GetFileName(argPath);
+                var tempBackupLocationPath = Path.Combine(tempBackupPath, tempPathName);
+                if (!Directory.Exists(tempBackupLocationPath))
+                    Directory.CreateDirectory(tempBackupLocationPath);
+
+                foreach (string dirPath in Directory.GetDirectories(argPath, "*", SearchOption.AllDirectories))
+                {
+                    if (!tempBackupLocationPath.Contains(dirPath))
+                        Directory.CreateDirectory(dirPath.Replace(argPath, tempBackupLocationPath));
+                }
+
+                string[] tempAllFiles = Directory.GetFiles(argPath);
+                foreach (var file in tempAllFiles)
+                {
+                    File.Copy(file, $"{tempBackupLocationPath}\\{Path.GetFileName(file)}", true);
+                }
+                // Kopieert alle files die in de _files en/of _bestanden zitten
+                foreach (string newPath in Directory.GetFiles(argPath, "*.*", SearchOption.AllDirectories))
+                {
+                    File.Copy(newPath, newPath.Replace(argPath, tempBackupLocationPath), true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+        }
+        public static void DeletePermanentBackupSignature(string argPath)
+        {
+            Directory.Delete(argPath, true);
+        }
+    }
+}

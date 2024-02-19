@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HDSignatures
+{
+    internal class UserData
+    {
+        public string UserName;
+        public string Description;
+
+        public string Naam;
+        public string NaamVL;
+        public string Mail;
+        public string Functie;
+    }
+}

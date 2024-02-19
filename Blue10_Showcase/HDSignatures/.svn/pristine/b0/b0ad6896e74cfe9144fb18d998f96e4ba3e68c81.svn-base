@@ -1,0 +1,416 @@
+﻿using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using System.Text.RegularExpressions;
+
+namespace HDSignatures.Data
+{
+    internal partial class DataManager
+    {
+        public static string GetRtfUnicodeEscapedString(string argTekst)
+        {
+            var sb = new StringBuilder();
+            foreach (var c in argTekst)
+            {
+                if (c <= 0x7f)
+                    sb.Append(c);
+                else
+                    sb.Append("\\u" + Convert.ToUInt32(c) + "?");
+            }
+            return sb.ToString();
+        }
+        /// <summary>
+        /// Pakt alle variables waar de info in zit en gebruikt ze om Nieuwe Signatures te maken voor elke User
+        /// </summary>
+        /// <param name="tempDescOfUsers">Een list met alle Info over de Users</param>
+        /// <param name="tempActiveUserList">Alle Active Users</param>
+        public static void ModifySignatures(List<UserData> tempDescOfUsers, List<UserData> tempActiveUserList)
+        {
+            foreach (UserData tempUserData in tempDescOfUsers)
+            {
+                bool blnSignatureCopied = false;
+                bool blnComma = false;
+                bool blnTxtCreated = false;
+                bool blnRtfCreated = false;
+                bool blnHtmlCreated = false;
+                bool blnBestanden_filesCreated = false;
+                bool blnBestanden_bestandenCreated = false;
+                try
+                {
+                    //TXT bestanden
+                    // Pad naar het Admin bestand
+                    string tempAdminPathTxt = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.txt";
+                    // Pad naar de users zijn Signature bestand
+                    string tempUserPathTxt = $"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.txt";
+                    // Pad naar het orginele bestand
+                    string tempOriginelePathTxt = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strOrigineleFile}.txt";
+                    if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                        continue;
+                    if (!File.Exists(tempOriginelePathTxt))
+                    {
+                        Log.Error("Orginele .txt Bestand niet kunnen vinden");
+                        break;
+                    }
+
+                    // Als het bestand niet bestaat maakt hij hem aan en voegt hij de orginele data erin
+                    if (!File.Exists(tempUserPathTxt))
+                    {
+                        Console.WriteLine("\n\r");
+                        Log.Information($"SIGNATURE VOOR {tempUserData.UserName} WORDT GEMAAKT");
+                        File.Copy(tempOriginelePathTxt, tempUserPathTxt);
+                        // Leest alle text die in het bestand zit
+                        string tempSignatureContextTxt = File.ReadAllText(tempUserPathTxt);
+                        // Veranderd de Naam, Voorletters, Mail en Functie in het bestand
+                        foreach (var tempKeyValuePair in tempUserData.UserValueDictionary)
+                        {
+                            // Checkt of de key een mail is of niet
+                            if (Regex.IsMatch(tempKeyValuePair.Key, "mail", RegexOptions.IgnoreCase) || Regex.IsMatch(tempKeyValuePair.Key, "@", RegexOptions.IgnoreCase))
+                                tempSignatureContextTxt = tempSignatureContextTxt.Replace($"#{tempKeyValuePair.Key}#", tempKeyValuePair.Value.ToLower(), StringComparison.OrdinalIgnoreCase);
+                            else
+                                tempSignatureContextTxt = tempSignatureContextTxt.Replace($"#{tempKeyValuePair.Key}#", tempKeyValuePair.Value, StringComparison.OrdinalIgnoreCase);
+                        }
+                        File.WriteAllText(tempUserPathTxt, tempSignatureContextTxt);
+                        blnTxtCreated = true;
+                    }
+                    if (!File.Exists(tempAdminPathTxt))
+                        File.Copy(tempUserPathTxt, tempAdminPathTxt);
+
+                    if (Settings.blnUserGetsAllSignatures)
+                    {
+                        // Checkt voor elke active User of er signatures missen van andere Users
+                        foreach (var tempActiveUser in tempActiveUserList)
+                        {
+                            if (tempActiveUser.Description == null || !tempActiveUser.Description.Contains("Naam="))
+                                continue;
+                            // pad naar de Directory waar de tempActiveUser zijn signatures opslaat
+                            string tempActiveUserPath = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}";
+                            if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                continue;
+                            if (!Directory.Exists(tempActiveUserPath))
+                            {
+                                // Als het niet bestaat maakt hij een nieuwe aan
+                                Directory.CreateDirectory(tempActiveUserPath);
+                            }
+
+                            // pad naar de Users signature
+                            string tempActiveUserPathTxt = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.txt";
+                            if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                continue;
+                            if (!File.Exists(tempActiveUserPathTxt))
+                            {
+                                Log.Information($"{tempUserData.UserName} Signature.txt is toegevoegd -> {tempActiveUser.UserName}");
+                                blnSignatureCopied = true;
+                                // Als hij niet bestaat bij de User dan kopieert hij hem
+                                File.Copy(tempAdminPathTxt, $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.txt");
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+
+                try
+                {
+                    //RTF bestanden
+                    // Pad naar het Admin bestand
+                    string tempAdminPathRTF = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.rtf";
+                    // Pad naar de users zijn Signature bestand
+                    string tempUserPathRtf = $"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.rtf";
+                    // Pad naar het orginele bestand
+                    string tempOriginelePathRtf = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strOrigineleFile}.rtf";
+                    if (!File.Exists(tempOriginelePathRtf))
+                    {
+                        Log.Error("Orginele .rtf Bestand niet kunenn vinden");
+                        break;
+                    }
+                    if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                        continue;
+                    // Als het bestand niet bestaat maakt hij hem aan en voegt hij de orginele data erin
+                    if (!File.Exists(tempUserPathRtf))
+                    {
+                        File.Copy(tempOriginelePathRtf, tempUserPathRtf);
+                        // Leest alle text die in het bestand zit
+                        string tempSignatureContextRtf = File.ReadAllText(tempUserPathRtf);
+                        // Veranderd de Naam, Voorletters, Mail en Functie in het bestand
+                        foreach (var tempKeyValuePair in tempUserData.UserValueDictionary)
+                        {
+                            // Checkt of de key een mail is of niet
+                            if (Regex.IsMatch(tempKeyValuePair.Key, "mail", RegexOptions.IgnoreCase) || Regex.IsMatch(tempKeyValuePair.Key, "@", RegexOptions.IgnoreCase))
+                                tempSignatureContextRtf = tempSignatureContextRtf.Replace($"#{tempKeyValuePair.Key}#", tempKeyValuePair.Value.ToLower(), StringComparison.OrdinalIgnoreCase);
+                            else
+                                tempSignatureContextRtf = tempSignatureContextRtf.Replace($"#{tempKeyValuePair.Key}#", tempKeyValuePair.Value, StringComparison.OrdinalIgnoreCase);
+                        }
+
+                        File.WriteAllText(tempUserPathRtf, tempSignatureContextRtf);
+                        blnRtfCreated = true;
+
+                    }
+                    if (!File.Exists(tempAdminPathRTF))
+                        File.Copy(tempUserPathRtf, tempAdminPathRTF);
+
+                    if (Settings.blnUserGetsAllSignatures)
+                    {
+                        // Checkt voor elke active tempActiveUser of er signatures missen van andere Users
+                        foreach (var tempActiveUser in tempActiveUserList)
+                        {
+                            if (tempActiveUser.Description == null || !tempActiveUser.Description.Contains("Naam="))
+                                continue;
+                            // pad naar de Users signature
+                            string tempActiveUserPathRtf = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.rtf";
+                            if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                continue;
+                            if (!File.Exists(tempActiveUserPathRtf))
+                            {
+                                Log.Information($"{tempUserData.UserName} Signature.rtf is toegevoegd -> {tempActiveUser.UserName}");
+                                blnSignatureCopied = true;
+                                // Als hij niet bestaat bij de tempActiveUser dan kopieert hij hem
+                                File.Copy(tempAdminPathRTF, $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.rtf");
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+
+                try
+                {
+                    //HTM bestanden
+                    // Pad naar het Admin bestand
+                    string tempAdminPathHTM = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.htm";
+                    // Pad naar de users zijn Signature bestand
+                    string tempUserPathHtm = $"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.htm";
+                    // Pad naar het orginele bestand
+                    string tempOriginelePathHtm = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strOrigineleFile}.htm";
+                    if (!File.Exists(tempOriginelePathHtm))
+                    {
+                        Log.Error("Orginele .htm Bestand niet kunenn vinden");
+                        break;
+                    }
+                    if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                        continue;
+                    // Als het bestand niet bestaat maakt hij hem aan en voegt hij de orginele data erin
+                    if (!File.Exists(tempUserPathHtm))
+                    {
+                        File.Copy(tempOriginelePathHtm, tempUserPathHtm);
+                        // Leest alle text die in het bestand zit
+                        string tempSignatureContextHtm = File.ReadAllText(tempUserPathHtm);
+                        // Veranderd de Naam, Voorletters, Mail en Functie in het bestand
+                        foreach (var tempKeyValuePair in tempUserData.UserValueDictionary)
+                        {
+                            // Checkt of de key een mail is of niet
+                            if (Regex.IsMatch(tempKeyValuePair.Key, "mail", RegexOptions.IgnoreCase) || Regex.IsMatch(tempKeyValuePair.Key, "@", RegexOptions.IgnoreCase))
+                                tempSignatureContextHtm = tempSignatureContextHtm.Replace($"#{tempKeyValuePair.Key}#", HttpUtility.HtmlEncode(tempKeyValuePair.Value).ToLower(), StringComparison.OrdinalIgnoreCase);
+                            else
+                                tempSignatureContextHtm = tempSignatureContextHtm.Replace($"#{tempKeyValuePair.Key}#", HttpUtility.HtmlEncode(tempKeyValuePair.Value), StringComparison.OrdinalIgnoreCase);
+                        }
+                        if (Settings.blnCreateFolderFiles)
+                            tempSignatureContextHtm = tempSignatureContextHtm.Replace($"{Settings.strOrigineleFile}_files", $"{Settings.strFilePrefix}{HttpUtility.HtmlEncode(tempUserData.Naam).Replace(" ", "")}_files");
+                        if (Settings.blnCreateFolderBestanden)
+                            tempSignatureContextHtm = tempSignatureContextHtm.Replace($"{Settings.strOrigineleFile}_bestanden", $"{Settings.strFilePrefix}{HttpUtility.HtmlEncode(tempUserData.Naam).Replace(" ", "")}_bestanden");
+                        File.WriteAllText(tempUserPathHtm, tempSignatureContextHtm);
+                        blnHtmlCreated = true;
+                    }
+                    if (!File.Exists(tempAdminPathHTM))
+                        File.Copy(tempUserPathHtm, tempAdminPathHTM);
+
+                    if (Settings.blnUserGetsAllSignatures)
+                    {
+                        // Checkt voor elke active User of er signatures missen van andere Users
+                        foreach (var tempActiveUser in tempActiveUserList)
+                        {
+                            if (tempActiveUser.Description == null || !tempActiveUser.Description.Contains("Naam="))
+                                continue;
+                            // pad naar de Users signature
+                            string tempActiveUserPathHtm = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.htm";
+                            if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                continue;
+                            if (!File.Exists(tempActiveUserPathHtm))
+                            {
+                                Log.Information($"{tempUserData.UserName} Signature.htm is toegevoegd -> {tempActiveUser.UserName}");
+                                blnSignatureCopied = true;
+                                // Als hij niet bestaat bij de tempActiveUser dan kopieert hij hem
+                                File.Copy(tempAdminPathHTM, $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}.htm");
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+
+                try
+                {
+                    //_files/_bestanden directories
+                    // Het pad naar de signatures zelf
+                    string tempOriginalPath = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}";
+                    // Het Orginele pad naar _files bestand/directory
+                    string tempOriginalFolderPath = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strOrigineleFile}_files";
+                    // Het pad met de Users _files bestand/directory
+                    string tempUserPathFile = $"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_files";
+                    // het pad met de Users _bestanden bestand/directory
+                    string tempUserPathBestand = $"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_bestanden";
+                    if (!Directory.Exists(tempOriginalFolderPath))
+                    {
+                        Log.Error("Orginele _files Bestand niet kunenn vinden");
+                        break;
+                    }
+                    if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempUserData.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                        continue;
+                    // Checkt in de Settings.ini of Deze functie op True staat
+                    if (Settings.blnCreateFolderFiles)
+                    {
+                        // Checkt of de bestand bestaast zo niet maakt hij een nieuwe aan met alle files erin
+                        if (!Directory.Exists(tempUserPathFile))
+                        {
+                            // Maakt de Directory
+                            Directory.CreateDirectory(tempUserPathFile);
+                            // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                            foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                            {
+                                File.Copy(file, file.Replace(tempOriginalFolderPath, tempUserPathFile), true);
+                            }
+                            blnBestanden_filesCreated = true;
+                        }
+                        if (Settings.blnUserGetsAllSignatures)
+                        {
+                            foreach (var tempActiveUser in tempActiveUserList)
+                            {
+                                if (tempActiveUser.Description == null || !tempActiveUser.Description.Contains("Naam="))
+                                    continue;
+                                // Pad naar de bestand in de tempActiveUser folder
+                                string tempActiveUserPathFile = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_files";
+                                if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                    continue;
+                                if (!Directory.Exists(tempActiveUserPathFile))
+                                {
+                                    Directory.CreateDirectory(tempActiveUserPathFile);
+                                    // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                                    foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                                    {
+                                        File.Copy(file, file.Replace(tempOriginalFolderPath, tempActiveUserPathFile), true);
+                                    }
+                                    Log.Information($"{tempUserData.UserName} Signature_files is toegevoegd -> {tempActiveUser.UserName}");
+                                    blnSignatureCopied = true;
+                                }
+                                // Pad naar de bestand in de Admin folder
+                                string tempAdminPathFile = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_files";
+                                if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                    continue;
+                                if (!Directory.Exists(tempAdminPathFile))
+                                {
+                                    Directory.CreateDirectory(tempAdminPathFile);
+                                    // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                                    foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                                    {
+                                        File.Copy(file, file.Replace(tempOriginalFolderPath, tempAdminPathFile), true);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // Checkt in de Settings.ini of Deze functie op True staat
+                    if (Settings.blnCreateFolderBestanden)
+                    {
+
+                        if (!Directory.Exists(tempUserPathBestand))
+                        {
+                            // Maakt de Directory
+                            Directory.CreateDirectory(tempUserPathBestand);
+                            // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                            foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                            {
+                                File.Copy(file, file.Replace(tempOriginalFolderPath, tempUserPathBestand), true);
+                            }
+                            blnBestanden_bestandenCreated = true;
+                        }
+                        if (Settings.blnUserGetsAllSignatures)
+                        {
+                            foreach (var tempActiveUser in tempActiveUserList)
+                            {
+                                if (tempActiveUser.Description == null || !tempActiveUser.Description.Contains("Naam="))
+                                    continue;
+                                // Pad naar de bestand in de tempActiveUser folder
+                                string tempActiveUserPathBestand = $"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_bestanden";
+                                if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{tempActiveUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                    continue;
+                                if (!Directory.Exists(tempActiveUserPathBestand))
+                                {
+                                    Directory.CreateDirectory(tempActiveUserPathBestand);
+                                    // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                                    foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                                    {
+                                        File.Copy(file, file.Replace(tempOriginalFolderPath, tempActiveUserPathBestand), true);
+                                    }
+                                    Log.Information($"{tempUserData.UserName} Signature_bestanden is toegevoegd -> {tempActiveUser.UserName}");
+                                    blnSignatureCopied = true;
+                                }
+                                // Pad naar de bestand in de Admin folder
+                                string tempAdminPathBestand = $"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempUserData.Naam.Replace(" ", "")}_bestanden";
+                                if (!Directory.Exists($"{Settings.strSchijf}:\\Users\\{Settings.strAdminNaam}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}"))
+                                    continue;
+                                if (!Directory.Exists(tempAdminPathBestand))
+                                {
+                                    Directory.CreateDirectory(tempAdminPathBestand);
+                                    // Loopje om elke file in het originele bestand in de nieuw gemaakte bestand te zetten
+                                    foreach (string file in Directory.GetFiles(tempOriginalFolderPath, "*.*", SearchOption.AllDirectories))
+                                    {
+                                        File.Copy(file, file.Replace(tempOriginalFolderPath, tempAdminPathBestand), true);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    var tempTest = $"{tempUserData.UserName} - Volgende bestanden zijn aangemaakt: ";
+                    if (blnTxtCreated)
+                    {
+                        tempTest += ".txt";
+                        blnComma = true;
+                    }
+                    if (blnRtfCreated)
+                    {
+                        if (blnComma) tempTest += ", ";
+                        tempTest += ".rtf";
+                        blnComma = true;
+                    }
+                    if (blnHtmlCreated)
+                    {
+                        if (blnComma) tempTest += ", ";
+                        tempTest += $".htm";
+                        blnComma = true;
+                    }
+                    if (blnBestanden_filesCreated)
+                    {
+                        if (blnComma) tempTest += ", ";
+                        tempTest += $"_files";
+                        blnComma = true;
+                    }
+                    if (blnBestanden_bestandenCreated)
+                    {
+                        if (blnComma) tempTest += ", ";
+                        tempTest += $"_bestanden";
+                        blnComma = true;
+                    }
+                    if (blnTxtCreated || blnRtfCreated || blnHtmlCreated || blnBestanden_filesCreated || blnBestanden_bestandenCreated)
+                        Log.Information(tempTest);
+                    else if (!blnSignatureCopied)
+                        Log.Information($"Geen nieuwe Signatures gemaakt - {tempUserData.UserName}");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+            }
+            // Sluit de Log functie
+            Log.CloseAndFlush();
+        }
+    }
+}

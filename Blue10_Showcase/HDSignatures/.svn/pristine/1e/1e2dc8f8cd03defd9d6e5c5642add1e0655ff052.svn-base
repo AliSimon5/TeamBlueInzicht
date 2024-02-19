@@ -1,0 +1,90 @@
+﻿using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace HDSignatures.Data
+{
+    internal partial class DataManager
+    {
+        public static void DeleteSignaturesOfInactiveUsers(List<UserData> tempInactiveUserList, List<UserData> tempAllUserList)
+        {
+            foreach (var tempInactiveUser in tempInactiveUserList)
+            {
+                try
+                {
+                    var tempDescription = tempInactiveUser.Description;
+
+                    if (!tempDescription.Contains(Settings.strBasisNaam))
+                        continue;
+
+                    var tempSplitDescription = tempDescription.Split(';');
+                    var tempDictionary = new Dictionary<string, string>();
+
+                    foreach (var tempItem in tempSplitDescription)
+                    {
+                        var tempSplitItem = tempItem.Split('=');
+                        if (tempSplitItem.Length >= 2)
+                        {
+                            if (!tempDictionary.ContainsKey(tempSplitItem[0]))
+                                tempDictionary.Add(tempSplitItem[0], tempSplitItem[1]);
+                            Regex.Match(tempSplitItem[0], Settings.strBasisNaam);
+                            if (Regex.IsMatch(tempSplitItem[0], Settings.strBasisNaam, RegexOptions.IgnoreCase))
+                            {
+                                if (tempSplitItem[0].Length <= Settings.strBasisNaam.Length)
+                                {
+                                    tempInactiveUser.Naam = tempSplitItem[1];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    Log.Information($"SIGNATURES VAN {tempInactiveUser.UserName} WORDEN VERWIJDERD");
+
+                // Pakt de naam van de User
+
+                // Voor elke User gaat hij checken of er signatures van de disabled user in de bestand zit zowel verwijderd hij hem zo niet doet hij niks
+                foreach (var tempUser in tempAllUserList)
+                {
+                    bool tempDeleted = false;
+
+                    // Het pad naar de User met de signature van de disabled user
+                    tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempInactiveUser.Naam.Replace(" ", "")}.txt") ? true : tempDeleted;
+                    tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempInactiveUser.Naam.Replace(" ", "")}.rtf") ? true : tempDeleted;
+                    tempDeleted = DeleteIfFileExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempInactiveUser.Naam.Replace(" ", "")}.htm") ? true : tempDeleted;
+                    tempDeleted = DeleteIfDirectoryExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempInactiveUser.Naam.Replace(" ", "")}_files") ? true : tempDeleted;
+                    tempDeleted = DeleteIfDirectoryExists($"{Settings.strSchijf}:\\Users\\{tempUser.UserName}\\AppData\\Roaming\\Microsoft\\{Settings.strSignatureFolderName}\\{Settings.strFilePrefix}{tempInactiveUser.Naam.Replace(" ", "")}_bestanden") ? true : tempDeleted;
+
+                    if (tempDeleted) Log.Verbose($"{tempInactiveUser.UserName} - Signatures zijn verwijderd bij -> {tempUser.UserName}");
+                }
+            }
+                catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+        }
+    }
+    private static bool DeleteIfFileExists(string argpath)
+    {
+        if (File.Exists(argpath))
+        {
+            File.Delete(argpath);
+            return true;
+        }
+        return false;
+    }
+    private static bool DeleteIfDirectoryExists(string argpath)
+    {
+        if (Directory.Exists(argpath))
+        {
+            Directory.Delete(argpath, true);
+            return true;
+        }
+        return false;
+    }
+}
+}

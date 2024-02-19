@@ -1,0 +1,179 @@
+﻿using HDListFolders.Data;
+using HDListFolders.Logic;
+using HDListFolders.Types;
+using M.Core.Application.ControlHelpers;
+using M.Core.Application.Settings;
+using M.Core.Application.WPF.MessageBox;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+
+namespace HDListFolders
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        private ListBoxControl<FileData> _lbFilesOne;
+        private ListBoxControl<FileData> _lbFilesTwo;
+        private ListBoxControl<FileData> _lbFilesThree;
+        private int intAmountOfFiles = 0;
+        private DispatcherTimer dtTimer;
+
+        public MainWindow()
+        {
+            AutoSettings.LoadAllSettings();
+            InitializeComponent();
+
+            _lbFilesOne = new ListBoxControl<FileData>(lbFilesOne);
+            _lbFilesTwo = new ListBoxControl<FileData>(lbFilesTwo);
+            _lbFilesThree = new ListBoxControl<FileData>(lbFilesThree);
+
+            _lbFilesOne.EventDoubleClick += _lbFilesOne_EventDoubleClick;
+            _lbFilesTwo.EventDoubleClick += _lbFilesTwo_EventDoubleClick;
+            _lbFilesThree.EventDoubleClick += _lbFilesThree_EventDoubleClick;
+
+            LoadSettings();
+
+            dtTimer = new DispatcherTimer();
+            dtTimer.Interval = new TimeSpan(0, 0, 0, 0, 700);
+            dtTimer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            btnSearch_Click(null, null);
+        }
+
+        private void _lbFilesThree_EventDoubleClick(object sender, FileData e)
+        {
+            if (e != null)
+                Process.Start("explorer.exe", e.Path);
+        }
+
+        private void _lbFilesTwo_EventDoubleClick(object sender, FileData e)
+        {
+            if (e != null)
+                Process.Start("explorer.exe", e.Path);
+        }
+
+        private void _lbFilesOne_EventDoubleClick(object sender, FileData e)
+        {
+            if (e != null)
+                Process.Start("explorer.exe", e.Path);
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            dtTimer.Start();
+            if (tbMainPath.Text == null)
+            {
+                MBox.ShowWarning("Vul eerst een Pad in");
+                return;
+            }
+            if (!Directory.Exists(tbMainPath.Text))
+            {
+                MBox.ShowWarning($"{tbMainPath.Text}\nBestaat niet of is niet gevonden.");
+                return;
+            }
+
+            SaveSettings();
+
+            List<FileData> tempFileDataList = new List<FileData>();
+
+            var tempAllFoundFilesInPath = DataManager.GetAllFilesFromPath(tbMainPath.Text);
+
+            if (intAmountOfFiles == tempAllFoundFilesInPath.Count())
+                return;
+            else
+            {
+                intAmountOfFiles = tempAllFoundFilesInPath.Count();
+            }
+
+            if (!string.IsNullOrEmpty(tbFilterOne.Text))
+            {
+                var tempAllowedFiles = LogicManager.FilterFilesWithPrefix(tempAllFoundFilesInPath, tbFilterOne.Text);
+
+                foreach (var tempFile in tempAllowedFiles)
+                {
+                    tempFileDataList.Add(new FileData() { FileName = tempFile.Name, Path = tempFile.FullName});
+                }
+
+                _lbFilesOne.SetItemsSource(tempFileDataList);
+                tempFileDataList = new List<FileData>();
+            }
+
+            if (!string.IsNullOrEmpty(tbFilterTwo.Text))
+            {
+                var tempAllowedFiles = LogicManager.FilterFilesWithPrefix(tempAllFoundFilesInPath, tbFilterTwo.Text);
+
+                foreach (var tempFile in tempAllowedFiles)
+                {
+                    tempFileDataList.Add(new FileData() { FileName = tempFile.Name, Path = tempFile.FullName });
+                }
+
+                _lbFilesTwo.SetItemsSource(tempFileDataList);
+                tempFileDataList = new List<FileData>();
+            }
+
+            if (!string.IsNullOrEmpty(tbFilterThree.Text))
+            {
+              var tempAllowedFiles =  LogicManager.FilterFilesWithPrefix(tempAllFoundFilesInPath, tbFilterThree.Text);
+
+                foreach (var tempFile in tempAllowedFiles)
+                {
+                    tempFileDataList.Add(new FileData() { FileName = tempFile.Name, Path = tempFile.FullName });
+                }
+
+                _lbFilesThree.SetItemsSource(tempFileDataList);
+                tempFileDataList = new List<FileData>();
+            }
+        }
+        public void SaveSettings()
+        {
+            if (!string.IsNullOrEmpty(tbMainPath.Text))
+                Settings.Path = tbMainPath.Text;
+
+            if (!string.IsNullOrEmpty(tbFilterOne.Text))
+                Settings.FilterOne = tbFilterOne.Text;
+
+            if (!string.IsNullOrEmpty(tbFilterTwo.Text))
+                Settings.FilterTwo = tbFilterTwo.Text;
+
+            if (!string.IsNullOrEmpty(tbFilterThree.Text))
+                Settings.FilterThree = tbFilterThree.Text;
+
+            AutoSettings.SaveAllSettings();
+        }
+        public void LoadSettings()
+        {
+
+            if (!string.IsNullOrEmpty(Settings.Path))
+                tbMainPath.Text  = Settings.Path;
+
+            if (!string.IsNullOrEmpty(Settings.FilterOne))
+                tbFilterOne.Text = Settings.FilterOne;
+
+            if (!string.IsNullOrEmpty(Settings.FilterTwo))
+                tbFilterTwo.Text= Settings.FilterTwo;
+
+            if (!string.IsNullOrEmpty(Settings.FilterThree))
+               tbFilterThree.Text = Settings.FilterThree;
+        }
+    }
+}

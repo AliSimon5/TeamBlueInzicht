@@ -1,0 +1,134 @@
+﻿using System;
+using System.Collections.Generic;
+using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
+using System.DirectoryServices.ActiveDirectory;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HDSignatures.Data
+{
+    internal partial class DataManager
+    {
+        /// <summary>
+        /// Pakt alle local Users en voegt ze toe aan een list
+        /// </summary>
+        /// <returns></returns>
+        public static List<UserData> GetAllADUsersList()
+        {
+            Domain Domein = Domain.GetComputerDomain();
+            // Maakt een UserData list aan die alle Users pakt
+            List<UserData> tempAllUsersList = new List<UserData>();
+
+            // Zorgt ervoor dat hij gaat zoeken tussen alle users in domain
+            using (var context = new PrincipalContext(ContextType.Domain, Domein.ToString()))
+            {
+                // zoekt alle Users
+                using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+                {
+                    // loopje voor elke user in de searcher
+                    foreach (var tempUserPrincipals in searcher.FindAll())
+                    {
+                        DirectoryEntry de = tempUserPrincipals.GetUnderlyingObject() as DirectoryEntry;
+
+                        // Zorgt ervoor dat UserData kan gebruikt worden
+                        UserData userData = new UserData();
+
+                        // zet de samAccountname value in userData.UserName
+                        userData.UserName = (string)de.Properties["samAccountName"].Value;
+                        // voegt hem toe aan de list
+                        tempAllUsersList.Add(userData);
+                    }
+                }
+            }
+            return tempAllUsersList;
+        }
+
+        /// <summary>
+        /// Scheid de inactive Users en zet ze in een aparte list
+        /// </summary>
+        /// <returns></returns>
+        public static List<UserData> GetInactiveADUserList()
+        {
+            Domain Domein = Domain.GetComputerDomain();
+            // Maakt een UserData list aan die alle inactive Users pakt
+            List<UserData> tempInactiveADUserList = new List<UserData>();
+
+            // Zorgt ervoor dat hij gaat zoeken tussen alle users in domain
+            using (var context = new PrincipalContext(ContextType.Domain, Domein.ToString()))
+            {
+                // zoekt alle Users
+                using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+                {
+                    // loopje voor elke user in de searcher
+                    foreach (var tempUserPrincipals in searcher.FindAll())
+                    {
+                        DirectoryEntry de = tempUserPrincipals.GetUnderlyingObject() as DirectoryEntry;
+
+                        // Zorgt ervoor dat UserData kan gebruikt worden
+                        UserData userData = new UserData();
+                        userData.UserName = (string)de.Properties["samAccountName"].Value;
+                        userData.Description = (string)de.Properties["description"].Value;
+                        // gaat checken op de userAccountControl of de User inactief is met het gebruik van flags
+                        var tempUserAccountControlNumber = de.Properties["userAccountControl"].Value;
+                        var tempEnumUserAccountControl = (UserAccountControlFlag)tempUserAccountControlNumber;
+                        if (tempEnumUserAccountControl.HasFlag(UserAccountControlFlag.ACCOUNTDISABLE))
+                        {
+                            // voegt hem toe aan de list
+                            tempInactiveADUserList.Add(userData);
+                        }
+                    }
+                }
+            }
+            return tempInactiveADUserList;
+        }
+        /// <summary>
+        /// Pakt van elke user de description en filtert of hij de correcte description heeft
+        /// </summary>
+        /// <returns></returns>
+        public static List<UserData> GetActiveADUsersWithDescriptionList()
+        {
+            Domain Domein = Domain.GetComputerDomain();
+            // Maakt een UserData list aan die alle descriptions van de Users pakt
+            List<UserData> tempDescriptionOfADUsersList = new List<UserData>();
+
+            // Zorgt ervoor dat hij gaat zoeken tussen alle users in domain
+            using (var context = new PrincipalContext(ContextType.Domain, Domein.ToString()))
+            {
+                // zoekt alle Users
+                using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
+                {
+
+                    // loopje voor elke user in de searcher
+                    foreach (var tempUserPrincipals in searcher.FindAll())
+                    {
+
+                        DirectoryEntry de = tempUserPrincipals.GetUnderlyingObject() as DirectoryEntry;
+
+                        // Zorgt ervoor dat UserData kan gebruikt worden
+                        UserData userData = new UserData();
+                        userData.UserName = (string)de.Properties["samAccountName"].Value;
+
+                        // gaat checken op de userAccountControl of de User actief is met het gebruik van flags
+                        var tempUserAccountControlNumber = de.Properties["userAccountControl"].Value;
+
+                        var tempEnumUserAccountControl = (UserAccountControlFlag)tempUserAccountControlNumber;
+
+                        if (!tempEnumUserAccountControl.HasFlag(UserAccountControlFlag.ACCOUNTDISABLE))
+                        {
+                            userData.Description = (string)de.Properties["description"].Value;
+                            if (userData.Description == null || !userData.Description.Contains(Settings.strBasisNaam, StringComparison.OrdinalIgnoreCase))
+                                continue;
+
+                            // voegt hem toe aan de list
+                            tempDescriptionOfADUsersList.Add(userData);
+                        }
+                    }
+                }
+            }
+            return tempDescriptionOfADUsersList;
+        }
+
+    }
+}

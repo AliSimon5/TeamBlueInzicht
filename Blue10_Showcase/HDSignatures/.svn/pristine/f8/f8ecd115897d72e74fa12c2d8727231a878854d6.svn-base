@@ -1,0 +1,27 @@
+﻿using M.Core.Application.Settings;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HDSignatures
+{
+    public class Settings : AutoSettings
+    {
+        public static bool blnUsersInAD { get; set; } = false;
+        public static string strSchijf { get; set; } = "C";
+        public static string strAdminNaam { get; set; } = "Administrator";
+
+        public static string strSignaturesFolderName = "Signatures";
+        public static string strHandtekeningenFolderName = "Handtekeningen";
+        public static string strSignatureFolderName = "Signatures";
+
+        public static bool blnUserGetsAllSignatures { get; set; } = true;
+        public static string strFilePrefix { get; set; } = "WT-";
+        public static string strOrigineleFile { get; set; } = "WensTravel";
+        public static bool blnCreateFolderFiles { get; set; } = false;
+        public static bool blnCreateFolderBestanden { get; set; } = true;
+    }
+    
+}

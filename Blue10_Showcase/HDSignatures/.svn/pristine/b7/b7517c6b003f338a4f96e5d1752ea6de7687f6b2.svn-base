@@ -1,0 +1,962 @@
+﻿using HDSignaturesTool.Data;
+using HDSignaturesTool.Logic;
+using HDSignaturesTool.Types;
+using M.Core.Application.ControlHelpers;
+using M.Core.Application.WPF.MessageBox;
+using M.NetStandard.Settings;
+using M.NetStandard.SinkToAction;
+using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.VisualBasic.Logging;
+using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Timers;
+using System.Web.Configuration;
+using System.Web.UI.WebControls;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Forms;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+using Log = Serilog.Log;
+using Path = System.IO.Path;
+using Window = System.Windows.Window;
+
+namespace HDSignaturesTool
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        private int intCount = 0;
+        private int OphalenGelukt = 0;
+
+        private double time = Settings.intSeconds;
+        private double PausedTime;
+        private DispatcherTimer Timer;
+        DateTime startTime = DateTime.Now;
+
+        private ListBoxControl<UserData> _lbAllUsers;
+        private ListBoxControl<UserData> _lbInactiveUsers;
+        private ListBoxControl<UserData> _lbActiveUsers;
+        private DataGridControl<UserDataWrapper> _dgUserInformation;
+
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            try
+            {
+                AutoSettings.CreateDefaultOrLoadSettingsForAllAutoSettingsClasses();
+
+                _lbAllUsers = new ListBoxControl<UserData>(lbAllUsers);
+                _lbInactiveUsers = new ListBoxControl<UserData>(lbInactiveUsers);
+                _lbActiveUsers = new ListBoxControl<UserData>(lbActiveUsers);
+
+                _dgUserInformation = new DataGridControl<UserDataWrapper>(dgUserInformation, false);
+                _dgUserInformation.CreateBoolColumn("Aanmaken", nameof(UserDataWrapper.blnCreate), 70).IsReadOnly = false;
+                _dgUserInformation.CreateTextColumn("Naam", nameof(UserDataWrapper.UserName_dg), 100).IsReadOnly = true;
+                _dgUserInformation.CreateTextColumn("Description", nameof(UserDataWrapper.Description_dg), 200).IsReadOnly = true;
+                _dgUserInformation.CreateTextColumn("Pad", nameof(UserDataWrapper.Path_dg), 455).IsReadOnly = true;
+                _dgUserInformation.EventRowEdited += _dgUserInformation_EventRowEdited;
+                _dgUserInformation.UseVisualTemplateLines();
+
+                #region Log
+                //zoekt waar de applicatie is opgestart en maakt een bestand aan die "HDSignatures_Logs" heet
+                var startupPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+                var logPath = Path.Combine(startupPath, "HDSignatures_Logs");
+
+                //Logger
+#if DEBUG
+
+                Log.Logger = new LoggerConfiguration()
+                                  //Wat de bestanden hun naam zijn en waar ze naartoe moeten
+                                  .WriteTo.Sink(new ActionSink(LogToTextBox))
+                                .WriteTo.File(Path.Combine(logPath, $"[{DateTime.Now:yyyy-MM-dd}] HDSignatures.log"),
+                                    rollingInterval: RollingInterval.Day,
+                                    fileSizeLimitBytes: 10000000,
+                                    retainedFileCountLimit: 10,
+                                    rollOnFileSizeLimit: true,
+                                    buffered: true,
+                                    flushToDiskInterval: TimeSpan.FromMilliseconds(150))
+                                .MinimumLevel.Verbose()
+                                //maakt de .log bestand aan
+                                .CreateLogger();
+#else
+                Log.Logger = new LoggerConfiguration()
+                                //Wat de bestanden hun naam zijn en waar ze naartoe moeten
+                                .WriteTo.Sink(new ActionSink(LogToTextBox))
+                                .WriteTo.File(Path.Combine(logPath, $"[{DateTime.Now:yyyy-MM-dd}] HDSignatures.log"),
+                                    rollingInterval: RollingInterval.Day,
+                                    fileSizeLimitBytes: 10000000,
+                                    retainedFileCountLimit: 10,
+                                    rollOnFileSizeLimit: true,
+                                    buffered: true,
+                                    flushToDiskInterval: TimeSpan.FromMilliseconds(150))
+                                .MinimumLevel.Information()
+                                //maakt de .log bestand aan
+                                .CreateLogger();
+#endif
+                #endregion
+
+                btnStart.IsEnabled = false;
+                tbCopyPath.IsReadOnly = true;
+                tbCopyPath.IsEnabled = false;
+                CheckSavedSettings();
+                CheckIfLocalOrDomainIsActive();
+                UpdateUserInformation();
+                if (cbDomain.IsChecked == false && cbLokaal.IsChecked == false)
+                    intCount++;
+                btnOpslaan.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFABADB3");
+                if (cbLokaal.IsChecked == true)
+                    cbDomain.IsEnabled = false;
+                else cbDomain.IsEnabled = true;
+                if (cbDomain.IsChecked == true)
+                    cbLokaal.IsEnabled = false;
+                else cbLokaal.IsEnabled = true;
+
+                if (btnStart.IsEnabled == true)
+                {
+                    btnStartTimer.IsEnabled = true;
+                    btnResetTimer.IsEnabled = true;
+                    btnOpslaan.IsEnabled = false;
+                }
+                else
+                {
+                    btnStartTimer.IsEnabled = false;
+                    btnPauseTimer.IsEnabled = false;
+                    btnResetTimer.IsEnabled = false;
+                }
+                this.tbSeconds.MaxLength = 4;
+                Timer = new DispatcherTimer();
+                Timer.Interval = new TimeSpan(0, 0, 0, 0, 250);
+                Timer.Tick += Timer_Tick;
+                tbTimerCounter.Text = $"00:00:00";
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+        }
+        void Timer_Tick(object sender, EventArgs e)
+        {
+            if (time == 0)
+            {
+                time = Settings.intSeconds;
+                return;
+            }
+            var tempTotalSeconds = time * 60;
+            var tempDateNow = DateTime.Now;
+            var tempTimeSpan = tempDateNow.Subtract(startTime);
+            double tempTimeLeft = tempTotalSeconds - tempTimeSpan.TotalSeconds;
+            var tempTimeSpanTimeLeft = TimeSpan.FromSeconds(tempTimeLeft);
+            PausedTime = tempTimeLeft / 60;
+            double tempMinutes = Math.Floor((tempTimeLeft / 60));
+            var tempSeconds = tempTimeLeft - (tempMinutes * 60);
+            tbTimerCounter.Text = tempTimeSpanTimeLeft.ToString("hh\\:mm\\:ss");
+            if (tempTimeLeft <= 0)
+            {
+                Timer.Stop();
+                btnStart_Click(null, null);
+                time = Settings.intSeconds;
+                startTime = DateTime.Now;
+                Timer.Start();
+            }
+        }
+        private void btnStartTimer_Click(object sender, RoutedEventArgs e)
+        {
+            if (tbTimerCounter.Text == "00:00:00")
+                time = Settings.intSeconds;
+            startTime = DateTime.Now;
+            btnStartTimer.IsEnabled = false;
+            Timer.Start();
+            grMain.IsEnabled = false;
+            btnPauseTimer.IsEnabled = true;
+        }
+
+        private void btnPauseTimer_Click(object sender, RoutedEventArgs e)
+        {
+            Timer.Stop();
+            time = PausedTime;
+            grMain.IsEnabled = true;
+            btnStartTimer.IsEnabled = true;
+        }
+        private void btnResetTimer_Click(object sender, RoutedEventArgs e)
+        {
+            Timer.Stop();
+            time = Settings.intSeconds;
+            grMain.IsEnabled = true;
+            btnPauseTimer.IsEnabled = false;
+            btnStartTimer.IsEnabled = true;
+            tbTimerCounter.Text = $"00:00:00";
+        }
+        public void LogToTextBox(string argText)
+        {
+            if (string.IsNullOrEmpty(argText)) return;
+
+            App.Current.Dispatcher?.Invoke(() =>
+            {
+                tbLogs.Text += argText;
+            });
+            tbLogs.ScrollToEnd();
+        }
+        private void _dgUserInformation_EventRowEdited(object sender, UserDataWrapper e)
+        {
+            var tempList = _dgUserInformation.GetDataSource();
+
+            var tempAllCreateList = tempList.FindAll(x => x.blnCreate);
+
+        }
+        private void btnBackups_Click(object sender, RoutedEventArgs e)
+        {
+            BackupsWindow secondWindow = new BackupsWindow() { Owner = this };
+            secondWindow.ShowDialog();
+        }
+        private void btnUsersOphalen_Click(object sender, RoutedEventArgs e)
+        {
+            tbBasisNaam.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFABADB3");
+            tbPrefix.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFABADB3");
+            tbSignatureDirectoryName.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFABADB3");
+            btnUsersOphalen.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFABADB3");
+
+            if (cbDomain.IsChecked == true)
+            {
+                UpdateSettings();
+                if (intCount > 0 && string.IsNullOrEmpty(Settings.strBasisNaam) && string.IsNullOrEmpty(Settings.strFilePrefix) && string.IsNullOrEmpty(Settings.strSignatureDirectoryName))
+                {
+                    MBox.ShowWarning("Vul eerst Prefix, Basis Naam en Directory Naam in");
+                    tbBasisNaam.BorderBrush = Brushes.Red;
+                    tbPrefix.BorderBrush = Brushes.Red;
+                    tbSignatureDirectoryName.BorderBrush = Brushes.Red;
+                    return;
+                }
+                if (intCount > 0 && string.IsNullOrEmpty(Settings.strBasisNaam) || Settings.strBasisNaam == "")
+                {
+                    MBox.ShowWarning("Vul Eerst de Basis Naam in");
+                    tbBasisNaam.BorderBrush = Brushes.Red;
+                    return;
+                }
+                if (intCount > 0 && string.IsNullOrEmpty(Settings.strFilePrefix) || Settings.strFilePrefix == "")
+                {
+                    MBox.ShowWarning("Vul Eerst de Prefix in");
+                    tbPrefix.BorderBrush = Brushes.Red;
+                    return;
+                }
+                if (intCount > 0 && string.IsNullOrEmpty(Settings.strSignatureDirectoryName) || Settings.strSignatureDirectoryName == "")
+                {
+                    MBox.ShowWarning("Vul Eerst de Directory Naam in");
+                    tbSignatureDirectoryName.BorderBrush = Brushes.Red;
+                    return;
+                }
+                List<UserData> tempAllADUserList = DataManager.GetAllADUsersList();
+                _lbAllUsers.SetItemsSource(tempAllADUserList);
+                List<UserData> tempInactiveADUserList = DataManager.GetInactiveADUserList();
+                _lbInactiveUsers.SetItemsSource(tempInactiveADUserList);
+                List<UserData> tempActiveADUserList = DataManager.GetActiveADUsersList();
+                _lbActiveUsers.SetItemsSource(tempActiveADUserList);
+                List<UserData> tempProcessedUserList = LogicManager.ParseUserDescription(tempActiveADUserList);
+                List<UserDataWrapper> tempUserDataWrapperList = new List<UserDataWrapper>();
+                foreach (var tempUserData in tempProcessedUserList)
+                {
+                    var tempUserDataWrapper = new UserDataWrapper();
+                    tempUserDataWrapper.userData = tempUserData;
+                    tempUserDataWrapperList.Add(tempUserDataWrapper);
+                }
+                _dgUserInformation.SetDataSource(tempUserDataWrapperList);
+                UpdateUserInformation();
+                btnOpslaan.IsEnabled = true;
+                OphalenGelukt++;
+            }
+            if (cbLokaal.IsChecked == true)
+            {
+                UpdateSettings();
+                if (intCount > 0 && string.IsNullOrEmpty(Settings.strBasisNaam.Trim()) && string.IsNullOrEmpty(Settings.strFilePrefix.Trim()) && string.IsNullOrEmpty(Settings.strSignatureDirectoryName.Trim()))
+                {
+                    MBox.ShowWarning("Vul eerst Prefix, Basis Naam en Directory Naam in");
+                    tbBasisNaam.BorderBrush = Brushes.Red;
+                    tbPrefix.BorderBrush = Brushes.Red;
+                    tbSignatureDirectoryName.BorderBrush = Brushes.Red;
+                    return;
+                }
+                if (intCount > 0 && string.IsNullOrEmpty(Settings.strBasisNaam))
+                {
+                    MBox.ShowWarning("Vul Eerst de Basis Naam in");
+                    tbBasisNaam.BorderBrush = Brushes.Red;
+                    return;
+                }
+                if (intCount > 0 && string.IsNullOrEmpty(Settings.strFilePrefix))
+                {
+                    MBox.ShowWarning("Vul Eerst de Prefix in");
+                    tbPrefix.BorderBrush = Brushes.Red;
+                    return;
+                }
+                if (intCount > 0 && string.IsNullOrEmpty(Settings.strSignatureDirectoryName))
+                {
+                    MBox.ShowWarning("Vul Eerst de Directory Naam in");
+                    tbSignatureDirectoryName.BorderBrush = Brushes.Red;
+                    return;
+                }
+                List<UserData> tempAllLocalUserList = DataManager.GetAllLocalUserList();
+                LogicManager.GetPathFromSIDNumber(tempAllLocalUserList);
+                _lbAllUsers.SetItemsSource(tempAllLocalUserList);
+                List<UserData> tempInactiveLocalUserList = DataManager.GetInactiveLocalUserList();
+                LogicManager.GetPathFromSIDNumber(tempInactiveLocalUserList);
+                _lbInactiveUsers.SetItemsSource(tempInactiveLocalUserList);
+                List<UserData> tempActiveLocalUserList = DataManager.GetActiveLocalUserList();
+                LogicManager.GetPathFromSIDNumber(tempActiveLocalUserList);
+                _lbActiveUsers.SetItemsSource(tempActiveLocalUserList);
+                List<UserData> tempProcessedUserList = LogicManager.ParseUserDescription(tempActiveLocalUserList);
+                LogicManager.GetPathFromSIDNumber(tempProcessedUserList);
+                List<UserDataWrapper> tempUserDataWrapperList = new List<UserDataWrapper>();
+                foreach (var tempUserData in tempProcessedUserList)
+                {
+                    var tempUserDataWrapper = new UserDataWrapper();
+                    tempUserDataWrapper.userData = tempUserData;
+                    tempUserDataWrapperList.Add(tempUserDataWrapper);
+                }
+                _dgUserInformation.SetDataSource(tempUserDataWrapperList);
+                UpdateUserInformation();
+                btnOpslaan.IsEnabled = true;
+                OphalenGelukt++;
+            }
+
+        }
+        private void btnCopySignatures_Click(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+            if (btnCopySignatures.IsChecked == true)
+            {
+                tbCopyPath.IsReadOnly = false;
+                tbCopyPath.IsEnabled = true;
+            }
+            else
+            {
+                tbCopyPath.IsReadOnly = true;
+                tbCopyPath.IsEnabled = false;
+            }
+        }
+        private void btnAdminOnly_Click(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnOpslaan.IsEnabled = true;
+            btnStart.IsEnabled = false;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+            if (btnAdminOnly.IsChecked == true)
+            {
+                btnUserGetsAllSignatures.IsEnabled = false;
+                btnCreateSignatureDirectory.IsEnabled = false;
+            }
+            else
+            {
+                btnUserGetsAllSignatures.IsEnabled = true;
+                btnCreateSignatureDirectory.IsEnabled = true;
+            }
+        }
+        private void UpdateSettings()
+        {
+            if (!string.IsNullOrEmpty(tbSeconds.Text))
+            {
+                if (!IsValid(tbSeconds.Text))
+                {
+                    MBox.ShowWarning("Minuten kan niet hoger dan 24 uur zijn! \n\r (1440 minuten)");
+                    Settings.intSeconds = 1440;
+                    tbSeconds.Text = "1440";
+                }
+                else
+                Settings.intSeconds = int.Parse(tbSeconds.Text);
+                
+            }
+            else Settings.intSeconds = 0;
+
+            Settings.strAdminPath = tbBasisPath.Text;
+            Settings.strFilePrefix = tbPrefix.Text;
+            Settings.strOrigineleFile = tbBasisBestand.Text;
+            Settings.strSignatureDirectoryName = tbSignatureDirectoryName.Text;
+            Settings.strBasisNaam = tbBasisNaam.Text;
+            Settings.blnUsersInLocal = (bool)cbLokaal.IsChecked;
+            Settings.blnUsersInAD = (bool)cbDomain.IsChecked;
+            Settings.blnCreateHtm = (bool)btnHtm.IsChecked;
+            Settings.blnCreateRtf = (bool)btnRtf.IsChecked;
+            Settings.blnCreateTxt = (bool)btnTxt.IsChecked;
+            Settings.blnCreateFolderFiles = (bool)btnFiles.IsChecked;
+            Settings.blnCreateFolderBestanden = (bool)btnBestanden.IsChecked;
+            Settings.blnAdminOnly = (bool)btnAdminOnly.IsChecked;
+            Settings.blnUserGetsAllSignatures = (bool)btnUserGetsAllSignatures.IsChecked;
+            Settings.blnMakeSignatureDirectory = (bool)btnCreateSignatureDirectory.IsChecked;
+            Settings.blnDeleteInactiveSignatures = (bool)btnDeleteInactiveSignature.IsChecked;
+            Settings.blnDeleteAllSignatures = (bool)btnDeleteAllSignatures.IsChecked;
+            Settings.blnCopySignatures = (bool)btnCopySignatures.IsChecked;
+            Settings.strCopySignaturesToPath = tbCopyPath.Text;
+            LogicManager.GetSchijfFromPath(tbBasisPath.Text);
+            AutoSettings.SaveAllSettings();
+            UpdateDataGrid();
+        }
+        private void btnOpslaan_Click(object sender, RoutedEventArgs e)
+        {
+            tbBasisPath.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFABADB3");
+            tbBasisBestand.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFABADB3");
+            tbSignatureDirectoryName.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFABADB3");
+            tbBasisNaam.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFABADB3");
+            btnOpslaan.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFABADB3");
+
+            UpdateSettings();
+            btnUsersOphalen_Click(null, null);
+            btnStart.IsEnabled = true;
+            btnOpslaan.IsEnabled = false;
+            if (!string.IsNullOrEmpty(tbBasisPath.Text))
+            {
+                if (!Directory.Exists(tbBasisPath.Text))
+                {
+                    // Log Pad niet kunnen vinden
+                    // Verzinnen wat nog gedaan moet worden
+                    MBox.ShowWarning("Basis Pad bestaat niet of is niet gevonden.");
+                    tbBasisPath.BorderBrush = Brushes.Red;
+                    btnStart.IsEnabled = false;
+                }
+            }
+            else
+            {
+                MBox.ShowWarning("Geen Basis Pad gegeven.");
+                tbBasisPath.BorderBrush = Brushes.Red;
+                btnStart.IsEnabled = false;
+            }
+            if (string.IsNullOrEmpty(tbBasisBestand.Text))
+            {
+                MBox.ShowWarning("Geen Template Naam gegeven");
+                tbBasisBestand.BorderBrush = Brushes.Red;
+                btnStart.IsEnabled = false;
+            }
+            //Directory naam
+            if (string.IsNullOrEmpty(tbSignatureDirectoryName.Text))
+            {
+                MBox.ShowWarning("Geen Directory Naam gegeven");
+                tbSignatureDirectoryName.BorderBrush = Brushes.Red;
+                btnStart.IsEnabled = false;
+            }
+            //Basis naam
+            if (string.IsNullOrEmpty(tbBasisNaam.Text))
+            {
+                MBox.ShowWarning("Geen Basis Naam gegeven");
+                tbBasisNaam.BorderBrush = Brushes.Red;
+                btnStart.IsEnabled = false;
+            }
+            if (string.IsNullOrEmpty(tbPrefix.Text))
+            {
+                MBox.ShowWarning("Geen Prefix gegeven");
+                tbPrefix.BorderBrush = Brushes.Red;
+                btnStart.IsEnabled = false;
+            }
+            if (btnStart.IsEnabled == true)
+            {
+                btnStartTimer.IsEnabled = true;
+                btnResetTimer.IsEnabled = true;
+                btnOpslaan.IsEnabled = false;
+            }
+            else
+            {
+                btnStartTimer.IsEnabled = false;
+                btnPauseTimer.IsEnabled = false;
+                btnResetTimer.IsEnabled = false;
+                btnOpslaan.IsEnabled = true;
+            }
+        }
+        private void btnStart_Click(object sender, RoutedEventArgs e)
+        {
+            var tempUserDataList = GetCreateSignatureUserDataList();
+
+            var tempUserList = new UserLists()
+            {
+                ProcessedUsersList = tempUserDataList,
+                ActiveUsersLists = _lbActiveUsers.GetItemsSource(),
+                InactiveUsersList = _lbInactiveUsers.GetItemsSource(),
+                AllUsersList = _lbAllUsers.GetItemsSource()
+            };
+
+            DataManager.BackupSignatures();
+            if (Settings.blnUsersInAD) LogicManager.ModifySignaturesForAD(tempUserList);
+            if (Settings.blnUsersInLocal) LogicManager.ModifySignaturesForLocal(tempUserList);
+        }
+        public void CheckSavedSettings()
+        {
+            AutoSettings.LoadSettingsOfType<Settings>();
+            tbBasisPath.Text = Settings.strAdminPath;
+            tbPrefix.Text = Settings.strFilePrefix;
+            tbBasisBestand.Text = Settings.strOrigineleFile;
+            tbSignatureDirectoryName.Text = Settings.strSignatureDirectoryName;
+            if (string.IsNullOrEmpty(Settings.strBasisNaam))
+            {
+                cbLokaal.IsChecked = false;
+                cbDomain.IsChecked = false;
+            }
+            else
+            {
+                tbBasisNaam.Text = Settings.strBasisNaam;
+                cbLokaal.IsChecked = Settings.blnUsersInLocal;
+                cbDomain.IsChecked = Settings.blnUsersInAD;
+            }
+            tbCopyPath.Text = Settings.strCopySignaturesToPath;
+            btnHtm.IsChecked = Settings.blnCreateHtm;
+            btnRtf.IsChecked = Settings.blnCreateRtf;
+            btnTxt.IsChecked = Settings.blnCreateTxt;
+            btnFiles.IsChecked = Settings.blnCreateFolderFiles;
+            btnBestanden.IsChecked = Settings.blnCreateFolderBestanden;
+            btnAdminOnly.IsChecked = Settings.blnAdminOnly;
+            btnUserGetsAllSignatures.IsChecked = Settings.blnUserGetsAllSignatures;
+            btnCreateSignatureDirectory.IsChecked = Settings.blnMakeSignatureDirectory;
+            btnDeleteInactiveSignature.IsChecked = Settings.blnDeleteInactiveSignatures;
+            btnDeleteAllSignatures.IsChecked = Settings.blnDeleteAllSignatures;
+            btnCopySignatures.IsChecked = Settings.blnCopySignatures;
+            tbSeconds.Text = Settings.intSeconds.ToString();
+            if (!string.IsNullOrEmpty(tbBasisPath.Text))
+                if (Directory.Exists(tbBasisPath.Text))
+                    btnStart.IsEnabled = true;
+        }
+        private void btnDeleteAllSignatures_Click(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+            if (btnDeleteAllSignatures.IsChecked == true)
+            {
+                btnUserGetsAllSignatures.IsEnabled = false;
+                btnCreateSignatureDirectory.IsEnabled = false;
+                btnAdminOnly.IsEnabled = false;
+                btnDeleteInactiveSignature.IsEnabled = false;
+                btnCopySignatures.IsEnabled = false;
+                btnHtm.IsEnabled = false;
+                btnRtf.IsEnabled = false;
+                btnTxt.IsEnabled = false;
+                btnFiles.IsEnabled = false;
+                btnBestanden.IsEnabled = false;
+                tbCopyPath.IsReadOnly = true;
+                tbCopyPath.IsEnabled = false;
+            }
+            else
+            {
+                btnUserGetsAllSignatures.IsEnabled = true;
+                btnCreateSignatureDirectory.IsEnabled = true;
+                btnUserGetsAllSignatures.IsEnabled = true;
+                btnCreateSignatureDirectory.IsEnabled = true;
+                btnDeleteInactiveSignature.IsEnabled = true;
+                btnCopySignatures.IsEnabled = true;
+                btnHtm.IsEnabled = true;
+                btnRtf.IsEnabled = true;
+                btnTxt.IsEnabled = true;
+                btnFiles.IsEnabled = true;
+                btnBestanden.IsEnabled = true;
+                btnAdminOnly.IsEnabled = true;
+                if ((bool)btnAdminOnly.IsChecked)
+                {
+                    btnUserGetsAllSignatures.IsEnabled = false;
+                    btnCreateSignatureDirectory.IsEnabled = false;
+                }
+                if ((bool)btnCopySignatures.IsChecked)
+                {
+                    tbCopyPath.IsReadOnly = false;
+                    tbCopyPath.IsEnabled = true;
+                }
+            }
+        }
+        public void CheckIfLocalOrDomainIsActive()
+        {
+            if (cbLokaal.IsChecked == true)
+                btnUsersOphalen_Click(this, null);
+            if (cbDomain.IsChecked == true)
+                btnUsersOphalen_Click(this, null);
+        }
+        public List<UserData> GetCreateSignatureUserDataList()
+        {
+            var tempUserDataWrapperList = _dgUserInformation.GetDataSource();
+
+            /*
+            var tempUserDataWrapperCreateList = new List<UserDataWrapper>();
+            foreach(var tempUserDataWrapper in tempUserDataWrapperList)
+            {
+                if(tempUserDataWrapper.blnCreate) tempUserDataWrapperCreateList.Add(tempUserDataWrapper);
+            }
+
+            var tempUserDataList2 = new List<UserData>();
+            foreach(var tempUserDataWrapper in tempUserDataWrapperCreateList)
+            {
+                tempUserDataList2.Add(tempUserDataWrapper.userData);
+            }*/
+
+
+            List<UserData> tempUserDataList = tempUserDataWrapperList.FindAll(x => x.blnCreate == true).Select(x => x.userData).ToList();
+
+            return tempUserDataList;
+        }
+        public void UpdateDataGrid()
+        {
+            var startupPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            var tempBackupPath = Path.Combine(startupPath, "HDSignatures.SavedUsers.txt");
+            if (!File.Exists(tempBackupPath))
+                File.Create(tempBackupPath);
+            File.WriteAllText(tempBackupPath, "");
+
+            var tempUserDataWrapperList = _dgUserInformation.GetDataSource();
+            if (tempUserDataWrapperList == null)
+                return;
+            foreach (var tempUser in tempUserDataWrapperList)
+            {
+                File.AppendAllText(tempBackupPath, tempUser.UserName_dg + "=" + tempUser.blnCreate + Environment.NewLine);
+            }
+        }
+        public void UpdateUserInformation()
+        {
+            try
+            {
+                var startupPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+                var tempBackupPath = Path.Combine(startupPath, "HDSignatures.SavedUsers.txt");
+                if (!File.Exists(tempBackupPath) || new FileInfo(tempBackupPath).Length == 0)
+                    return;
+                var tempUserDataWrapperList = _dgUserInformation.GetDataSource();
+                if (tempUserDataWrapperList == null) return;
+                string[] tempAllLinesOfSavedUsers = File.ReadAllLines(tempBackupPath);
+                foreach (var tempUser in tempUserDataWrapperList)
+                {
+                    foreach (var line in tempAllLinesOfSavedUsers)
+                    {
+                        if (line.Contains(tempUser.UserName_dg))
+                        {
+                            var tempDictionary = new Dictionary<string, string>();
+
+                            string[] tempSplittedLine = line.ToString().Split('=');
+
+                            tempDictionary.Add(tempSplittedLine[0], tempSplittedLine[1]);
+
+                            if (tempSplittedLine[1].ToString().Contains("True"))
+                                tempUser.blnCreate = true;
+                            if (tempSplittedLine[1].ToString().Contains("False"))
+                                tempUser.blnCreate = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+        }
+
+        #region Oplsaan update
+        private void btnHtm_Checked(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnRtf_Checked(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnTxt_Checked(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnFiles_Checked(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnBestanden_Checked(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnAdminOnly_Checked(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnUserGetsAllSignatures_Checked(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnHtm_Click(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnRtf_Click(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnTxt_Click(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnFiles_Click(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnBestanden_Click(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnUserGetsAllSignatures_Click(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnCreateSignatureDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnDeleteInactiveSignature_Checked(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void btnDeleteInactiveSignature_Click(object sender, RoutedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void tbCopyPath_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void tbPrefix_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (OphalenGelukt >= 1)
+                btnOpslaan.BorderBrush = Brushes.Red;
+            btnUsersOphalen.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void tbBasisBestand_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void tbSignatureDirectoryName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (OphalenGelukt >= 1)
+                btnOpslaan.BorderBrush = Brushes.Red;
+            btnUsersOphalen.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void tbBasisNaam_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (OphalenGelukt >= 1)
+                btnOpslaan.BorderBrush = Brushes.Red;
+            btnUsersOphalen.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void tbBasisPath_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void cbLokaal_Click(object sender, RoutedEventArgs e)
+        {
+            btnStart.IsEnabled = false;
+            if (cbLokaal.IsChecked == true)
+                cbDomain.IsEnabled = false;
+            else cbDomain.IsEnabled = true;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void cbDomain_Click(object sender, RoutedEventArgs e)
+        {
+            btnStart.IsEnabled = false;
+            if (cbDomain.IsChecked == true)
+                cbLokaal.IsEnabled = false;
+            else cbLokaal.IsEnabled = true;
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            btnPauseTimer.IsEnabled = false;
+            btnResetTimer.IsEnabled = false;
+        }
+
+        private void tbSeconds_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            btnOpslaan.BorderBrush = Brushes.Red;
+            btnStart.IsEnabled = false;
+            if (!string.IsNullOrEmpty(tbSeconds.Text))
+                Settings.intSeconds = int.Parse(tbSeconds.Text);
+            btnOpslaan.IsEnabled = true;
+            btnStartTimer.IsEnabled = false;
+            try
+            {
+                var tempTotalSeconds = int.Parse(tbSeconds.Text) * 60;
+                var tempDateNow = DateTime.Now;
+                var tempTimeSpan = tempDateNow.Subtract(startTime);
+                double tempTimeLeft = tempTotalSeconds - tempTimeSpan.TotalSeconds;
+                var tempTimeSpanTimeLeft = TimeSpan.FromSeconds(tempTimeLeft);
+                PausedTime = tempTimeLeft / 60;
+                double tempMinutes = Math.Floor((tempTimeLeft / 60));
+                var tempSeconds = tempTimeLeft - (tempMinutes * 60);
+                tbTimerCounter.Text = tempTimeSpanTimeLeft.ToString("hh\\:mm\\:ss");
+            }
+            catch
+            {
+                tbTimerCounter.Text = "00:00:00";
+            }
+        }
+        private void tbSeconds_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (!IsTextAllowed(e.Text))
+            {
+                e.Handled = true;
+            }
+        }
+        private static readonly Regex _regex = new Regex("[^0-9]+"); //regex that matches disallowed text
+        private static bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+        public static bool IsValid(string str)
+        {
+            int i;
+            return int.TryParse(str, out i) && i >= 1 && i <= 1440;
+        }
+        #endregion
+    }
+}

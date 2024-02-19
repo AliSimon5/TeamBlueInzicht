@@ -1,0 +1,30 @@
+﻿using M.NetStandard.CommonInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace HDListFolders.Types
+{
+    internal class FileData : BoxItem
+    {
+        public string strNewPath;
+        public string FileName { get; set; }
+        public string Path { get; set; }
+        public string MainPath { get; set; }
+        public string FileDate { get; set; }
+        public bool ShowNameOnly { get; set; }
+        public string GetBoxItemTitle()
+        {
+            if (!ShowNameOnly)
+            {
+                if (Path.Contains(MainPath))
+                    strNewPath = Path.Replace(MainPath, "");
+                return $"{FileName} \n {strNewPath}\n {FileDate}";
+            }
+            return FileName;
+        }
+    }
+}

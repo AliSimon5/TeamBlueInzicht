@@ -1,0 +1,22 @@
+﻿<Window x:Class="HDListFolders.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HDListFolders"
+        mc:Ignorable="d"
+        Title="HDListFolders" Height="557" Width="1064">
+    <Grid>
+        <Label Content="HDListFolders" HorizontalAlignment="Left" Margin="105,34,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold" FontSize="22"/>
+        <TextBox x:Name="tbMainPath" HorizontalAlignment="Left" Margin="301,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="348"/>
+        <TextBox x:Name="tbFilterOne" Margin="662,45,0,0" TextWrapping="Wrap" Height="18" VerticalAlignment="Top" HorizontalAlignment="Left" Width="134"/>
+        <Label Content="Hoofd Pad" HorizontalAlignment="Left" Margin="301,19,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold"/>
+        <Label Content="Zoek Filter" Margin="661,19,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="68" FontFamily="Segoe UI Semibold"/>
+        <Button x:Name="btnSearch" Content="Zoek" HorizontalAlignment="Left" Margin="808,42,0,0" VerticalAlignment="Top" Height="24" Width="46" Click="btnSearch_Click"/>
+        <Label Content="Bestanden en mappen" Margin="20,111,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="135" Height="29" FontFamily="Segoe UI Semibold"/>
+        <Image HorizontalAlignment="Left" Height="74" Margin="20,17,0,0" VerticalAlignment="Top" Width="74" Source="/HDListFolders.ico"/>
+        <Button x:Name="btnRefresh" Content="Ververs" Margin="0,109,19,0" VerticalAlignment="Top" Height="24" Click="btnRefresh_Click" HorizontalAlignment="Right" Width="46"/>
+        <DataGrid x:Name="dgResultsOfSearch" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="20,141,19,20"/>
+
+    </Grid>
+</Window>
