@@ -1,0 +1,121 @@
+﻿using ClosedXML.Excel;
+using HDTelefoonKosten.Types;
+using Microsoft.Win32;
+using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace HDTelefoonKosten.DataManager
+{
+    internal partial class DataManager
+    {
+        public static void ExportCallDataToExcelFile(List<CallData> argCallDataList, List<MonthlyCostData> argMonthlyCostDataList, bool MakeCalldata, bool MakeMonthly)
+        {
+            DataTable dt = new DataTable();
+            dt.Clear();
+            dt.Columns.Add("Direction");
+            dt.Columns.Add("Bedrijf");
+            dt.Columns.Add("Subscriber");
+            dt.Columns.Add("Originator");
+            dt.Columns.Add("Termination");
+            dt.Columns.Add("Datum");
+            dt.Columns.Add("Bel tijd");
+            dt.Columns.Add("Kosten");
+            dt.Columns.Add("Kosten met marge");
+
+            DataTable dt2 = new DataTable();
+            dt2.Clear();
+            dt2.Columns.Add("Jaar/Maand");
+            dt2.Columns.Add("Bedrijf");
+            dt2.Columns.Add("Subscriber");
+            dt2.Columns.Add("Belletjes");
+            dt2.Columns.Add("Ins");
+            dt2.Columns.Add("Outs");
+            dt2.Columns.Add("Bel tijd");
+            dt2.Columns.Add("Bedrag");
+            dt2.Columns.Add("Start tarief mobiel");
+            dt2.Columns.Add("Per minuut mobiel");
+            dt2.Columns.Add("Start tarief binnenland");
+            dt2.Columns.Add("Per minuut binnenland");
+            dt2.Columns.Add("Vanaf");
+            dt2.Columns.Add("Tot");
+            dt2.Columns.Add("Tijds periode");
+
+            foreach (var tempCall in argCallDataList)
+            {
+                DataRow tempRow = dt.NewRow();
+                tempRow["Direction"] = tempCall.Direction;
+                tempRow["Bedrijf"] = tempCall.Bedrijf;
+                tempRow["Subscriber"] = tempCall.Subscriber;
+                tempRow["Originator"] = tempCall.Originator;
+                tempRow["Termination"] = tempCall.Termination;
+                tempRow["Datum"] = tempCall.Date;
+                tempRow["Bel tijd"] = tempCall.Duration;
+                tempRow["Kosten"] = tempCall.Cost;
+                tempRow["Kosten met marge"] = tempCall.CostWithMarge;
+                dt.Rows.Add(tempRow);
+            }
+
+            foreach (var tempCall in argMonthlyCostDataList)
+            {
+                DataRow tempRow = dt2.NewRow();
+                tempRow["Jaar/Maand"] = tempCall.YearOrMonth;
+                tempRow["Bedrijf"] = tempCall.CompanyName;
+                tempRow["Subscriber"] = tempCall.Subscriber;
+                tempRow["Belletjes"] = tempCall.TotalCalls;
+                tempRow["Ins"] = tempCall.TotalIns;
+                tempRow["Outs"] = tempCall.TotalOuts;
+                tempRow["Bel tijd"] = tempCall.TotalCallTime;
+                tempRow["Bedrag"] = tempCall.TotalAmount;
+                tempRow["Start tarief mobiel"] = tempCall.StartRateMobiel;
+                tempRow["Per minuut mobiel"] = tempCall.CostPerMinuteMobiel;
+                tempRow["Start tarief binnenland"] = tempCall.StartRateBinnenLand;
+                tempRow["Per minuut binnenland"] = tempCall.CostPerMinuteBinnenLand;
+                tempRow["Vanaf"] = tempCall.FirstDate;
+                tempRow["Tot"] = tempCall.LastDate;
+                tempRow["Tijds periode"] = tempCall.TimePeriod;
+                dt2.Rows.Add(tempRow);
+            }
+
+            System.Windows.Forms.SaveFileDialog saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            saveFileDialog1.Filter = "Microsoft Excel Werkblad|*.xlsx";
+            saveFileDialog1.Title = "Microsoft Excel Werkblad opslaan";
+            try
+            {
+                saveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            saveFileDialog1.FileName = $"HDTelefoonKosten {argCallDataList[0].Bedrijf}.xlsx";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK && saveFileDialog1.FileName != "")
+            {
+                try
+                {
+                    using (var workbook = new XLWorkbook())
+                    {
+                        if (MakeMonthly)
+                            workbook.Worksheets.Add(dt2, "Overzicht");
+                        if (MakeCalldata)
+                            workbook.Worksheets.Add(dt, "Bel data");
+
+                        workbook.SaveAs(saveFileDialog1.FileName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Opslaan mislukt: " + ex.Message);
+                }
+            }
+        }
+
+    }
+}
+

@@ -1,0 +1,666 @@
+﻿using DocumentFormat.OpenXml.ExtendedProperties;
+using DocumentFormat.OpenXml.Spreadsheet;
+using HDTelefoonKosten.Core;
+using HDTelefoonKosten.Properties;
+using HDTelefoonKosten.Types;
+using HDTelefoonKosten.Windows;
+using M.Core.Application.ControlHelpers;
+using M.Core.Application.WPF.MessageBox;
+using M.NetStandard.SinkToAction;
+using Microsoft.Office.Interop.Excel;
+using Microsoft.Win32;
+using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Routing;
+using System.Web.UI.WebControls;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Xml.Linq;
+using static System.Net.WebRequestMethods;
+using Excel = Microsoft.Office.Interop.Excel;
+
+namespace HDTelefoonKosten
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : System.Windows.Window
+    {
+        StringBuilder _stringBuilder = new StringBuilder();
+        public string tempFilePath;
+        private double intMarge = 0;
+        private double intVoorschot = 0;
+
+        public static ProgressBar referenceProgressBar;
+        public static List<CompanyType> SelectedMargeCompaniesList;
+
+        ListBoxControl<CompanyType> _lbCompanies;
+        ListBoxControl<SubscriberData> _lbSubscribers;
+        private DataGridControl<CallData> _dgCallData;
+        private DataGridControl<MonthlyCostData> _dgMonthlyCostData;
+        ComboBoxControl<MonthType> _cbAllMonths;
+
+        private List<CompanyType> _selectedCompanyType = null;
+        private List<SubscriberData> _selectedSubscriberType = null;
+        public static List<CompanyType> _listAllCompanies = new List<CompanyType>(); // aleen strCompany
+        private List<CallData> _listAllCallData = new List<CallData>(); // alle info
+        private List<MonthType> _listAllMonths = new List<MonthType>(); // alleen maanden
+        private List<SubscriberData> _listAllSubscriber = new List<SubscriberData>(); // alle subscribers
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            referenceProgressBar = pbProgress;
+
+            #region Serilog logt naar een textbox
+            //zoekt waar de applicatie is opgestart en maakt een bestand aan die "HDSignatures_Logs" heet
+            var startupPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            var logPath = Path.Combine(startupPath, "HDSignatures_Logs");
+
+            //Logger
+#if DEBUG
+
+            Log.Logger = new LoggerConfiguration()
+                              //Wat de bestanden hun naam zijn en waar ze naartoe moeten
+                              .WriteTo.Sink(new ActionSink(LogToTextBox))
+                            .WriteTo.File(Path.Combine(logPath, $"[{DateTime.Now:yyyy-MM-dd}] HDSignatures.log"),
+                                rollingInterval: RollingInterval.Day,
+                                fileSizeLimitBytes: 10000000,
+                                retainedFileCountLimit: 10,
+                                rollOnFileSizeLimit: true,
+                                buffered: true,
+                                flushToDiskInterval: TimeSpan.FromMilliseconds(150))
+                            .MinimumLevel.Verbose()
+                            //maakt de .log bestand aan
+                            .CreateLogger();
+#else
+            Log.Logger = new LoggerConfiguration()
+                            //Wat de bestanden hun naam zijn en waar ze naartoe moeten
+                            .WriteTo.Sink(new ActionSink(LogToTextBox))
+                            .WriteTo.File(Path.Combine(logPath, $"[{DateTime.Now:yyyy-MM-dd}] HDSignatures.log"),
+                                rollingInterval: RollingInterval.Day,
+                                fileSizeLimitBytes: 10000000,
+                                retainedFileCountLimit: 10,
+                                rollOnFileSizeLimit: true,
+                                buffered: true,
+                                flushToDiskInterval: TimeSpan.FromMilliseconds(150))
+                            .MinimumLevel.Information()
+                            //maakt de .log bestand aan
+                            .CreateLogger();
+#endif
+            #endregion
+
+            #region CallData DataGrid
+            // DataGrid met alle bedrijven en hun data die uit de document is gehaald
+            _dgCallData = new DataGridControl<CallData>(dgCallData, false);
+            _dgCallData.CreateTextColumn($"Direction", nameof(CallData.Direction), 111).IsReadOnly = true;
+            _dgCallData.CreateTextColumn($"Bedrijf", nameof(CallData.Bedrijf), 230).IsReadOnly = true;
+            _dgCallData.CreateTextColumn($"Subscriber", nameof(CallData.Subscriber), 150).IsReadOnly = true;
+            _dgCallData.CreateTextColumn($"Originator", nameof(CallData.Originator), 150).IsReadOnly = true;
+            _dgCallData.CreateTextColumn($"Termination", nameof(CallData.Termination), 150).IsReadOnly = true;
+            _dgCallData.CreateTextColumn($"Datum", nameof(CallData.Date), 200).IsReadOnly = true;
+            _dgCallData.CreateTextColumn($"Bel tijd", nameof(CallData.Duration), 150).IsReadOnly = true;
+            _dgCallData.CreateTextColumn($"Kosten", nameof(CallData.Cost), 150).IsReadOnly = true;
+            _dgCallData.CreateTextColumn($"Kosten met marge", nameof(CallData.CostWithMarge), 150).IsReadOnly = true;
+            _dgCallData.UseVisualTemplateLines();
+            #endregion
+
+            #region MonthlyCostData DataGrid
+            // DataGrid met alle bedrijven en maandelijkse info
+            _dgMonthlyCostData = new DataGridControl<MonthlyCostData>(dgMonthlyCostData, false);
+            _dgMonthlyCostData.CreateTextColumn($"Jaar/Maand", nameof(MonthlyCostData.YearOrMonth), 100).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Bedrijf", nameof(MonthlyCostData.CompanyName), 230).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Subscriber", nameof(MonthlyCostData.Subscriber), 95).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Belletjes", nameof(MonthlyCostData.TotalCalls), 70).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Ins", nameof(MonthlyCostData.TotalIns), 50).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Outs", nameof(MonthlyCostData.TotalOuts), 50).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Bel tijd", nameof(MonthlyCostData.TotalCallTime), 90).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Bedrag", nameof(MonthlyCostData.TotalAmount), 65).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Start tarief mobiel", nameof(MonthlyCostData.StartRateMobiel), 120).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Per minuut mobiel", nameof(MonthlyCostData.CostPerMinuteMobiel), 120).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Start tarief binnenland", nameof(MonthlyCostData.StartRateBinnenLand), 135).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Per minuut binnenland", nameof(MonthlyCostData.CostPerMinuteBinnenLand), 135).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Vanaf", nameof(MonthlyCostData.FirstDate), 130).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Tot", nameof(MonthlyCostData.LastDate), 130).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Tijds periode", nameof(MonthlyCostData.TimePeriod), 90).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Voorschot", nameof(MonthlyCostData.Voorschot), 80).IsReadOnly = true;
+            _dgMonthlyCostData.CreateTextColumn($"Tekort voorschot", nameof(MonthlyCostData.TekortVoorschot), 110).IsReadOnly = true;
+            _dgMonthlyCostData.UseVisualTemplateLines();
+            _dgMonthlyCostData.ActionRowColoring = ColorMonthlyRow;
+            #endregion
+
+            _lbCompanies = new ListBoxControl<CompanyType>(lbAllCompanies);
+            _lbSubscribers = new ListBoxControl<SubscriberData>(lbSubscribersOfCompany);
+
+            btnCompanyMarges.IsEnabled = false;
+            btnPerMaand.IsEnabled = false;
+            cbUseMarge.IsChecked = true;
+            btnPerJaar.IsEnabled = false;
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+        }
+
+        public void ColorMonthlyRow(DataGridRow argDataRow)
+        {
+            var tempMonthlyCost = (MonthlyCostData)argDataRow.Item;
+
+            if (tempMonthlyCost.TekortVoorschot != "")
+            {
+                argDataRow.Background = Brushes.Red;
+                argDataRow.Foreground = Brushes.White;
+            }
+        }
+
+        public void LogToTextBox(string argText)
+        {
+            if (string.IsNullOrEmpty(argText)) return;
+
+            App.Current.Dispatcher?.Invoke(() =>
+            {
+                _stringBuilder.Append(argText);
+
+                tbLogs.Text = _stringBuilder.ToString();
+            });
+            tbLogs.ScrollToEnd();
+        }
+
+        private async void RunOphalenBeforeFunction()
+        {
+            _selectedCompanyType = _lbCompanies.GetSelections();
+            _selectedSubscriberType = _lbSubscribers.GetSelections();
+            if (_selectedSubscriberType.Count == 0)
+            {
+                MBox.ShowWarning("Geen Subscriber gekozen");
+                return;
+            }
+            btnPerJaar.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF707070");
+            btnPerMaand.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#FF707070");
+            if (_selectedCompanyType.Count == 0)
+            {
+                MBox.ShowWarning("Geen Bedrijf gekozen");
+                return;
+            }
+
+            int tempFirstRunCount = 0;
+            var tempAllSelectedCompanyCallData = new List<CallData>();
+            var tempAllCompanySubscriberCallData = new List<CallData>();
+            if (SelectedMargeCompaniesList != null)
+                SelectedMargeCompaniesList.Clear();
+            // Filter op allene geselecteerde bedrijven
+            foreach (var Company in _selectedCompanyType)
+            {
+                var tempCompanyCallData = _listAllCallData.FindAll(x => x.Bedrijf == Company.strCompany);
+                tempAllSelectedCompanyCallData.AddRange(tempCompanyCallData);
+            }
+
+            // Filter vervolgens nog op alleen geselecteerde telefoonnummers
+            foreach (var CompanySubscriber in _selectedSubscriberType)
+            {
+                var tempCompanyCall = tempAllSelectedCompanyCallData.FindAll(x => x.Subscriber == CompanySubscriber.Subscriber);
+                tempAllCompanySubscriberCallData.AddRange(tempCompanyCall);
+            }
+
+            string tempFirstDate = string.Empty;
+            string tempLastDate = string.Empty;
+            TimeSpan tempTimePeriod = TimeSpan.Parse("00:00:00");
+
+            List<MonthlyCostData> tempMontlyCostDataList = new List<MonthlyCostData>();
+            List<CompanyMargesType> tempCompanyMargesList = new List<CompanyMargesType>();
+
+            foreach (var Company in _selectedCompanyType)
+            {
+                if ((bool)cbUseMarge.IsChecked)
+                {
+                    var templist = DataManager.DataManager.ReadCompanyMargeFile();
+                    if (templist != null)
+                    {
+                        var tempCompany = templist.Find(x => x.CompanyName == Company.strCompany);
+                        if (tempCompany != null)
+                        {
+                            intMarge = tempCompany.CompanyMarge;
+                            intVoorschot = tempCompany.CompanyVoorschot;
+                        }
+                    }
+                    else
+                    {
+                        intMarge = 1;
+                        intVoorschot = 0;
+                    }
+                }
+                // Voor elk bedrijf
+                if (tempFirstRunCount == 0)
+                    tbLogs.Clear();
+                tempFirstRunCount++;
+                if (intMarge > 0 && (bool)cbUseMarge.IsChecked)
+                {
+                    foreach (var tempCallDataCostWithMarge in tempAllSelectedCompanyCallData)
+                    {
+                        tempCallDataCostWithMarge.Marge = intMarge;
+                        tempCallDataCostWithMarge.CostWithMarge = tempCallDataCostWithMarge.Cost * ((intMarge + 100) / 100);
+                    }
+                }
+                _dgCallData.SetDataSource(tempAllSelectedCompanyCallData);
+
+                // Per bedrijf de CallData opzoeken
+                var tempSelectedCompanyCallData = tempAllCompanySubscriberCallData.FindAll(x => x.Bedrijf == Company.strCompany);
+
+                // Zoek unieke telefoonnummers op
+                var tempUniqueSelectedPhoneNumbers = LogicManager.LogicManager.GetUniqueSubscribers(tempSelectedCompanyCallData);
+
+                this.IsEnabled = false;
+                this.Cursor = Cursors.Wait;
+                foreach (var tempSelectedPhoneNumber in tempUniqueSelectedPhoneNumbers)
+                {
+                    // Vind alle calldata voor unieke telefoonnummer.
+                    var tempSelectedCompanySubscriberCallData = tempSelectedCompanyCallData.FindAll(x => x.Subscriber == tempSelectedPhoneNumber.Subscriber);
+
+                    MonthlyCostData monthlyCostData = await LogicManager.LogicManager.ParseAllCallData(tempSelectedCompanySubscriberCallData, intMarge, intVoorschot);
+
+                    tempMontlyCostDataList.Add(monthlyCostData);
+
+                    tbLogs.Text += ($"Bedrijf: {monthlyCostData.CompanyName} " +
+                         $"\nTotaal belletjes: {monthlyCostData.TotalCalls}" +
+                         $"\nTotaal ins: {monthlyCostData.TotalIns}" +
+                         $"\nTotaal outs: {monthlyCostData.TotalOuts}" +
+                         $"\nTotaal bel tijd: {monthlyCostData.TotalCallTime}" +
+                         $"\nTotaal bedrag: {monthlyCostData.TotalAmount}" +
+                         $"\nStart tarief mobiel: {monthlyCostData.StartRateMobiel}" +
+                         $"\nKosten per minuut mobiel: {monthlyCostData.CostPerMinuteMobiel}" +
+                         $"\nStart tarief binnenland: {monthlyCostData.StartRateBinnenLand}" +
+                         $"\nKosten per minuut binnenland: {monthlyCostData.CostPerMinuteBinnenLand}" +
+                         $"\nBegin datum: {monthlyCostData.FirstDate}" +
+                         $"\nEind datum: {monthlyCostData.LastDate}" +
+                          $"\nTotaal tijd periode: {monthlyCostData.TimePeriod}" +
+                         $"\n\r");
+
+                }
+                this.Cursor = null;
+                this.IsEnabled = true;
+            }
+            btnCompanyMarges.IsEnabled = true;
+            btnPerMaand.IsEnabled = true;
+            btnPerJaar.IsEnabled = true;
+        }
+        public static void SaveCompanyMarges(List<CompanyType> argSelectedCompanyList, double tempMarge)
+        {
+            List<CompanyMargesType> ListSavedCompanyMarges = new List<CompanyMargesType>();
+            ListSavedCompanyMarges = DataManager.DataManager.ReadCompanyMargeFile();
+            List<CompanyMargesType> tempListSavedCompanyMargesIsNull = new List<CompanyMargesType>();
+
+            foreach (var Company in argSelectedCompanyList)
+            {
+                if (ListSavedCompanyMarges != null)
+                {
+                    var tempFoundCompanyMarge = ListSavedCompanyMarges.Find(x => x.CompanyName == Company.strCompany);
+                    if (tempFoundCompanyMarge != null)
+                        tempFoundCompanyMarge.CompanyMarge = tempMarge;
+                    else
+                    {
+                        var tempCompanyMarge = new CompanyMargesType()
+                        {
+                            CompanyName = Company.strCompany,
+                            CompanyMarge = tempMarge
+                        };
+                        if (ListSavedCompanyMarges != null)
+                            ListSavedCompanyMarges.Add(tempCompanyMarge);
+                        else
+                            tempListSavedCompanyMargesIsNull.Add(tempCompanyMarge);
+                    }
+                }
+                else
+                {
+                    var tempCompanyMarge = new CompanyMargesType()
+                    {
+                        CompanyName = Company.strCompany,
+                        CompanyMarge = tempMarge
+                    };
+                    if (ListSavedCompanyMarges != null)
+                        ListSavedCompanyMarges.Add(tempCompanyMarge);
+                    else
+                        tempListSavedCompanyMargesIsNull.Add(tempCompanyMarge);
+                }
+                if (ListSavedCompanyMarges != null)
+                    DataManager.DataManager.WriteCompanyMargeToFile(ListSavedCompanyMarges);
+                else
+                    DataManager.DataManager.WriteCompanyMargeToFile(tempListSavedCompanyMargesIsNull);
+            }
+        }
+        public static void SetProgress(int argValue, int argMaximum = -1)
+        {
+            // Nodig indien je de functie aanroept vanaf een andere thread.
+            App.Current.Dispatcher?.Invoke(() =>
+            {
+                if (argMaximum > 0) MainWindow.referenceProgressBar.Maximum = argValue;
+
+                MainWindow.referenceProgressBar.Value = argValue;
+            });
+        }
+        private async void btnSelectFile_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                this.IsEnabled = false;
+                this.Cursor = Cursors.Wait;
+                DeleteAllData();
+                pbProgress.Maximum = openFileDialog.FileNames.Count();
+                pbProgress.Value = 0;
+                pbProgress.Minimum = 0;
+                List<string> tempAllSelectedFilesList = new List<string>();
+                int count = 0;
+                await Task.Run(() =>
+                {
+                    foreach (var file in openFileDialog.FileNames)
+                    {
+                        tempAllSelectedFilesList.Add(file);
+                        count++;
+
+                        tempFilePath = file;
+                        List<CallData> tempAllCallDataList = LogicManager.LogicManager.GetAllParsedRowsList(tempFilePath);
+                        List<CompanyType> tempAllCompaniesList = LogicManager.LogicManager.GetUniqueCompanies(tempAllCallDataList);
+                        List<MonthType> tempAllMonthsList = LogicManager.LogicManager.GetUniqueMonths(tempAllCallDataList);
+                        List<SubscriberData> tempAllSubscribersList = LogicManager.LogicManager.GetUniqueSubscribers(tempAllCallDataList);
+
+                        _listAllCallData.AddRange(tempAllCallDataList);
+                        _listAllCompanies.AddRange(tempAllCompaniesList);
+                        _listAllMonths.AddRange(tempAllMonthsList.Where(x => _listAllMonths.FirstOrDefault(y => y.intMonth == x.intMonth) == null).ToList());
+                        _listAllSubscriber.AddRange(tempAllSubscribersList);
+
+                        SetProgress(count);
+                    }
+                });
+                SetProgress(0);
+
+                foreach (var file in tempAllSelectedFilesList)
+                    lbAllSelectedFiles.Items.Add(file.Substring(file.LastIndexOf(@"\") + 1));
+
+                this.Cursor = null;
+                this.IsEnabled = true;
+
+                _listAllCompanies = LogicManager.LogicManager.ParseListAllCompanies(_listAllCompanies);
+                _listAllCompanies = _listAllCompanies.OrderBy(x => x.strCompany).ToList();
+                _lbCompanies.SetItemsSource(_listAllCompanies);
+                btnPerJaar.IsEnabled = true;
+                btnPerMaand.IsEnabled = true;
+                btnCompanyMarges.IsEnabled = true;
+            }
+        }
+        public void DeleteAllData()
+        {
+            _listAllCallData.Clear();
+            _listAllCompanies.Clear();
+            _listAllMonths.Clear();
+
+            lbAllSelectedFiles.Items.Clear();
+            _lbCompanies.SetItemsSource(null);
+            tbLogs.Clear();
+            _dgCallData.SetDataSource(null);
+            _dgMonthlyCostData.SetDataSource(null);
+        }
+        private void cbAllBusinesses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var SelectedCompanyList = _lbCompanies.GetSelections();
+            if (SelectedCompanyList.Count == 0)
+                _lbSubscribers.SetItemsSource(null);
+            btnPerJaar.BorderBrush = Brushes.Red;
+            btnPerMaand.BorderBrush = Brushes.Red;
+
+            foreach (var Company in SelectedCompanyList)
+            {
+                List<SubscriberData> CompanySubscribersList = GetSubscribersOfCompany(Company);
+                _lbSubscribers.SetItemsSource(CompanySubscribersList);
+
+            }
+        }
+        public List<SubscriberData> GetSubscribersOfCompany(CompanyType Company)
+        {
+            _selectedCompanyType = _lbCompanies.GetSelections();
+            _selectedSubscriberType = _lbSubscribers.GetSelections();
+
+            var tempAllSelectedCompanyCallData = new List<CallData>();
+            var tempAllCompanySubscriberCallData = new List<CallData>();
+            List<SubscriberData> tempUniqueSelectedPhoneNumbers = new List<SubscriberData>();
+
+            foreach (var selectedCompany in _selectedCompanyType)
+            {
+                var tempCompanyCallData = _listAllCallData.FindAll(x => x.Bedrijf == selectedCompany.strCompany);
+                tempAllSelectedCompanyCallData.AddRange(tempCompanyCallData);
+            }
+
+            // Zoek unieke telefoonnummers op
+            tempUniqueSelectedPhoneNumbers = LogicManager.LogicManager.GetUniqueSubscribers(tempAllSelectedCompanyCallData);
+
+            return tempUniqueSelectedPhoneNumbers;
+        }
+        private async void btnPerMaand_Click(object sender, RoutedEventArgs e)
+        {
+            RunOphalenBeforeFunction();
+            List<CallData> tempAllCompanyCallData = new List<CallData>();
+            List<MonthlyCostData> listMonthlyCompanyCallData = new List<MonthlyCostData>();
+            _selectedSubscriberType = _lbSubscribers.GetSelections();
+            _selectedCompanyType = _lbCompanies.GetSelections();
+            int totalCount = _selectedCompanyType.Count() + _selectedSubscriberType.Count();
+            pbProgress.Maximum = totalCount;
+            pbProgress.Value = 0;
+            pbProgress.Minimum = 0;
+            int tempProgress = 0;
+
+            foreach (var Company in _selectedCompanyType)
+            {
+                tempProgress++;
+                var tempCompanyCallData = _listAllCallData.FindAll(x => x.Bedrijf == Company.strCompany);
+                tempAllCompanyCallData.AddRange(tempCompanyCallData);
+                SetProgress(tempProgress);
+            }
+
+            foreach (var SelectedSubscriber in _selectedSubscriberType)
+            {
+                tempProgress++;
+                var templistMonthlyCompanyCallData = await LogicManager.LogicManager.GetMonthlyCostDataForCompany(SelectedSubscriber, _listAllMonths, tempAllCompanyCallData, intMarge, intVoorschot);
+                listMonthlyCompanyCallData.AddRange(templistMonthlyCompanyCallData);
+                SetProgress(tempProgress);
+            }
+            _dgMonthlyCostData.SetDataSource(listMonthlyCompanyCallData);
+            SetProgress(0);
+        }
+        private async void btnPerJaar_Click(object sender, RoutedEventArgs e)
+        {
+            RunOphalenBeforeFunction();
+            _selectedSubscriberType = _lbSubscribers.GetSelections();
+            if (_selectedSubscriberType == null)
+            {
+                MBox.ShowWarning("Geen telefoon nummer gekozen.");
+            }
+
+            int tempFirstRunCount = 0;
+            var tempAllSelectedCompanyCallData = new List<CallData>();
+            var tempAllCompanySubscriberCallData = new List<CallData>();
+
+            // Filter op allene geselecteerde bedrijven
+            foreach (var Company in _selectedCompanyType)
+            {
+                var tempCompanyCallData = _listAllCallData.FindAll(x => x.Bedrijf == Company.strCompany);
+                tempAllSelectedCompanyCallData.AddRange(tempCompanyCallData);
+            }
+
+            // Filter vervolgens nog op alleen geselecteerde telefoonnummers
+            foreach (var CompanySubscriber in _selectedSubscriberType)
+            {
+                var tempCompanyCall = tempAllSelectedCompanyCallData.FindAll(x => x.Subscriber == CompanySubscriber.Subscriber);
+                tempAllCompanySubscriberCallData.AddRange(tempCompanyCall);
+            }
+
+            string tempFirstDate = string.Empty;
+            string tempLastDate = string.Empty;
+            TimeSpan tempTimePeriod = TimeSpan.Parse("00:00:00");
+
+            List<MonthlyCostData> tempMontlyCostDataList = new List<MonthlyCostData>();
+            int tempProgress = 0;
+            pbProgress.Maximum = _selectedCompanyType.Count();
+            pbProgress.Value = 0;
+            pbProgress.Minimum = 0;
+            foreach (var Company in _selectedCompanyType)
+            {
+                tempProgress++;
+                // Voor elk bedrijf
+                if (tempFirstRunCount == 0)
+                    tbLogs.Clear();
+                tempFirstRunCount++;
+                if (intMarge > 0 && (bool)cbUseMarge.IsChecked)
+                {
+                    foreach (var tempCostWithMarge in tempAllSelectedCompanyCallData)
+                    {
+                        tempCostWithMarge.CostWithMarge = tempCostWithMarge.Cost * ((intMarge + 100) / 100);
+                        _dgCallData.SetDataSource(tempAllSelectedCompanyCallData);
+                    }
+                }
+                else
+                    _dgCallData.SetDataSource(tempAllSelectedCompanyCallData);
+                if (intVoorschot > 0)
+                {
+                    intVoorschot = intVoorschot * 12;
+                }
+                // Per bedrijf de CallData opzoeken
+                var tempSelectedCompanyCallData = tempAllCompanySubscriberCallData.FindAll(x => x.Bedrijf == Company.strCompany);
+
+                // Zoek unieke telefoonnummers op
+                var tempUniqueSelectedPhoneNumbers = LogicManager.LogicManager.GetUniqueSubscribers(tempSelectedCompanyCallData);
+
+                this.IsEnabled = false;
+                this.Cursor = Cursors.Wait;
+
+                foreach (var tempSelectedPhoneNumber in tempUniqueSelectedPhoneNumbers)
+                {
+                    // Vind alle calldata voor unieke telefoonnummer.
+                    var tempSelectedCompanySubscriberCallData = tempSelectedCompanyCallData.FindAll(x => x.Subscriber == tempSelectedPhoneNumber.Subscriber);
+
+                    MonthlyCostData monthlyCostData = await LogicManager.LogicManager.ParseAllCallData(tempSelectedCompanySubscriberCallData, intMarge, intVoorschot);
+
+                    monthlyCostData.Subscriber = tempSelectedPhoneNumber.Subscriber;
+
+                    tempMontlyCostDataList.Add(monthlyCostData);
+                }
+                SetProgress(tempProgress);
+                this.Cursor = null;
+                this.IsEnabled = true;
+            }
+            Thread.Sleep(1000);
+            SetProgress(0);
+            _dgMonthlyCostData.SetDataSource(tempMontlyCostDataList);
+        }
+
+        private void cbUseMarge_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)cbUseMarge.IsChecked)
+            {
+                CallData callData = new CallData();
+                callData.Marge = intMarge;
+            }
+            if (!(bool)cbUseMarge.IsChecked)
+            {
+                intMarge = 0;
+            }
+        }
+
+        private void tbMarge_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (!IsTextAllowed(e.Text))
+            {
+                e.Handled = true;
+            }
+        }
+        private static readonly Regex _regex = new Regex("[^0-9]+"); //regex that matches disallowed text
+        private static bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+        private void tbMarge_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            cbUseMarge_Click(null, null);
+        }
+
+        private void btnCompanyMarges_Click(object sender, RoutedEventArgs e)
+        {
+            MargeManagerWindow secondWindow = new MargeManagerWindow() { Owner = this };
+            secondWindow.ShowDialog();
+        }
+        private void lbSubscribersOfCompany_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            btnPerJaar.BorderBrush = Brushes.Red;
+            btnPerMaand.BorderBrush = Brushes.Red;
+        }
+
+        private void btnExportExcel_Click(object sender, RoutedEventArgs e)
+        {
+            var tempMonthlyCostDataList = _dgMonthlyCostData.GetDataSource();
+            var tempAllSelectedCompanyCallData = _dgCallData.GetDataSource();
+            bool MakeCallData = false;
+            bool MakeMonthly = false;
+            bool ResizeCollums = false;
+
+            if (cbExportCallData.IsChecked == true)
+                MakeCallData = true;
+
+            if (cbExportMonthlyData.IsChecked == true)
+                MakeMonthly = true;
+
+            if (cbResizeCollums.IsChecked == true)
+                ResizeCollums = true;
+
+            if (MakeMonthly == true || MakeCallData == true)
+                DataManager.DataManager.ExportCallDataToExcelFile(tempAllSelectedCompanyCallData, tempMonthlyCostDataList, MakeCallData, MakeMonthly, ResizeCollums);
+        }
+
+        #region Select and Deselect all
+        private void btnSelectAllCompanies_Click(object sender, RoutedEventArgs e)
+        {
+            lbAllCompanies.SelectAll();
+        }
+
+        private void btnDeselectAllCompanies_Click(object sender, RoutedEventArgs e)
+        {
+            lbAllCompanies.UnselectAll();
+        }
+
+        private void btnSelectAllSubscribers_Click(object sender, RoutedEventArgs e)
+        {
+            lbSubscribersOfCompany.SelectAll();
+        }
+
+        private void btnDeselectAllSubscribers_Click(object sender, RoutedEventArgs e)
+        {
+            lbSubscribersOfCompany.UnselectAll();
+        }
+
+        private void btnSelectAllCompanyIds_Click(object sender, RoutedEventArgs e)
+        {
+            lbAllCompanyIds.SelectAll();
+        }
+
+        private void btnDeselectAllCompanyIds_Click(object sender, RoutedEventArgs e)
+        {
+            lbAllCompanyIds.UnselectAll();
+        }
+        #endregion
+
+        
+    }
+}

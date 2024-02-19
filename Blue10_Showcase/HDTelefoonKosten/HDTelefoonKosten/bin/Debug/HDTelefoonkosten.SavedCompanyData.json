@@ -1,0 +1,4923 @@
+[
+  {
+    "CompanyName": "\\N",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1314557132",
+    "CompanyNickname": "Oma de Groot / \\N"
+  },
+  {
+    "CompanyName": "52.IFH GmbH & Co. KG",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "-534314628",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "A tot Z accountants & adviseurs B.V.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "1543777678",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "ABD-Techniek",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "1169629768",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "ACM Fleetforce BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 1.0,
+    "CompanyId": "1461346722",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "ACR Caravan- en Camperservice B.V.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 25.0,
+    "CompanyId": "1415905848",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Agro Partners Tuinbouwtechniek BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 1.0,
+    "CompanyId": "-1400461247",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Alex Severs Beheer BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 3.0,
+    "CompanyId": "1535787645",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Architectenbureau van den Hoeven B.V.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "879850366",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Auto Tasveld",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1428868221",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "AWE-Tech",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "208778050",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Baas VOF",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "26341089",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Beton- en Vlechtbedrijf Hadek",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1023356777",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Bilthovense Boekhandel",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1648459677",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "BIT Hotmelt Technology",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 40.0,
+    "CompanyId": "-1807377080",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Blijf van mijn Lijf - Den Helder",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 26.0,
+    "CompanyId": "1666902561",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "BP de Watertoren",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1527639696",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Brouwer Tuinbouwtechniek BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1585166217",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "BVBA Domano Diffusion",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 40.0,
+    "CompanyId": "1516477290",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "BVBA Original",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "-396817825",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Café de Burcht",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1594048139",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "CitySense BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 40.0,
+    "CompanyId": "1539785266",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Coöperatie Immix U.A.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "-448845951",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "De Bedrijfswagen Garage",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "-750904477",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "De Geest Loodgietersbedrijf Montfoort",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "-2126446132",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "De Haan IT Nederland BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1476338986",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "de Schakel Wonen en Slapen BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1286783582",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Den Hartog Bouwmaterieel BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 48.5,
+    "CompanyId": "1539244472",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Den Hartog Fijnmechanische Techniek",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 13.25,
+    "CompanyId": "1140509116",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Domano Internationale Mode BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 40.0,
+    "CompanyId": "1516477290",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Dorelan Nederland BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1621192955",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Elektrotechniek Kees van Schaik BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 44.0,
+    "CompanyId": "1720724468",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Elmet BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 35.0,
+    "CompanyId": "-402453329",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Galock Dienstverlening",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 2.0,
+    "CompanyId": "1666897831",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Greenz BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1479663448",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Grieks Restauranta Lexios/Oli Mazi",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "-633902067",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "H. Lagendijk Benzinestations BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 60.0,
+    "CompanyId": "1527639696",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "HD Services",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "76",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Healthynez Holding B.V.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "-901172012",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Hek en van Loon Installatietechniek",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 50.0,
+    "CompanyId": "1397885127",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "House of Trends B.V.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 37.5,
+    "CompanyId": "-1477808723",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "IP Liften Beheer BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1155899554",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "IT's People",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1533204976",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Kloosterhoeve Harmelen",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 12.5,
+    "CompanyId": "1493363736",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Kuipers Consultant BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "238549995",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "L&S Lelystad",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "-1720349174",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "L&S Roosendaal",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1665481137",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "L&S Rotterdam",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1534669144",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "L&S Utrecht",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1665289542",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Lagendijk Brandstof",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 60.0,
+    "CompanyId": "1527639696",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Lobatrans",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1479663448",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Loon- en Grondverzetbedrijf De Gier BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "-1678254340",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Metal Bouwkonsort",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 60.0,
+    "CompanyId": "938593829",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Multitask2000",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "-1362872294",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Naturals Kralingen BV ROTTERDAM",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1479663448",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Naturals Nederland B.V.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1479663448",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Naturals Zoetermeer BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1479663448",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Orthodontiepraktijk Leidsche Rijn",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1333374257",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Peeters Familierecht",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "1461349422",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Profipack Verpakkingsmaterialen B.V.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "1461349422",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Restaurant de Kraai BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1487595828",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Rigro Las en Montage",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1370510575",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Sauna Thermen Zuidwolde",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 20.0,
+    "CompanyId": "1667203842",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Schalkwijk Kamerik",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "1351157776",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Security Beheer BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "-534314628",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Splendor Advocaten",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 7.5,
+    "CompanyId": "1480860119",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Tandartsenpraktijk Leidsche Rijn",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1325002206",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Ton van Leeuwen Snijwerken B.V.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 36.0,
+    "CompanyId": "1481107674",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "TP Advocatuur",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "902762944",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Tradekar International BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 50.0,
+    "CompanyId": "1591254947",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Triomf Tours B.V.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 65.0,
+    "CompanyId": "1638196368",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Unilumin LED Europe BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 7.5,
+    "CompanyId": "1638196368",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "WDC Adm & bel adv kantoor",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "1164618496",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Zainab Foods",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 6.5,
+    "CompanyId": "1164618496",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Zuijl en Weerd Holding BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 50.0,
+    "CompanyId": "110743465",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "ABD",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "1169629768",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "ACR",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 25.0,
+    "CompanyId": "1415905848",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Agro",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 1.0,
+    "CompanyId": "-1400461247",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "AlexSevers/SevalMobility",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 3.0,
+    "CompanyId": "1535787645",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Architectenbureau van den Hoeven",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "879850366",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "AtotZ Accountants/Bril (Oud Meijer&Co)",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "1543777678",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Auto Tasveld / JE Automotive",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1428868221",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "BIT",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 40.0,
+    "CompanyId": "-1807377080",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Blijf van mijn lijf",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 26.0,
+    "CompanyId": "1666902561",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Bodeminjectie / Heron Protektie",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 26.0,
+    "CompanyId": "1362569957",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Both Advocaten",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 3.0,
+    "CompanyId": "-357647971",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Brekz",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 175.0,
+    "CompanyId": "298",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Buro Mulders",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "827372331",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "CCW / Schep BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 12.0,
+    "CompanyId": "-1223311361",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Chalet.nl",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 225.0,
+    "CompanyId": "1565960152",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "CitySense",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 40.0,
+    "CompanyId": "1539785266",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "DeGierBV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "-1678254340",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "DeHoop",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 3.0,
+    "CompanyId": "-934162426",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Den Hartog Bouwmaterieel",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 48.5,
+    "CompanyId": "1539244472",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Den Hartog FMT",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 13.25,
+    "CompanyId": "1140509116",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Derks & Zn.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "27",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "DeVor",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 35.0,
+    "CompanyId": "-551057761",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Domano",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 40.0,
+    "CompanyId": "1516477290",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Dorelan",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1621192955",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Elmet",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 35.0,
+    "CompanyId": "-402453329",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Esso Tramdijk (Spijkenisse) (Baas VOF)",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "26341089",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Fomax",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 25.0,
+    "CompanyId": "1385158188",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Galock",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 2.0,
+    "CompanyId": "1666897831",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "H5S / High Five Solutions",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1415754554",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Hadek / Ruimer Leven",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 85.0,
+    "CompanyId": "1023356777",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Hako",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 50.0,
+    "CompanyId": "84",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Halal",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 75.0,
+    "CompanyId": "1373282313",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Heemskerk Advocaten",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 2.0,
+    "CompanyId": "1466246792",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Hek en van Loon",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 50.0,
+    "CompanyId": "1397885127",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "HG-Supplies",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "1629319732",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "House of Trends",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 37.5,
+    "CompanyId": "-1477808723",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Immix / Eradus / Regulus / Bijkerk / StiAd / Jeanne",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "-448845951",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "The IOT Company / ACM Fleetforce",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 1.0,
+    "CompanyId": "1461346722",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "IPLiften",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 25.0,
+    "CompanyId": "1155899554",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Juch",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 135.0,
+    "CompanyId": "1276089231",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "KeesvanSchaik",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 44.0,
+    "CompanyId": "1720724468",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Kloosterhoeve",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 12.5,
+    "CompanyId": "1493363736",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Kuipers Thuis",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "238549995",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Lagendijk - Kantoor",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 60.0,
+    "CompanyId": "1527639696",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Lodder",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 45.0,
+    "CompanyId": "1276694259",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "LTC",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "-949674129",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Mado",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 6.0,
+    "CompanyId": "393760414",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "MarcEdwards Bussum / Madero",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "1423754123",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "MarineTechnics",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 4.0,
+    "CompanyId": "-291824409",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Meo Lease",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 25.0,
+    "CompanyId": "971358977",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Naturals/Greenz/Fleuri Bloemen/Lobatrans",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1479663448",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Neuland",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 30.0,
+    "CompanyId": "1337589899",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "OfficeCity",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 75.0,
+    "CompanyId": "-1040638167",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Oli Mazi",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "-633902067",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "OPLR",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1333374257",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Original Fireworks",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 12.5,
+    "CompanyId": "-396817825",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Peeters Fam. Recht",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "1461349422",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Profipack",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 80.0,
+    "CompanyId": "1782573222",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Regulus",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "612256091",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Restaurant Kraai",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1487595828",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "RVS Montfoort",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 145.0,
+    "CompanyId": "-1391927327",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Sauna Zuidwolde",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 20.0,
+    "CompanyId": "1667203842",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Schakel Advies / Schakel Stuurt / Rien Regelt",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "-1797763484",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Schakel Storingsdienst",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 4.0,
+    "CompanyId": "-1797763484",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Schalkwijk",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "1351157776",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Siematic Oosterhout / Kuechen Kleve",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 40.0,
+    "CompanyId": "1644058910",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Slot Automatisering",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 1.0,
+    "CompanyId": "1028279611",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Snijwerken",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 36.0,
+    "CompanyId": "1481107674",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Splendor",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 7.5,
+    "CompanyId": "1480860119",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Statenweg",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 9.0,
+    "CompanyId": "1363013277",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Stichting BringSalvation",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 4.0,
+    "CompanyId": "1639743332",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "t Grote wapen BV/ 't Wapen van Haarzuylen",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 2.0,
+    "CompanyId": "-94665860",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "TPAdvocatuur",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "902762944",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Tradekar",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 50.0,
+    "CompanyId": "1591254947",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Triomf Tours",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 65.0,
+    "CompanyId": "2",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Unilumin",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 7.5,
+    "CompanyId": "1638196368",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Vakwerk",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 4.0,
+    "CompanyId": "1639389534",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Van Miltenburg Auto",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 15.0,
+    "CompanyId": "-1287155045",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Van Zuijlen BV (Pedro)",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 125.0,
+    "CompanyId": "113",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Via Hilbrand",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 4.0,
+    "CompanyId": "1486927436",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "VZTS",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "409368987",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Wdcadmin",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "1521019038",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Wens Travel",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 9.5,
+    "CompanyId": "-1537903987",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "ZainabFoods",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 6.5,
+    "CompanyId": "1164618496",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Zijlstra / BT Zijlstra / Rodin / Multitask2000",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "-1362872294",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0000000000",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031103180398",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031346252778",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031611714191",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031620764659",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031624313193",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031630342879",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031640219372",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031641471632",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031650524049",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031652657846",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031653626418",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031657437948",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031682912039",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031682971892",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0031880038539",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0048665413440",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0102121299",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0108002763",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0115612012",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0132061304",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0135211212",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0137200202",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0137200203",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0153697111",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0153699999",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0172244036",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0174286974",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0180322333",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0180421399",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0182301505",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0183502311",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0184692767",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0186651060",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0203993429",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0229218113",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0235115775",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0235615182",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0235639264",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0263576100",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0263576190",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0294234449",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0299364830",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0302930184",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0306076019",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0341251553",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0343551641",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0344725785",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0347323126",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0347341841",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0348462373",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0348473340",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0348502845",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0348551886",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0348557073",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0348566138",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0348567459",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0348704309",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0365323623",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0383035359",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0406310466",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0408484700",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0412623795",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0416288195",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0418651515",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0495450095",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0497385218",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0541350649",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "05551279",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0591641640",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0610387177",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0610418740",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0610446820",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0610614578",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0610620013",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0610925793",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0610926117",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0611360785",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0611361650",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0612042531",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0612367824",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0612466025",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0612549949",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0612700125",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0612919553",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0613096097",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0613162254",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1539244472",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0613269154",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0613277148",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0613363898",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0613568684",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0613573123",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0613607251",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0613680567",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0614600773",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0614694107",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0614778470",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0614970223",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0615191347",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0615370381",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0617153640",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0618814936",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0619173738",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0619878550",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0619971749",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0620102367",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0620141039",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0620300767",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0620361145",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0620391045",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0620393202",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0621305470",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0621602754",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0621635927",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0621857710",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0622195630",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0622255951",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0622396214",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0622419790",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0622455095",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0622566838",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0622604518",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0622924784",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0622941871",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0623116046",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0623302470",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0623423731",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0623671055",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0623938915",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0624313193",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1023356777",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0624908207",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0624938720",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0624947919",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0625424649",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0626150617",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0626240203",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0626366660",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0626842745",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0627070719",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0627406003",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0627424327",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0628431683",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0628509403",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0628681150",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0629041398",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0629190634",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0629307810",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0629495072",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0630342879",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0630508828",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0630581888",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0630854972",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0634060651",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0634138778",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0634296470",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0634526022",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0636129605",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0638159926",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0638161616",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0638824501",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0639047149",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0639176207",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0639331599",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0640100031",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0640107596",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0640110085",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0640219372",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0640245278",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0641116220",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0641170475",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0641185551",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0641471632",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0642094242",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0642139234",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0642307895",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0642718084",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0643094411",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0643236417",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0643510646",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0643842512",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0645377641",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0645420478",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0646083700",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0646285045",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0646978387",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0647005430",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0647196709",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0647966714",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0648070852",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0648201095",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0648315735",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0649641356",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0649882505",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0650182768",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0650524049",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0650749762",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0650857370",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0650982361",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651018201",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651105489",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651226906",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651248330",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651292434",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651420963",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651421322",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651426313",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651459916",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651527411",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651790626",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651816788",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0651950221",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0652550271",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0652616560",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0652657846",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653128054",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653140722",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653152891",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653165816",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653172588",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653236544",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653256749",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653309796",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653354418",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653356043",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653402209",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653436492",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653630210",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653646794",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653676864",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653723948",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653761511",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653775262",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653875463",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653986945",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0653993376",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0654290365",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0654317389",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0654353310",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0654386255",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0654650891",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0654963188",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0654994698",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0655372534",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0655773187",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0655898887",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0657025717",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0657203072",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0657345425",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0657437948",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0657569990",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0657736733",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0657972696",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0681459959",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0681494798",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0682067794",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0682298171",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0682654148",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0682806899",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0682912039",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0682934648",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0682961524",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0683181052",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0683285333",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0683410616",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0683525529",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0683917665",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0683940249",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0686822245",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0704063906",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0705178841",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0707013416",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0786912408",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0851307310",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0880287800",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0881113535",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0883681519",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0884720300",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31104151722",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31181794523",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31183359360",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31187601122",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31202255021",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31223612363",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31224745252",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31235530077",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31237436365",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31251769161",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31302281014",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31302732186",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31302943762",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31306771410",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31306771571",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31306771967",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31306772106",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31306925882",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31307546848",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31334622432",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31343576095",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31344665586",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31344678000",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31344678900",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31345470990",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31345571818",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31346241287",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31346241822",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31346250432",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31346562695",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31346756017",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31346833192",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348220207",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348407709",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348412280",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348412713",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348413224",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348441226",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348441245",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348441481",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348442221",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348443642",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348444244",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348444440",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348445085",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348446561",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348471262",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348473340",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1476338986",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348502845",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348507174",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348552704",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348563839",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348723932",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31355881484",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31356252727",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31365364169",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31367440560",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31528355182",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31610382664",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31610471659",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31610822293",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31610918019",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31610933129",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31610945447",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31610979277",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1476338986",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31611042837",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31611196340",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31611278797",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31611411921",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31611468073",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31611714327",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31612077745",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31612094728",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31612605703",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31612770421",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31612939610",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31613110358",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31614112010",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31614533319",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31614545252",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31615047318",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31615595041",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31616267247",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31616284578",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31616395144",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31618335615",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31618486416",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31618814671",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31620171281",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31620226189",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31620424595",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31620542609",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31621225540",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31621701622",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31621862048",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31622369537",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31622495401",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31622529224",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31622805884",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31622991539",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31623231919",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31623365848",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31623450578",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31623846307",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31624752838",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31624814770",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31624827755",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31624923165",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31625179926",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31625247349",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31625378831",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31625408418",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31625552662",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31626352345",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31626710001",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31626964759",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31627012745",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31627301432",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31628027206",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31628835190",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31628842872",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31628888907",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31629026415",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31629041038",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31629046048",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31629077157",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31629112422",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31629332916",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31630238722",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31630657583",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31631938004",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31633192385",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31633613629",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31633735507",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31633917610",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31634141967",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31634269930",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31634467106",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31634479650",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31636030389",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31637229627",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31638106350",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31638279859",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31640386942",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31641438667",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31642018300",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31642124045",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31642326156",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31642411648",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31642719772",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31642802432",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31643113897",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31643442288",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31644974966",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31645010822",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31645767396",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31646050880",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31646152043",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31646588172",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31646885806",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31646910089",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31647399016",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31648055453",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31648169781",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31649690725",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31650228808",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31650228983",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31650267256",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31650620077",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31650640123",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31651071703",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31651228530",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31651499778",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31651559298",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31651578881",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31651663785",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31651720440",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31651989807",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31652055611",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31652080936",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31652331448",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31652370822",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31652370824",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31652370829",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31652370830",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31652370831",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653145641",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653266024",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653292310",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653292552",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653296514",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653298272",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653318016",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653371003",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653373770",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653453948",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653500008",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653692911",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653752140",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653766828",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653788130",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653819133",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31653886893",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31654296623",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31654345273",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31654383828",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31654656902",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31654796603",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31655382416",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31655701079",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31655871356",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31657852314",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31657940526",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31680048342",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31681246271",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31681406794",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31681581388",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31682019050",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31682040357",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31682171686",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31682366205",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31682389501",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31682478714",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31683434071",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31683835337",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31683899770",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31687287405",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31703143143",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31786549085",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31850502000",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31851308540",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31852731281",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31852731284",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31855362053",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31882444666",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31885007350",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31886789988",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31888963963",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31970102815",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "3256715521",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "348445590",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "348479195",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "77709014101",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "anonymous",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Caf?® de Burcht",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1594048139",
+    "CompanyNickname": "Café de Burcht"
+  },
+  {
+    "CompanyName": "CafÃ© de Burcht",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1594048139",
+    "CompanyNickname": "Café de Burcht"
+  },
+  {
+    "CompanyName": "Co?Âperatie Immix U.A.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "-448845951",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "CoÃ¶peratie Immix U.A.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "-448845951",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Corona Media B.V.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "de Gauwe Krakeling",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Fleuri Bloemen",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 10.0,
+    "CompanyId": "1479663448",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "HG Supplies",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 5.0,
+    "CompanyId": "1629319732",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Ineke van Meines Advocatenkantoor",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "M. van Egmond",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "Veilig Zijn Beveiligingen BV",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": null,
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "WDM bedrijfswagen Services B.V.",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "-750904477",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0613162254",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1539244472",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0624313193",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "Hadek",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0624313193",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1023356777",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0624313193",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1023356777",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0624313193",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1023356777",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "0624313193",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1023356777",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31610979277",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1476338986",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31610979277",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1476338986",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31610979277",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1476338986",
+    "CompanyNickname": null
+  },
+  {
+    "CompanyName": "31348473340",
+    "CompanyMarge": 0.0,
+    "CompanyVoorschot": 0.0,
+    "CompanyId": "1476338986",
+    "CompanyNickname": null
+  }
+]

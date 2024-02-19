@@ -1,0 +1,273 @@
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using HDTelefoonKosten.DataManager;
+using HDTelefoonKosten.Types;
+using M.Core.Application.ControlHelpers;
+using M.Core.Application.WPF.MessageBox;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
+namespace HDTelefoonKosten.Windows
+{
+    /// <summary>
+    /// Interaction logic for MargeManagerWindow.xaml
+    /// </summary>
+    public partial class MargeManagerWindow : Window
+    {
+        private int intMarge = 0;
+        private int intVoorschot = 0;
+        private string strId = "";
+        private List<CompanyMargesType> SelectedCompanyList;
+        private List<CompanyIdType> SelectedCompanyIdList;
+        ListBoxControl<CompanyMargesType> _lbCompanies;
+        ListBoxControl<CompanyIdType> _lbCompanyIds;
+        public MargeManagerWindow()
+        {
+            InitializeComponent();
+
+            _lbCompanies = new ListBoxControl<CompanyMargesType>(lbAllCompanies);
+            _lbCompanyIds = new ListBoxControl<CompanyIdType>(lbAllCompanyIds);
+            _lbCompanies.EventSelectionChanged += _lbCompanies_EventSelectionChanged;
+
+
+            SetJsonInListBox();
+            this.tbPermanentMarge.MaxLength = 3;
+        }
+
+        private void _lbCompanies_EventSelectionChanged(object sender, List<CompanyMargesType> e)
+        {
+            var tempSelection = e.First();
+            if (tempSelection == null) return;
+
+            tbPermanentMarge.Text = tempSelection.CompanyMarge.ToString();
+            tbVoorschot.Text = tempSelection.CompanyVoorschot.ToString();
+        }
+
+        private static readonly Regex _regex = new Regex("[^0-9]+"); //regex that matches disallowed text
+        private static bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+
+        private void tbPermanentMarge_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (!IsTextAllowed(e.Text))
+            {
+                e.Handled = true;
+            }
+        }
+
+        public void SetJsonInListBox()
+        {
+            List<CompanyMargesType> tempCompanyMargesList = new List<CompanyMargesType>();
+            List<CompanyMargesType> tempLeftOutCompanies = new List<CompanyMargesType>();
+            List<string> tempCompanyIdsStringList = new List<string>();
+            List<CompanyIdType> tempCompanyIdsList = new List<CompanyIdType>();
+
+            List<CompanyMargesType> tempNewCompanyMargesList = new List<CompanyMargesType>();
+            foreach (var item in MainWindow._listAllCompanies)
+            {
+                tempNewCompanyMargesList.Add(new CompanyMargesType() { CompanyName = item.strCompany });
+            }
+            tempCompanyMargesList = DataManager.DataManager.ReadCompanyMargeFile();
+
+            if (tempCompanyMargesList != null || tempCompanyMargesList.Count > 0)
+            {
+                _lbCompanies.SetItemsSource(tempCompanyMargesList);
+                DataManager.DataManager.WriteCompanyMargeToFile(tempCompanyMargesList);
+
+                foreach (var item in tempCompanyMargesList)
+                {
+                    if (!string.IsNullOrEmpty(item.CompanyId))
+                        tempCompanyIdsStringList.Add(item.CompanyId);
+                }
+                foreach (var item in tempCompanyIdsStringList)
+                {
+                    tempCompanyIdsList.Add(new CompanyIdType() { CompanyId = item });
+                }
+                _lbCompanyIds.SetItemsSource(tempCompanyIdsList);
+            }
+            else
+            {
+                _lbCompanies.SetItemsSource(tempNewCompanyMargesList);
+                DataManager.DataManager.WriteCompanyMargeToFile(tempNewCompanyMargesList);
+            }
+            if (SelectedCompanyList != null)
+            {
+                _lbCompanies.SetSelections(SelectedCompanyList);
+            }
+
+        }
+        private void btnSetMargeForCompany_Click(object sender, RoutedEventArgs e)
+        {
+            List<CompanyMargesType> tempCompanyMargesList = new List<CompanyMargesType>();
+            List<CompanyMargesType> tempSavedCompanyMargeList = new List<CompanyMargesType>();
+            CompanyMargesType companyMargesType = new CompanyMargesType();
+            SelectedCompanyList = _lbCompanies.GetSelections();
+
+            if (SelectedCompanyList == null)
+            {
+                MBox.ShowWarning("Geen bedrijf gekozen om marge aan te passen");
+                return;
+            }
+            foreach (var SelectedCompany in SelectedCompanyList)
+            {
+                if (string.IsNullOrEmpty(tbPermanentMarge.Text))
+                {
+                    intMarge = 0;
+                    companyMargesType.CompanyName = SelectedCompany.CompanyName.ToString();
+                    companyMargesType.CompanyMarge = intMarge;
+                }
+                else
+                {
+                    intMarge = int.Parse(tbPermanentMarge.Text);
+                    companyMargesType.CompanyName = SelectedCompany.CompanyName.ToString();
+                    companyMargesType.CompanyMarge = intMarge;
+                }
+                tempCompanyMargesList.Add(companyMargesType);
+                CompanyMargesType tempFoundChangedCompanyMarge = new CompanyMargesType();
+                tempSavedCompanyMargeList = DataManager.DataManager.ReadCompanyMargeFile();
+                if (tempSavedCompanyMargeList != null)
+                {
+                    tempFoundChangedCompanyMarge = tempSavedCompanyMargeList.Find(x => x.CompanyName == SelectedCompany.CompanyName);
+
+                    tempFoundChangedCompanyMarge.CompanyMarge = companyMargesType.CompanyMarge;
+                }
+                else
+                {
+                    tempSavedCompanyMargeList = new List<CompanyMargesType>();
+                    tempFoundChangedCompanyMarge.CompanyName = SelectedCompany.CompanyName.ToString();
+                    tempFoundChangedCompanyMarge.CompanyMarge = companyMargesType.CompanyMarge;
+                    tempSavedCompanyMargeList.Add(tempFoundChangedCompanyMarge);
+                }
+                DataManager.DataManager.WriteCompanyMargeToFile(tempSavedCompanyMargeList);
+                SetJsonInListBox();
+            }
+        }
+
+        private void btnDeleteAllCompanyMarges_Click(object sender, RoutedEventArgs e)
+        {
+            _lbCompanies.SetItemsSource(null);
+            DataManager.DataManager.ClearCompanyMargeFile();
+        }
+
+        private void btnSetVoorschot_Click(object sender, RoutedEventArgs e)
+        {
+            List<CompanyMargesType> tempCompanyVoorschotenList = new List<CompanyMargesType>();
+            List<CompanyMargesType> tempSavedCompanyVoorschotenList = new List<CompanyMargesType>();
+            CompanyMargesType companyVoorschotenType = new CompanyMargesType();
+            SelectedCompanyList = _lbCompanies.GetSelections();
+
+            if (SelectedCompanyList == null)
+            {
+                MBox.ShowWarning("Geen bedrijf gekozen om marge aan te passen");
+                return;
+            }
+            foreach (var SelectedCompany in SelectedCompanyList)
+            {
+                if (string.IsNullOrEmpty(tbVoorschot.Text))
+                {
+                    intVoorschot = 0;
+                    companyVoorschotenType.CompanyName = SelectedCompany.CompanyName.ToString();
+                    companyVoorschotenType.CompanyVoorschot = intVoorschot;
+                }
+                else
+                {
+                    intVoorschot = int.Parse(tbVoorschot.Text);
+                    companyVoorschotenType.CompanyName = SelectedCompany.CompanyName.ToString();
+                    companyVoorschotenType.CompanyVoorschot = intVoorschot;
+                }
+                tempCompanyVoorschotenList.Add(companyVoorschotenType);
+                CompanyMargesType tempFoundChangedCompanyVoorSchot = new CompanyMargesType();
+                tempSavedCompanyVoorschotenList = DataManager.DataManager.ReadCompanyMargeFile();
+                if (tempSavedCompanyVoorschotenList != null)
+                {
+                    tempFoundChangedCompanyVoorSchot = tempSavedCompanyVoorschotenList.Find(x => x.CompanyName == SelectedCompany.CompanyName);
+
+                    tempFoundChangedCompanyVoorSchot.CompanyVoorschot = companyVoorschotenType.CompanyVoorschot;
+                }
+                else
+                {
+                    tempSavedCompanyVoorschotenList = new List<CompanyMargesType>();
+                    tempFoundChangedCompanyVoorSchot.CompanyName = SelectedCompany.CompanyName.ToString();
+                    tempFoundChangedCompanyVoorSchot.CompanyVoorschot = companyVoorschotenType.CompanyVoorschot;
+                    tempSavedCompanyVoorschotenList.Add(tempFoundChangedCompanyVoorSchot);
+                }
+                DataManager.DataManager.WriteCompanyMargeToFile(tempSavedCompanyVoorschotenList);
+                SetJsonInListBox();
+            }
+        }
+
+        private void btnSetCompanyId_Click(object sender, RoutedEventArgs e)
+        {
+            List<CompanyMargesType> tempCompanyIdList = new List<CompanyMargesType>();
+            List<CompanyMargesType> tempSavedCompanyIdList = new List<CompanyMargesType>();
+            CompanyMargesType companyIdType = new CompanyMargesType();
+            SelectedCompanyList = _lbCompanies.GetSelections();
+
+            if (SelectedCompanyList == null)
+            {
+                MBox.ShowWarning("Geen bedrijf gekozen om marge aan te passen");
+                return;
+            }
+            foreach (var SelectedCompany in SelectedCompanyList)
+            {
+                if (string.IsNullOrEmpty(tbCompanyId.Text))
+                {
+                    strId = "";
+                    companyIdType.CompanyName = SelectedCompany.CompanyName.ToString();
+                    companyIdType.CompanyId = strId;
+                }
+                else
+                {
+                    strId = tbCompanyId.Text;
+                    companyIdType.CompanyName = SelectedCompany.CompanyName.ToString();
+                    companyIdType.CompanyId = strId;
+                }
+
+                tempCompanyIdList.Add(companyIdType);
+
+                CompanyMargesType tempFoundChangedCompanyId = new CompanyMargesType();
+                tempSavedCompanyIdList = DataManager.DataManager.ReadCompanyMargeFile();
+
+                if (tempSavedCompanyIdList != null)
+                {
+                    tempFoundChangedCompanyId = tempSavedCompanyIdList.Find(x => x.CompanyName == SelectedCompany.CompanyName);
+
+                    tempFoundChangedCompanyId.CompanyId = companyIdType.CompanyId;
+                }
+                else
+                {
+                    tempSavedCompanyIdList = new List<CompanyMargesType>();
+                    tempFoundChangedCompanyId.CompanyName = SelectedCompany.CompanyName.ToString();
+                    tempFoundChangedCompanyId.CompanyId = companyIdType.CompanyId;
+                    tempSavedCompanyIdList.Add(tempFoundChangedCompanyId);
+                }
+                DataManager.DataManager.WriteCompanyMargeToFile(tempSavedCompanyIdList);
+                SetJsonInListBox();
+            }
+        }
+
+        private void lbAllCompanyIds_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedCompanyIdList = _lbCompanyIds.GetSelections();
+            List<CompanyMargesType> tempSavedCompanyIdList = new List<CompanyMargesType>();
+
+            tempSavedCompanyIdList = DataManager.DataManager.ReadCompanyMargeFile();
+
+            
+        }
+    }
+}

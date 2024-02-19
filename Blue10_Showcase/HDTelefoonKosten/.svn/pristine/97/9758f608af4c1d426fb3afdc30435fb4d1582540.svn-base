@@ -1,0 +1,43 @@
+﻿using Excel = Microsoft.Office.Interop.Excel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Office.Interop.Excel;
+using System.IO;
+using System.Web;
+using HDTelefoonKosten.Types;
+using System.Diagnostics;
+
+namespace HDTelefoonKosten.DataManager
+{
+    internal partial class DataManager
+    {
+        public static List<string> ReadExcelFile(string tempFilePath)
+        {
+            List<string> tempAllCollumsList = new List<string>();
+            string tempExcelPath = tempFilePath;
+            string tempPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            var tempCsvPath = Path.Combine(tempPath, "tempCsvFile.csv");
+
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(tempExcelPath);
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+
+            xlWorkbook.SaveAs(tempCsvPath, XlFileFormat.xlCSV, true);
+            xlWorkbook.Close();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            var tempAllLines = File.ReadAllLines(tempCsvPath, System.Text.Encoding.GetEncoding("iso-8859-1"));
+            foreach (var line in tempAllLines)
+            {
+                tempAllCollumsList.Add(line);
+            }
+            File.Delete(tempCsvPath);
+            return tempAllCollumsList;
+        }
+    }
+}

@@ -1,0 +1,26 @@
+﻿using M.NetStandard.CommonInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+
+namespace HDTelefoonKosten.Types
+{
+    public class CompanyType : BoxItem
+    {
+        public string strCompany { get; set; } = string.Empty;
+
+        public string GetBoxItemTitle()
+        {
+            return strCompany;
+        }
+
+        public static CompanyType strCompanyName;
+
+        public string strSubscriber { get; set; }
+     
+
+    }
+}

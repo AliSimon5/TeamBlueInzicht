@@ -1,0 +1,20 @@
+﻿using HDTelefoonKosten.Types;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HDTelefoonKosten.LogicManager
+{
+    internal partial class LogicManager
+    {
+        public static List<CallData> GetAllParsedRowsList(string tempFilePath)
+        {
+            List<string> tempAllRowList = DataManager.DataManager.ReadExcelFile(tempFilePath);
+            List<CallData> tempAllParsedList = ParseAllRows(tempAllRowList);
+            CallData.tempAllCallsList = tempAllParsedList;
+            return tempAllParsedList;
+        }
+    }
+}

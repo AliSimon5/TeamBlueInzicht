@@ -1,0 +1,46 @@
+﻿<Window x:Class="HDTelefoonKosten.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HDTelefoonKosten"
+        mc:Ignorable="d"
+        Title="HD Telefoon Kosten" Height="1080" Width="1924" WindowStartupLocation="CenterScreen" WindowState="Maximized" ResizeMode="CanMinimize">
+    <Grid>
+        <TextBox x:Name="tbLogs" Margin="860,146,458,0" TextWrapping="Wrap" Height="293" VerticalAlignment="Top"/>
+        <ListBox x:Name="lbAllCompanies" Margin="406,161,0,0" Width="242" HorizontalAlignment="Left" SelectionMode="Multiple" Height="256" VerticalAlignment="Top" SelectionChanged="lbAllBusinesses_SelectionChanged"/>
+        <Label Content="HD Telefoon Kosten" HorizontalAlignment="Left" Margin="110,30,0,0" VerticalAlignment="Top" FontSize="30" FontFamily="Segoe UI Semibold" Height="57" Width="289"/>
+        <Button x:Name="btnSelectFile" Content="Selecteer Bestand" HorizontalAlignment="Left" Margin="16,112,0,0" VerticalAlignment="Top" Height="22" Width="122" Click="btnSelectFile_Click"/>
+        <DataGrid x:Name="dgCallData" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,802,0,13" HorizontalAlignment="Center" Width="1894"/>
+        <ProgressBar x:Name="pbProgress" HorizontalAlignment="Left" Height="22" Margin="406,48,0,0" VerticalAlignment="Top" Width="488"/>
+        <ListBox x:Name="lbAllSelectedFiles" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="16,161,0,0" HorizontalAlignment="Left" Width="189" Height="256" VerticalAlignment="Top"/>
+        <Button x:Name="btnDeselectAllCompanies" Content="Deselecteer Alles" HorizontalAlignment="Left" Margin="527,422,0,0" VerticalAlignment="Top" Height="22" Width="95" Click="btnDeselectAllCompanies_Click"/>
+        <Button x:Name="btnSelectAllCompanies" Content="Selecteer Alles" HorizontalAlignment="Left" Margin="428,422,0,0" VerticalAlignment="Top" Height="22" Width="95" Click="btnSelectAllCompanies_Click"/>
+        <Button x:Name="btnPerJaar" Content="Bereken overzicht per jaar" HorizontalAlignment="Left" Margin="1505,146,0,0" VerticalAlignment="Top" Height="28" Width="172" Click="btnPerJaar_Click"/>
+        <Button x:Name="btnPerMaand" Content="Bereken overzicht per Maand" HorizontalAlignment="Left" Margin="1506,183,0,0" VerticalAlignment="Top" Height="28" Width="171" Click="btnPerMaand_Click"/>
+        <DataGrid x:Name="dgMonthlyCostData" d:ItemsSource="{d:SampleData ItemCount=5}" VirtualizingPanel.VirtualizationMode="Standard" Margin="15,456,15,0" Height="321" VerticalAlignment="Top"/>
+        <Button x:Name="btnCompanyMarges" Content="Marges van bedrijven instellen..." HorizontalAlignment="Left" Margin="1723,146,0,0" VerticalAlignment="Top" Height="28" Width="186" Click="btnCompanyMarges_Click"/>
+        <CheckBox x:Name="cbUseMarge" Content="Gebruik Marge bij berekenen van kosten" HorizontalAlignment="Left" Margin="1506,219,0,0" VerticalAlignment="Top" Height="16" Click="cbUseMarge_Click" Width="237"/>
+        <ListBox x:Name="lbSubscribersOfCompany" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="655,161,0,0" HorizontalAlignment="Left" Width="185" Height="256" VerticalAlignment="Top" SelectionMode="Multiple" SelectionChanged="lbSubscribersOfCompany_SelectionChanged"/>
+        <Button x:Name="btnDeselectAllSubscribers" Content="Deselecteer Alles" HorizontalAlignment="Left" Margin="745,422,0,0" VerticalAlignment="Top" Height="22" Width="95" Click="btnDeselectAllSubscribers_Click"/>
+        <Button x:Name="btnSelectAllSubscribers" Content="Selecteer Alles" HorizontalAlignment="Left" Margin="655,422,0,0" VerticalAlignment="Top" Height="22" Width="87" Click="btnSelectAllSubscribers_Click"/>
+        <Button x:Name="btnExportExcel" Content="Exporteer data als Excel bestand" Margin="1505,326,233,0" Click="btnExportExcel_Click" Height="30" VerticalAlignment="Top"/>
+        <CheckBox x:Name="cbExportCallData" Content="Exporteer alle bel data" HorizontalAlignment="Left" Margin="1674,266,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="cbExportMonthlyData" Content="Exporteer totaal ovezicht" HorizontalAlignment="Left" Margin="1506,266,0,0" VerticalAlignment="Top"/>
+        <Image Margin="16,17,0,0" Source="/IconHDTelefoonKosten.ico" Stretch="Uniform" HorizontalAlignment="Left" Width="78" Height="77" VerticalAlignment="Top"/>
+        <Label Content="Alle Bel Data" HorizontalAlignment="Left" Margin="15,778,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold"/>
+        <Label Content="Totale Overzicht" HorizontalAlignment="Left" Margin="16,430,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold"/>
+        <CheckBox x:Name="cbResizeCollums" Content="Automatisch de kollomen breedte aanpassen" HorizontalAlignment="Left" Margin="1506,286,0,0" VerticalAlignment="Top"/>
+        <Label Content="Dit kan Lang duren met hoeveel bestanden er gekozen zijn!" HorizontalAlignment="Left" Margin="1505,301,0,0" VerticalAlignment="Top" FontStyle="Italic" Background="White" Foreground="#FF6D6D6D" Height="25" Width="306" FontSize="9"/>
+        <ListBox x:Name="lbAllCompanyIds" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="212,161,0,0" SelectionChanged="lbAllCompanyIds_SelectionChanged" SelectionMode="Multiple" HorizontalAlignment="Left" Width="187" Height="256" VerticalAlignment="Top"/>
+        <Button x:Name="btnDeselectAllCompanyIds" Content="Deselecteer Alles" HorizontalAlignment="Left" Margin="303,422,0,0" VerticalAlignment="Top" Height="22" Width="95" Click="btnDeselectAllCompanyIds_Click"/>
+        <Button x:Name="btnSelectAllCompanyIds" Content="Selecteer Alles" HorizontalAlignment="Left" Margin="213,422,0,0" VerticalAlignment="Top" Height="22" Width="87" Click="btnSelectAllCompanyIds_Click"/>
+        <Button x:Name="btnShowCompanyWithNoId" Content="Bedrijven zonder ID" HorizontalAlignment="Left" Margin="406,112,0,0" VerticalAlignment="Top" Width="117" Height="22" Click="btnShowCompanyWithNoId_Click"/>
+        <Button x:Name="btnShowAllCompanies" Content="Toon alle bedrijven" HorizontalAlignment="Left" Margin="533,112,0,0" VerticalAlignment="Top" Width="117" Height="22" Click="btnShowAllCompanies_Click"/>
+        <Button x:Name="btnRefresh" Content="Vernieuwen" HorizontalAlignment="Left" Margin="758,112,0,0" VerticalAlignment="Top" Width="82" Height="22" Click="btnRefresh_Click"/>
+        <Label Content="Bestanden" HorizontalAlignment="Left" Margin="16,135,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold"/>
+        <Label Content="IDs" HorizontalAlignment="Left" Margin="212,135,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold"/>
+        <Label Content="Bedrijven" HorizontalAlignment="Left" Margin="406,135,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold"/>
+        <Label Content="Telefoon Nummers" HorizontalAlignment="Left" Margin="655,135,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Semibold"/>
+    </Grid>
+</Window>

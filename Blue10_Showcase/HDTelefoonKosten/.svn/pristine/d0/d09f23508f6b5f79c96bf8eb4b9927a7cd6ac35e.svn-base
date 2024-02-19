@@ -1,0 +1,135 @@
+﻿using HDTelefoonKosten.Types;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+
+namespace HDTelefoonKosten.LogicManager
+{
+    internal partial class LogicManager
+    {
+
+        public async static Task<MonthlyCostData> ParseAllCallData(List<CallData> tempSelectedCompanySubscriberCallData, double argMarge, double argVoorschot)
+        {
+            MonthlyCostData monthlyCostData = new MonthlyCostData();
+
+            MainWindow.referenceProgressBar.Value = 0;
+            MainWindow.referenceProgressBar.Maximum = 12;
+            MainWindow.referenceProgressBar.Minimum = 0;
+
+            string tempCompanyName = string.Empty;
+            string tempCompanyTotalCalls = string.Empty;
+            string tempCompanyIns = string.Empty;
+            string tempCompanyOuts = string.Empty;
+            TimeSpan tempCompanyTotalCallTime = TimeSpan.Parse("00:00:00");
+            double tempCompanyTotalAmount = 0;
+            double tempCompanyVoorschot = 0;
+            double tempCompanyTekortVoorschot = 0;
+            string tempCompanyFirstDate = string.Empty;
+            string tempCompanyLastDate = string.Empty;
+            DateTime tempYearDate;
+            TimeSpan tempCompanyTimePeriod = TimeSpan.Parse("00:00:00");
+            double tempCompanyCostPerMinute = 0;
+            SortedPhoneCalls tempCompanyCallRates = new SortedPhoneCalls();
+
+            string tempCompanyParsedCallTime = string.Empty;
+            string tempCompanyParsedStartRateBinnenLand = string.Empty;
+            string tempCompanyParsedStartRateMobiel = string.Empty;
+            string tempCompanyParsedTotalAmount = string.Empty;
+            string tempCompanyParsedTimePeriod = string.Empty;
+            string tempCompanyParsedCostPerMinute = string.Empty;
+
+            string tempCompanyParsedVoorschot = string.Empty;
+            string tempCompanyParsedTekortVoorschot = string.Empty;
+
+
+            await Task.Run(() =>
+            {
+                tempCompanyTotalCalls = LogicManager.GetTotalCalls(tempSelectedCompanySubscriberCallData);
+                MainWindow.SetProgress(1, 12);
+                tempCompanyIns = LogicManager.CountIns(tempSelectedCompanySubscriberCallData);
+                MainWindow.SetProgress(2);
+                tempCompanyOuts = LogicManager.CountOuts(tempSelectedCompanySubscriberCallData);
+                MainWindow.SetProgress(3);
+                tempCompanyTotalCallTime = LogicManager.GetCompanyTotalCallTime(tempSelectedCompanySubscriberCallData);
+                MainWindow.SetProgress(4);
+                tempCompanyTotalAmount = LogicManager.GetCompanyTotalAmount(tempSelectedCompanySubscriberCallData);
+                MainWindow.SetProgress(5);
+                tempCompanyFirstDate = LogicManager.GetCompanyFirstDate(tempSelectedCompanySubscriberCallData);
+                MainWindow.SetProgress(6);
+                tempCompanyLastDate = LogicManager.GetCompanyLastDate(tempSelectedCompanySubscriberCallData);
+                MainWindow.SetProgress(7);
+                tempCompanyTimePeriod = LogicManager.GetCompanyTimePeriod(tempSelectedCompanySubscriberCallData);
+                MainWindow.SetProgress(8);
+                tempCompanyCostPerMinute = LogicManager.GetCompanyCostPerMinute(tempSelectedCompanySubscriberCallData);
+                MainWindow.SetProgress(9);
+                tempCompanyName = LogicManager.GetCompanyName(tempSelectedCompanySubscriberCallData);
+                MainWindow.SetProgress(10);
+                tempCompanyCallRates = LogicManager.GetCompanyCallRates(tempSelectedCompanySubscriberCallData);
+                MainWindow.SetProgress(12);
+                MainWindow.SetProgress(0);
+            });
+
+            if (DateTime.TryParse(tempCompanyFirstDate, out tempYearDate))
+                monthlyCostData.YearOrMonth = tempYearDate.Year.ToString();
+
+            if (argMarge > 0)
+            {
+                tempCompanyCostPerMinute = tempCompanyCostPerMinute * ((argMarge + 100) / 100);
+                tempCompanyTotalAmount = tempCompanyTotalAmount * ((argMarge + 100) / 100);
+                tempCompanyCallRates.belTariefMobiel.dMinuutTarief = tempCompanyCallRates.belTariefMobiel.dMinuutTarief * ((argMarge + 100) / 100);
+                tempCompanyCallRates.belTariefMobiel.dStartTarief = tempCompanyCallRates.belTariefMobiel.dStartTarief * ((argMarge + 100) / 100);
+                tempCompanyCallRates.belTariefBinnenland.dStartTarief = tempCompanyCallRates.belTariefBinnenland.dStartTarief * ((argMarge + 100) / 100);
+                tempCompanyCallRates.belTariefBinnenland.dMinuutTarief = tempCompanyCallRates.belTariefBinnenland.dMinuutTarief * ((argMarge + 100) / 100);
+            }
+            if (argVoorschot > 0)
+            {
+                tempCompanyVoorschot = argVoorschot;
+                if (tempCompanyTotalAmount > tempCompanyVoorschot)
+                    tempCompanyTekortVoorschot = tempCompanyVoorschot - tempCompanyTotalAmount;
+            }
+
+            tempCompanyParsedCallTime = LogicManager.ParseCompanyTime(tempCompanyTotalCallTime);
+            tempCompanyParsedTimePeriod = LogicManager.ParseCompanyTime(tempCompanyTimePeriod);
+            tempCompanyParsedTotalAmount = LogicManager.ParseCompanyAmount(tempCompanyTotalAmount, false);
+            tempCompanyParsedVoorschot = LogicManager.ParseCompanyAmount(tempCompanyVoorschot, false);
+            tempCompanyParsedTekortVoorschot = LogicManager.ParseCompanyAmount(tempCompanyTekortVoorschot, false);
+
+            if (tempCompanyCallRates.belTariefMobiel.dMinuutTarief != null && tempCompanyCallRates.belTariefMobiel.dMinuutTarief != 0)
+                tempCompanyParsedCostPerMinute = LogicManager.ParseCompanyAmount(tempCompanyCallRates.belTariefMobiel.dMinuutTarief, true);
+            else tempCompanyParsedCostPerMinute = LogicManager.ParseCompanyAmount(tempCompanyCostPerMinute, true);
+
+            if (tempCompanyCallRates.belTariefMobiel.dStartTarief != null && tempCompanyCallRates.belTariefMobiel.dStartTarief != 0)
+                tempCompanyParsedCostPerMinute = LogicManager.ParseCompanyAmount(tempCompanyCallRates.belTariefMobiel.dStartTarief, true);
+            else tempCompanyParsedCostPerMinute = LogicManager.ParseCompanyAmount(tempCompanyCostPerMinute, true);
+
+            if (tempCompanyCallRates.belTariefBinnenland.dStartTarief != null && tempCompanyCallRates.belTariefBinnenland.dStartTarief != 0)
+                tempCompanyParsedStartRateMobiel = LogicManager.ParseCompanyAmount(tempCompanyCallRates.belTariefBinnenland.dStartTarief, true);
+
+            if (tempCompanyCallRates.belTariefBinnenland.dMinuutTarief != null && tempCompanyCallRates.belTariefBinnenland.dMinuutTarief != 0)
+                tempCompanyParsedStartRateBinnenLand = LogicManager.ParseCompanyAmount(tempCompanyCallRates.belTariefBinnenland.dMinuutTarief, true);
+
+
+
+            monthlyCostData.CompanyName = tempCompanyName;
+            monthlyCostData.TotalCalls = tempCompanyTotalCalls;
+            monthlyCostData.TotalIns = tempCompanyIns;
+            monthlyCostData.TotalOuts = tempCompanyOuts;
+            monthlyCostData.TotalCallTime = tempCompanyParsedCallTime;
+            monthlyCostData.TotalAmount = tempCompanyParsedTotalAmount;
+            monthlyCostData.FirstDate = tempCompanyFirstDate;
+            monthlyCostData.LastDate = tempCompanyLastDate;
+            monthlyCostData.TimePeriod = tempCompanyParsedTimePeriod;
+            monthlyCostData.CostPerMinuteMobiel = tempCompanyParsedCostPerMinute;
+            monthlyCostData.StartRateMobiel = tempCompanyParsedStartRateMobiel;
+            monthlyCostData.CostPerMinuteBinnenLand = tempCompanyParsedCostPerMinute;
+            monthlyCostData.StartRateBinnenLand = tempCompanyParsedStartRateBinnenLand;
+            monthlyCostData.Voorschot = tempCompanyParsedVoorschot;
+            monthlyCostData.TekortVoorschot = tempCompanyParsedTekortVoorschot;
+
+            return monthlyCostData;
+        }
+    }
+}

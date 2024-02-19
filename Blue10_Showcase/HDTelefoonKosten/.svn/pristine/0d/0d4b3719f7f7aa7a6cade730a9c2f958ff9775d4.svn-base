@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HDTelefoonKosten.LogicManager
+{
+    internal partial class LogicManager
+    {
+        public static string ParseCompanyTime(TimeSpan argCompanyCallTime)
+        {
+            var tempTotalDays = Math.Floor(argCompanyCallTime.TotalDays);
+            var tempHours = argCompanyCallTime.Hours;
+            var tempMinutes = argCompanyCallTime.Minutes;
+            var tempSeconds = argCompanyCallTime.Seconds;
+            return $"{tempTotalDays}d {tempHours.ToString("00")}:{tempMinutes.ToString("00")}:{tempSeconds.ToString("00")}";
+        }
+        public static string ParseCompanyAmount(double argCompanyTotalAmount, bool argMultipleDecimals)
+        {
+            if (argMultipleDecimals)
+            {
+                string tempResult = String.Format("€ {0:N3}", argCompanyTotalAmount);
+                if (tempResult == null || tempResult == "€ 0,000")
+                    return null;
+                return tempResult;
+            }
+            if (!argMultipleDecimals)
+            {
+                string tempResult = String.Format("€ {0:N2}", argCompanyTotalAmount);
+                if (tempResult == null || tempResult == "€ 0,00")
+                    return null;
+                return tempResult;
+            }
+            return null;
+        }
+        public static string ParseCompanyMonth(string argMonthNumber)
+        {
+            string tempFinalResult = string.Empty;
+            if (argMonthNumber == "1")
+                tempFinalResult = "Januari";
+            if (argMonthNumber == "2")
+                tempFinalResult = "Februari";
+            if (argMonthNumber == "3")
+                tempFinalResult = "Maart";
+            if (argMonthNumber == "4")
+                tempFinalResult = "April";
+            if (argMonthNumber == "5")
+                tempFinalResult = "Mei";
+            if (argMonthNumber == "6")
+                tempFinalResult = "Juni";
+            if (argMonthNumber == "7")
+                tempFinalResult = "Juli";
+            if (argMonthNumber == "8")
+                tempFinalResult = "Augustus";
+            if (argMonthNumber == "9")
+                tempFinalResult = "September";
+            if (argMonthNumber == "10")
+                tempFinalResult = "Oktober";
+            if (argMonthNumber == "11")
+                tempFinalResult = "November";
+            if (argMonthNumber == "12")
+                tempFinalResult = "December";
+            return tempFinalResult;
+        }
+    }
+}

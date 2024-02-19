@@ -1,0 +1,16 @@
+﻿<Window x:Class="HDTelefoonKosten.Windows.TargetManagerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HDTelefoonKosten.Windows"
+        mc:Ignorable="d"
+        Title="Target Installeren" Height="381" Width="469" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <ListBox x:Name="lbAllTargets" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="19,54,0,23"  HorizontalAlignment="Left" Width="246" SelectionMode="Multiple"/>
+        <Button x:Name="btnSetTargetId" Content="     Koppel ID aan &#xA;     geselecteerde target" Margin="0,86,24,0" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Width="159" Click="btnSetTargetId_Click"/>
+        <TextBox x:Name="tbTargetId" Margin="0,58,25,0" TextWrapping="Wrap"  Height="18" VerticalAlignment="Top" HorizontalAlignment="Right" Width="138"/>
+        <Label Content="ID" Margin="0,54,164,0" RenderTransformOrigin="0.053,-0.14" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="26"/>
+        <Label Content="Target instellingen" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="244" FontFamily="Segoe UI Semibold" FontSize="16"/>
+    </Grid>
+</Window>

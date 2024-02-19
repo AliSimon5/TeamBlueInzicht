@@ -1,0 +1,61 @@
+﻿using DocumentFormat.OpenXml.Presentation;
+using HDTelefoonKosten.Types;
+using M.Core.Application.WPF.MessageBox;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.UI.WebControls;
+using System.Windows.Input;
+
+namespace HDTelefoonKosten.LogicManager
+{
+    internal partial class LogicManager
+    {
+        /// <summary>
+        /// Bereken de belkosten per maand
+        /// </summary>
+        /// <param name="argSubscriberType"></param>
+        /// <param name="argAllMonthsList"></param>
+        /// <param name="argCompanyCallDataList"></param>
+        /// <param name="argMarge"></param>
+        /// <param name="argVoorschot"></param>
+        /// <returns></returns>
+        public static async Task<List<MonthlyCostData>> GetMonthlyCostDataForCompany(SubscriberData argSubscriberType, List<MonthType> argAllMonthsList, List<CallData> argCompanyCallDataList, double argMarge, double argVoorschot)
+        {
+            return await Task.Run(async () =>
+            {
+                List<MonthlyCostData> monthlyCostDatasList = new List<MonthlyCostData>();
+                foreach (var tempMonth in argAllMonthsList)
+                {
+                    // Calldata voor tempMonth opzoeken
+                    var tempListAllMonthCallData = argCompanyCallDataList.FindAll(x => x.Date.Month == tempMonth.intMonth && x.Subscriber == argSubscriberType.Subscriber && x.Date != DateTime.Parse("1-1-0001 00:00:00"));
+
+                    if (tempListAllMonthCallData.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    // MonthlyCostdata aanmaken
+                    var tempMonthlyCostData = await ParseAllCallData(tempListAllMonthCallData, argMarge, argVoorschot);
+
+                    if (tempMonthlyCostData.CompanyName == null) continue;
+
+                    if (DateTime.TryParse(tempMonthlyCostData.FirstDate, out var tempMonthDate))
+                        tempMonthlyCostData.YearOrMonth = ParseMonthNumberToText(tempMonthDate.Month.ToString());
+
+                    tempMonthlyCostData.Subscriber = argSubscriberType.Subscriber;
+
+                    // Toevoegen aan MonthlyCostDataList voor bedrijf
+                    monthlyCostDatasList.Add(tempMonthlyCostData);
+                }
+
+                // Return MonthlyCostDataList
+                return monthlyCostDatasList;
+            });
+        }
+    }
+
+}

@@ -1,0 +1,24 @@
+﻿using HDTelefoonKosten.Types;
+using M.Core.Application.WPF.MessageBox;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HDTelefoonKosten.LogicManager
+{
+    internal partial class LogicManager
+    {
+        public static List<CallData> GetAllParsedRowsList(string tempFilePath)
+        {
+            List<string> tempAllRowList = DataManager.DataManager.ReadExcelFile(tempFilePath, 1);
+            if (tempAllRowList == null)
+                MBox.ShowWarning($"File: {tempFilePath} Niet kunnen lezen");
+
+            List<CallData> tempAllParsedList = ParseAllRows(tempAllRowList);
+            CallData.tempAllCallsList = tempAllParsedList;
+            return tempAllParsedList;
+        }
+    }
+}

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>M.Core.Application.ControlHelpers</name>
+    </assembly>
+    <members>
+        <member name="T:M.Core.Application.ControlHelpers.ComboBoxItemHD">
+            <summary>
+            Subclass van ComboBoxItem, om een extra property te geven, waar het object die de ComboBoxItem representeerd in geplaatst kan worden.
+            </summary>
+        </member>
+        <member name="F:M.Core.Application.ControlHelpers.DataGridControl`1.ActionRowColoring">
+            <summary>
+            Action om per regel de row te wijzigen qua stijl;
+            LET OP: Zorg bij RowColoring dat je VirtualizationMode in XAML bij de datagrid op Standard hebt staan.
+            </summary>
+        </member>
+        <member name="M:M.Core.Application.ControlHelpers.DataGridControl`1.SetPrimaryKey(System.String)">
+            <summary>
+            Dit wordt gebruikt om selecties na een refresh van de data te herstellen.
+            </summary>
+            <param name="argPropertyName"></param>
+        </member>
+        <member name="M:M.Core.Application.ControlHelpers.DataGridControl`1.SetDataSource(System.Collections.Generic.List{`0},System.Boolean)">
+            <summary>
+            Om de selectie te herstellen, zorg dat je de functie SetPrimaryKey hebt gebruikt.
+            </summary>
+            <param name="argItemSource"></param>
+            <param name="argKeepSelection"></param>
+        </member>
+        <member name="M:M.Core.Application.ControlHelpers.DataGridControl`1.UseVisualTemplateClean(System.Double)">
+            <summary>        
+            Geen horizontale gridlijnen zichtbaar, using RowVirtualization (zorg dat je geen rows gaat editten qua kleuren, dan gaat het mis);
+            Zet anders bij DataGrid in XAML VirtualizingPanel.VirtualizationMode="Standard" 
+            </summary>
+            <param name="argRowHeight">-1 = Auto RowHeight, 20px is standaard</param>
+        </member>
+        <member name="M:M.Core.Application.ControlHelpers.DataGridControl`1.UseVisualTemplateLines(System.Double)">
+            <summary>        
+            Horizontale en Verticale lijnen, grijs, using RowVirtualization (zorg dat je geen rows gaat editten qua kleuren, dan gaat het mis);
+            Zet anders bij DataGrid in XAML VirtualizingPanel.VirtualizationMode="Standard" 
+            </summary>
+            <param name="argRowHeight">-1 = Auto RowHeight, 20px is standaard</param>
+        </member>
+        <member name="E:M.Core.Application.ControlHelpers.TreeViewControl`1.EventSelectionChanged">
+            <summary>
+            Geeft als sender de TreeView mee en als argument T
+            </summary>
+        </member>
+    </members>
+</doc>

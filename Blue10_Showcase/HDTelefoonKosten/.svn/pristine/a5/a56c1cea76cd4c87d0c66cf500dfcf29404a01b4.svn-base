@@ -1,0 +1,124 @@
+﻿using M.NetStandard.CommonInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+
+namespace HDTelefoonKosten.Types
+{
+    public class CompanyType : BoxItem
+    {
+        public string strCompany { get; set; } = string.Empty;
+
+        public string GetBoxItemTitle()
+        {
+            return strCompany;
+        }
+
+        public static CompanyType strCompanyName;
+
+        public string strSubscriber { get; set; }
+        public string strTotalAmountOfCalls
+        {
+            get
+            {
+                string TotalCalls = LogicManager.LogicManager.GetTotalCalls(CallData.tempAllCallsList);
+                return TotalCalls;
+            }
+            set
+            {
+
+            }
+        }
+        public string strIns
+        {
+            get
+            {
+                string TotalIns = LogicManager.LogicManager.CountIns(CallData.tempAllCallsList);
+                return TotalIns;
+            }
+            set
+            {
+
+            }
+        }
+        public string strOuts
+        {
+            get
+            {
+                string TotalOuts = LogicManager.LogicManager.CountOuts(CallData.tempAllCallsList);
+                return TotalOuts;
+            }
+            set
+            {
+
+            }
+        }
+        public string strCallTime
+        {
+            get
+            {
+                TimeSpan TotalCallTime = LogicManager.LogicManager.GetCompanyTotalCallTime(CallData.tempAllCallsList);
+                string tempTotalCallTIme = LogicManager.LogicManager.ParseCompanyTime(TotalCallTime);
+                return tempTotalCallTIme;
+            }
+            set
+            {
+
+            }
+        }
+        public string strAmount
+        {
+            get
+            {
+                double TotalAmount = LogicManager.LogicManager.GetCompanyTotalAmount(CallData.tempAllCallsList);
+                string tempTotalAmount = LogicManager.LogicManager.ParseCompanyAmount(TotalAmount, false);
+                return tempTotalAmount;
+            }
+            set
+            {
+
+            }
+        }
+        public string strFirstDate
+        {
+            get
+            {
+                string FirstDate = LogicManager.LogicManager.GetCompanyFirstDate(CallData.tempAllCallsList);
+                return FirstDate;
+            }
+            set
+            {
+
+            }
+        }
+        public string strLastDate
+        {
+            get
+            {
+                string LastDate = LogicManager.LogicManager.GetCompanyLastDate(CallData.tempAllCallsList);
+                return LastDate;
+            }
+            set
+            {
+
+            }
+        }
+        public string strTimePeriod
+        {
+            get
+            {
+                TimeSpan TimePeriod = LogicManager.LogicManager.GetCompanyTimePeriod(CallData.tempAllCallsList);
+                string tempTimePeriod = LogicManager.LogicManager.ParseCompanyTime(TimePeriod);
+                return tempTimePeriod;
+            }
+            set
+            {
+
+            }
+        }
+
+    }
+}

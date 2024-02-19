@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>M.NetStandard.CommonInterfaces</name>
+    </assembly>
+    <members>
+        <member name="T:M.NetStandard.CommonInterfaces.BoxItem">
+            <summary>
+            Interface die objecten moeten inheritten om bruikbaar te zijn voor ComboBoxControl, DataGridControl en ListBoxControl; 
+            De GetBoxItemTitle() is de tekst die je ziet in de ComboBox, DataGrid of ListBox.
+            </summary>
+        </member>
+        <member name="T:M.NetStandard.CommonInterfaces.TreeItem">
+            <summary>
+            Interface die objecten moeten inheritten om bruikbaar te zijn voor ComboBoxControl, DataGridControl en ListBoxControl; 
+            De GetBoxItemTitle() is de tekst die je ziet in de ComboBox, DataGrid of ListBox.
+            </summary>
+        </member>
+        <member name="M:M.NetStandard.CommonInterfaces.TreeItem.GetTreeItemTitle">
+            <summary>
+            Zichtbaar in de Treeview
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M.NetStandard.CommonInterfaces.TreeItem.GetOrderName">
+            <summary>
+            Naam om objecten op te sorteren
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M.NetStandard.CommonInterfaces.TreeItem.GetToolTipText">
+            <summary>
+            Zichtbaar als tooltip wanneer de muis over de treeviewitem gehouden wordt
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M.NetStandard.CommonInterfaces.TreeItem.GetChildObjects">
+            <summary>
+            Geeft alle ChildObjecten terug die de TreeItem Interface implementeren
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

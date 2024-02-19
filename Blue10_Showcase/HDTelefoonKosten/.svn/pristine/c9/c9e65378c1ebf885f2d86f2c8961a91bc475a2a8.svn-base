@@ -1,0 +1,30 @@
+﻿<Window x:Class="HDTelefoonKosten.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HDTelefoonKosten"
+        mc:Ignorable="d"
+        Title="HD Telefoon Kosten" Height="783" Width="2025">
+    <Grid Margin="-2,0,2,0">
+        <TextBox x:Name="tbLogs" Margin="1278,438,15,10" TextWrapping="Wrap"/>
+        <ListBox x:Name="cbAllBusinesses" Margin="210,113,0,0" Width="242" HorizontalAlignment="Left" SelectionMode="Multiple" Height="271" VerticalAlignment="Top" SelectionChanged="cbAllBusinesses_SelectionChanged"/>
+        <Label Content="Logo" HorizontalAlignment="Left" Margin="29,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="HD Telefoon Kosten" HorizontalAlignment="Left" Margin="71,10,0,0" VerticalAlignment="Top" FontSize="20" FontFamily="Segoe UI Semibold"/>
+        <Button x:Name="btnSelectFile" Content="Selecteer Bestand" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" Height="32" Width="114" Click="btnSelectFile_Click"/>
+        <Button x:Name="btnOphalen" Content="Informatie Ophalen" HorizontalAlignment="Left" Margin="129,55,0,0" VerticalAlignment="Top" Height="32" Width="114" Click="btnOphalen_Click"/>
+        <DataGrid x:Name="dgCallData" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,438,0,9" HorizontalAlignment="Left" Width="1263"/>
+        <ProgressBar x:Name="pbProgress" HorizontalAlignment="Left" Height="32" Margin="650,15,0,0" VerticalAlignment="Top" Width="768"/>
+        <ListBox x:Name="lbAllSelectedFiles" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,113,0,0" HorizontalAlignment="Left" Width="189" Height="190" VerticalAlignment="Top"/>
+        <Button x:Name="btnDeselectAll" Content="Deselecteer Alles" HorizontalAlignment="Left" Margin="331,389,0,0" VerticalAlignment="Top" Height="27" Width="100" Click="btnDeselectAll_Click"/>
+        <Button x:Name="btnSelectAll" Content="Selecteer Alles" HorizontalAlignment="Left" Margin="226,389,0,0" VerticalAlignment="Top" Height="27" Width="100" Click="btnSelectAll_Click"/>
+        <Button x:Name="btnPerJaar" Content="Per Jaar" HorizontalAlignment="Left" Margin="650,79,0,0" VerticalAlignment="Top" Height="28" Width="92" Click="btnPerJaar_Click"/>
+        <Button x:Name="btnPerMaand" Content="Per Maand" HorizontalAlignment="Left" Margin="747,79,0,0" VerticalAlignment="Top" Height="28" Width="92" Click="btnPerMaand_Click"/>
+        <DataGrid x:Name="dgMonthlyCostData" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="650,112,15,0" Height="321" VerticalAlignment="Top"/>
+        <Button x:Name="btnCompanyMarges" Content="Bedrijf Marges..." HorizontalAlignment="Left" Margin="1122,79,0,0" VerticalAlignment="Top" Height="28" Width="92" Click="btnCompanyMarges_Click"/>
+        <TextBox x:Name="tbMarge" HorizontalAlignment="Left" Margin="882,84,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="53" PreviewTextInput="tbMarge_PreviewTextInput" TextChanged="tbMarge_TextChanged"/>
+        <Label Content="%" HorizontalAlignment="Left" Margin="934,80,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.053,-0.14" Width="18"/>
+        <CheckBox x:Name="cbUseMarge" Content="Gebruik Marge" HorizontalAlignment="Left" Margin="952,85,0,0" VerticalAlignment="Top" Height="16" Click="cbUseMarge_Click" Width="91"/>
+        <ListBox x:Name="lbSubscribersOfCompany" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="460,113,0,0" HorizontalAlignment="Left" Width="182" Height="202" VerticalAlignment="Top"/>
+    </Grid>
+</Window>

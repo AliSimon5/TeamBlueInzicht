@@ -1,0 +1,138 @@
+﻿using DocumentFormat.OpenXml.Presentation;
+using HDTelefoonKosten.Types;
+using M.Core.Application.WPF.MessageBox;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+
+namespace HDTelefoonKosten
+{
+    internal class test
+    {
+        /*
+        private object _selectedSubscriberType;
+        private object _lbSubscribers;
+        private IEnumerable<object> _selectedCompanyType;
+        private object _listAllCallData;
+
+        private async void btnPerJaar_Click(object sender, RoutedEventArgs e)
+        {
+            ProcessCompanySubscribersWithMarge();
+            _selectedSubscriberType = _lbSubscribers.GetSelections();
+            if (_selectedSubscriberType == null)
+            {
+                MBox.ShowWarning("Geen telefoon nummer gekozen.");
+            }
+
+            int tempFirstRunCount = 0;
+            var tempAllSelectedCompanyCallData = new List<CallData>();
+            var tempAllCompanySubscriberCallData = new List<CallData>();
+
+            // Filter op allene geselecteerde bedrijven
+            foreach (var Company in _selectedCompanyType)
+            {
+                var tempCompanyCallData = _listAllCallData.FindAll(x => x.Bedrijf == Company.strCompany);
+                tempAllSelectedCompanyCallData.AddRange(tempCompanyCallData);
+            }
+
+            // Filter vervolgens nog op alleen geselecteerde telefoonnummers
+            foreach (var CompanySubscriber in _selectedSubscriberType)
+            {
+                var tempCompanyCall = tempAllSelectedCompanyCallData.FindAll(x => x.Subscriber == CompanySubscriber.Subscriber);
+                tempAllCompanySubscriberCallData.AddRange(tempCompanyCall);
+            }
+
+            string tempFirstDate = string.Empty;
+            string tempLastDate = string.Empty;
+            TimeSpan tempTimePeriod = TimeSpan.Parse("00:00:00");
+
+            List<MonthlyCostData> tempMontlyCostDataList = new List<MonthlyCostData>();
+            int tempProgress = 0;
+            pbProgress.Value = 0;
+            pbProgress.Minimum = 0;
+            pbProgress.Maximum = _selectedCompanyType.Count();
+
+
+            foreach (var Company in _selectedCompanyType)
+            {
+                this.IsEnabled = false;
+                this.Cursor = Cursors.Wait;
+                tempProgress++;
+                // Voor elk bedrijf
+                if (tempFirstRunCount == 0)
+                    tbLogs.Clear();
+                tempFirstRunCount++;
+                if ((bool)cbUseMarge.IsChecked)
+                {
+                    var templist = DataManager.DataManager.ReadCompanyDataFile();
+                    if (templist != null && templist.Count > 0)
+                    {
+                        var tempCompany = templist.Find(x => x.CompanyName == Company.strCompany);
+                        if (tempCompany != null)
+                        {
+                            dMarge = tempCompany.CompanyMarge;
+                            dVoorschot = tempCompany.CompanyVoorschot;
+                        }
+                    }
+                    else
+                    {
+                        dMarge = 1;
+                        dVoorschot = 0;
+                    }
+                }
+
+                if (dMarge > 0 && (bool)cbUseMarge.IsChecked)
+                {
+                    foreach (var tempCostWithMarge in tempAllSelectedCompanyCallData)
+                    {
+                        tempCostWithMarge.CostWithMarge = tempCostWithMarge.Cost * ((dMarge + 100) / 100);
+                        _dgCallData.SetDataSource(tempAllSelectedCompanyCallData);
+                    }
+                }
+                else
+                    _dgCallData.SetDataSource(tempAllSelectedCompanyCallData);
+
+                if (dVoorschot > 0)
+                {
+                    dVoorschot = dVoorschot * 12;
+                }
+                // Per bedrijf de CallData opzoeken
+                var tempSelectedCompanyCallData = tempAllCompanySubscriberCallData.FindAll(x => x.Bedrijf == Company.strCompany);
+
+                // Zoek unieke telefoonnummers op
+                var tempUniqueSelectedPhoneNumbers = LogicManager.LogicManager.GetUniqueSubscribers(tempSelectedCompanyCallData);
+
+
+
+                foreach (var tempSelectedPhoneNumber in tempUniqueSelectedPhoneNumbers)
+                {
+                    // Vind alle calldata voor unieke telefoonnummer.
+                    var tempSelectedCompanySubscriberCallData = tempSelectedCompanyCallData.FindAll(x => x.Subscriber == tempSelectedPhoneNumber.Subscriber);
+
+                    MonthlyCostData monthlyCostData = await LogicManager.LogicManager.ParseAllCallData(tempSelectedCompanySubscriberCallData, dMarge, dVoorschot);
+
+                    monthlyCostData.Subscriber = tempSelectedPhoneNumber.Subscriber;
+
+                    tempMontlyCostDataList.Add(monthlyCostData);
+                }
+                SetProgress(tempProgress);
+                await Task.Delay(50);
+            }
+            this.Cursor = null;
+            this.IsEnabled = true;
+            Thread.Sleep(1000);
+            SetProgress(0);
+            _dgMonthlyCostData.SetDataSource(tempMontlyCostDataList);
+        }
+
+        private void ProcessCompanySubscribersWithMarge()
+        {
+            throw new NotImplementedException();
+        }
+        */
+    }
+}

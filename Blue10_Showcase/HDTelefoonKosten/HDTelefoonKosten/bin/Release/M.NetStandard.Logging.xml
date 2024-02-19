@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>M.NetStandard.Logging</name>
+    </assembly>
+    <members>
+        <member name="M:M.NetStandard.Logging.LogFileWriter.ChangeFileName(System.String)">
+            <summary>
+            Deze functie hernoemd het logbestand, en haalt daarmee ook de username weg. 
+            Wanneer een volgende dag begint zal echter een nieuw log bestand aangemaakt worden.
+            </summary>
+            <param name="argNewFileBaseName"></param>
+        </member>
+        <member name="M:M.NetStandard.Logging.LogFileWriter.AddToFileName(System.String)">
+            <summary>
+            Extra text toevoegen aan huidige filename
+            </summary>
+            <param name="argText"></param>
+        </member>
+        <member name="M:M.NetStandard.Logging.LogFileWriter.AppendTextToQueue(System.String)">
+            <summary>
+            Zet tekst in een queue, deze wordt op de achtergrond gebruikt om weg te schrijven naar een tekstbestand.
+            </summary>
+            <param name="argText"></param>
+        </member>
+        <member name="M:M.NetStandard.Logging.LogFileWriter.AppendText(System.String)">
+            <summary>
+            Text toevoegen aan logbestand
+            </summary>
+            <param name="argText"></param>
+        </member>
+        <member name="M:M.NetStandard.Logging.LogFileWriter.GetContentOfCurrentFile">
+            <summary>
+            Inhoud opvragen van huidig logbestand
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M.NetStandard.Logging.LogFileWriter.checkFileAlreadyExist">
+            <summary>
+            Controleer of bestand al bestaat, zo niet nieuwe aanmaken.
+            Dit wordt vooral gebruikt als datum wisselt naar de volgende dag
+            </summary>
+        </member>
+        <member name="M:M.NetStandard.Logging.LogFileWriter.LoopQueue">
+            <summary>
+            Oneindige loop, vraag is of de applicatie hierdoor wel goed afsluit...
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

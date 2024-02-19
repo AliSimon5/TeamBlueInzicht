@@ -1,0 +1,105 @@
+﻿using Excel = Microsoft.Office.Interop.Excel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Office.Interop.Excel;
+using System.IO;
+using System.Web;
+using HDTelefoonKosten.Types;
+using System.Diagnostics;
+using Serilog.Formatting.Json;
+using Newtonsoft.Json;
+using DocumentFormat.OpenXml.Spreadsheet;
+
+namespace HDTelefoonKosten.DataManager
+{
+    internal partial class DataManager
+    {
+        public static List<string> ReadExcelFile(string tempFilePath, int argSheet)
+        {
+            ExecuteCommand("taskkill", "/f /im excel.exe");
+
+            string tempPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            var tempCsvPath = Path.Combine(tempPath, "tempCsvFile.csv");
+            if (File.Exists(tempCsvPath))
+                File.Delete(tempCsvPath);
+
+            List<string> tempAllRowList = new List<string>();
+            List<string> tempNullList = null;
+            string tempExcelPath = tempFilePath;
+
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(tempExcelPath);
+            int Sheets = 0;
+            List<string> tempAllCreatedFilesList = new List<string>();
+            foreach (Excel.Worksheet ws1 in xlWorkbook.Worksheets)
+            {
+                var tempCsvPathSheets = Path.Combine(tempPath, $"tempCsvFile{Sheets}.csv");
+                ws1.SaveAs(tempCsvPathSheets, XlFileFormat.xlCSV, true);
+                tempAllCreatedFilesList.Add(tempCsvPathSheets);
+                Sheets++;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+            xlWorkbook.Close(false, Type.Missing, Type.Missing);
+
+            for (int i = 0; i < Sheets; i++)
+            {
+                var tempCsvPathSheets = Path.Combine(tempPath, $"tempCsvFile{i}.csv");
+                var tempAllLines = File.ReadAllLines(tempCsvPathSheets, System.Text.Encoding.GetEncoding("iso-8859-1"));
+                foreach (var line in tempAllLines)
+                {
+                    tempAllRowList.Add(line);
+                }
+                if (tempAllRowList.Count > 10000) break;
+                else tempAllRowList.Clear();
+
+            }
+            foreach (var file in tempAllCreatedFilesList)
+            {
+                File.Delete(file);
+            }
+
+            ExecuteCommand("taskkill", "/f /im excel.exe");
+            return tempAllRowList;
+        }
+
+        public static List<CompanyMargesType> ReadCompanyMargeFile()
+        {
+            try
+            {
+                var tempSavedCompanyMarges = GetSavedCompanyDataPath();
+
+                var tempJSON = File.ReadAllText(tempSavedCompanyMarges);
+                var tempListCompanyMargesType = JsonConvert.DeserializeObject<List<CompanyMargesType>>(tempJSON);
+
+                return tempListCompanyMargesType;
+            }
+            catch (Exception ex)
+            {
+                return new List<CompanyMargesType>();
+            }
+        }
+        public static void WriteCompanyMargeToFile(List<CompanyMargesType> argListCompanyMarginType)
+        {
+            var tempSavedCompanyMarges = GetSavedCompanyDataPath();
+
+            var tempJSON = JsonConvert.SerializeObject(argListCompanyMarginType, Formatting.Indented);
+
+            File.WriteAllText(tempSavedCompanyMarges, tempJSON);
+        }
+        public static void ClearCompanyMargeFile()
+        {
+            var tempSavedCompanyMarges = GetSavedCompanyDataPath();
+            File.WriteAllText(tempSavedCompanyMarges, "");
+        }
+        public static string GetSavedCompanyDataPath()
+        {
+            var startupPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            var tempSavedCompanyMarges = Path.Combine(startupPath, "HDSignatures.SavedCompanyData.json");
+            return tempSavedCompanyMarges;
+        }
+    }
+}

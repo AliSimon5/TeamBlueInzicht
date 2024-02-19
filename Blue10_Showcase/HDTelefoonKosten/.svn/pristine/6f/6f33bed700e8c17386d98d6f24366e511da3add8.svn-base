@@ -1,0 +1,73 @@
+﻿using HDTelefoonKosten.Types;
+using Microsoft.Office.Interop.Excel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Documents;
+
+namespace HDTelefoonKosten.LogicManager
+{
+    internal partial class LogicManager
+    {
+        public static List<CompanyType> GetUniqueCompanies(List<CallData> tempAllParsedRowsList)
+        {
+            List<CallData> tempAllBussinessesList = tempAllParsedRowsList
+            .GroupBy(p => p.Bedrijf)
+            .Select(g => g.First())
+            .ToList();
+
+            List<CompanyType> tempCompanyList = new List<CompanyType>();
+            foreach (var item in tempAllBussinessesList)
+            {
+                tempCompanyList.Add(new CompanyType() { strCompany = item.Bedrijf });
+                tempCompanyList.Add(new CompanyType() { strSubscriber = item.Subscriber });
+            }
+            return tempCompanyList;
+        }
+
+        public static List<MonthType> GetUniqueMonths(List<CallData> tempAllParsedRowsList)
+        {
+            List<CallData> tempAllBussinessesList = tempAllParsedRowsList
+            .GroupBy(p => p.Date.Month)
+            .Select(g => g.First())
+            .ToList();
+
+            List<MonthType> tempMonthList = new List<MonthType>();
+            foreach (var item in tempAllBussinessesList)
+            {
+                tempMonthList.Add(new MonthType() { intMonth = item.Date.Month });
+            }
+            return tempMonthList;
+        }
+
+
+        public static List<CompanyType> ParseListAllCompanies(List<CompanyType> argAllCompaniesList)
+        {
+            if (argAllCompaniesList.Any(x => argAllCompaniesList.Any(y => y == x)))
+            {
+                List<CompanyType> tempAlltobeParsedList = argAllCompaniesList
+                .GroupBy(p => p.strCompany)
+                .Select(g => g.First())
+                .ToList();
+                return tempAlltobeParsedList;
+            }
+            return argAllCompaniesList;
+        }
+        public static List<SubscriberData> GetUniqueSubscribers(List<CallData> argAllCompaniesList)
+        {
+            List<CallData> tempAllBussinessesList = argAllCompaniesList
+           .GroupBy(p => p.Subscriber)
+           .Select(g => g.First())
+           .ToList();
+
+            List<SubscriberData> tempAllSubscribersList = new List<SubscriberData>();
+            foreach (var item in tempAllBussinessesList)
+            {
+                tempAllSubscribersList.Add(new SubscriberData() { Subscriber = item.Subscriber });
+            }
+            return tempAllSubscribersList;
+        }
+    }
+}

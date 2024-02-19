@@ -1,0 +1,324 @@
+﻿using HDTelefoonKosten.Core;
+using HDTelefoonKosten.Types;
+using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HDTelefoonKosten.LogicManager
+{
+    internal partial class LogicManager
+    {
+        public static string GetCompanyName(CompanyType argCompany, List<CallData> argList)
+        {
+            string tempCompanyName = argCompany.strCompany;
+            foreach (var item in argList)
+            {
+                if (item.Bedrijf == tempCompanyName)
+                    return item.Bedrijf.ToString();
+                continue;
+            }
+            return null;
+        }
+        public static string GetCompanyTotalCalls(CompanyType argCompany, List<CallData> argList)
+        {
+            string tempCompanyName = argCompany.strCompany;
+            int TotalAmount = 0;
+            foreach (var item in argList)
+            {
+                if (item.Bedrijf == tempCompanyName)
+                {
+                    TotalAmount++;
+                }
+            }
+            return TotalAmount.ToString();
+        }
+        public static string GetCompanyIns(CompanyType argCompany, List<CallData> argList)
+        {
+            string tempCompanyName = argCompany.strCompany;
+            int TotalAmount = 0;
+            foreach (var item in argList)
+            {
+                if (item.Bedrijf == tempCompanyName)
+                {
+                    if (item.Direction == "in")
+                        TotalAmount++;
+                }
+            }
+            return TotalAmount.ToString();
+        }
+        public static string GetCompanyOuts(CompanyType argCompany, List<CallData> argList)
+        {
+            string tempCompanyName = argCompany.strCompany;
+            int TotalAmount = 0;
+            foreach (var item in argList)
+            {
+                if (item.Bedrijf == tempCompanyName)
+                {
+                    if (item.Direction == "out")
+                        TotalAmount++;
+                }
+            }
+            return TotalAmount.ToString();
+        }
+        public static TimeSpan GetCompanyTotalCallTime(CompanyType argCompany, List<CallData> argList)
+        {
+            string tempCompanyName = argCompany.strCompany;
+            double TotalAmount = 0;
+            foreach (var item in argList)
+            {
+                if (item.Bedrijf == tempCompanyName)
+                {
+                    /* Lukt niet met parsen
+                    if (!tempCall.Duration.ToString().Contains(",") && !tempCall.Duration.ToString().Contains("."))
+                    {
+                        double tempzebdi;
+                        string zedbi = tempCall.Duration.ToString("#,##0");
+                        if (Double.TryParse(zedbi, out tempzebdi))
+                        {
+                            tempzebdi = Double.Parse(zedbi, CultureInfo.InvariantCulture);
+                            TotalAmount += tempzebdi;
+                            continue;
+                        }
+                        else
+                            Log.Error(tempCall.Subscriber.ToString() + " " + tempCall.Duration.ToString() + " Niet kunnen parsen");
+                    }*/
+                    TotalAmount += item.Duration;
+                }
+            }
+            TimeSpan timeSpan = TimeSpan.FromSeconds(TotalAmount);
+            var tempTotalDays = Math.Floor(timeSpan.TotalDays);
+            var tempHours = timeSpan.Hours;
+            var tempMinutes = timeSpan.Minutes;
+            var tempSeconds = timeSpan.Seconds;
+
+            return timeSpan;
+        }
+        public static double GetCompanyTotalAmount(CompanyType argCompany, List<CallData> argList)
+        {
+            string tempCompanyName = argCompany.strCompany;
+            double TotalAmount = 0;
+            foreach (var item in argList)
+            {
+                if (item.Bedrijf == tempCompanyName)
+                {
+                    TotalAmount += item.Cost;
+                }
+            }
+            return TotalAmount;
+        }
+        public static double GetCompanyCostPerMinute(CompanyType argCompany, List<CallData> argList)
+        {
+            string tempCompanyName = argCompany.strCompany;
+            double TotalAmount = 0;
+            double TotalCallTime = 0;
+            foreach (var item in argList)
+            {
+                if (item.Bedrijf == tempCompanyName)
+                {
+                    if (item.Direction == "out")
+                    {
+                        TotalAmount += item.Cost;
+                        TotalCallTime += item.Duration;
+                    }
+                }
+            }
+            TimeSpan timeSpan = TimeSpan.FromSeconds(TotalCallTime);
+            var tempMinutes = timeSpan.TotalMinutes;
+            double CostPerMinute = TotalAmount / tempMinutes;
+            return CostPerMinute;
+        }
+        public static string GetCompanyFirstDate(CompanyType argCompany, List<CallData> argList)
+        {
+            string tempCompanyName = argCompany.strCompany;
+            List<DateTime> tempDateList = new List<DateTime>();
+            foreach (var item in argList)
+            {
+                if (item.Bedrijf == tempCompanyName)
+                {
+                    tempDateList.Add(item.Date);
+                }
+            }
+            int skipCount = 0;
+            DateTime FirstDate = DateTime.Parse("1-1-0001 00:00:00");
+            foreach (DateTime dateTime in tempDateList)
+            {
+                DateTime tempFirstDate = tempDateList.OrderBy(a => a.Date).Skip(skipCount).First();
+                if (tempFirstDate == DateTime.Parse("1-1-0001 00:00:00"))
+                    skipCount++;
+                else
+                {
+                    FirstDate = tempFirstDate;
+                    break;
+                }
+            }
+            if (FirstDate == DateTime.Parse("1-1-0001 00:00:00"))
+                return "";
+            return FirstDate.ToString();
+        }
+        public static string GetCompanyLastDate(CompanyType argCompany, List<CallData> argList)
+        {
+            string tempCompanyName = argCompany.strCompany;
+            List<DateTime> tempDateList = new List<DateTime>();
+            foreach (var item in argList)
+            {
+                if (item.Bedrijf == tempCompanyName)
+                {
+                    tempDateList.Add(item.Date);
+                }
+            }
+            int skipCount = 0;
+            DateTime LastDate = DateTime.Parse("1-1-0001 00:00:00");
+            foreach (DateTime dateTime in tempDateList)
+            {
+                DateTime tempLastDate = tempDateList.OrderBy(a => a.Date).Skip(skipCount).Last();
+                if (tempLastDate == DateTime.Parse("1-1-0001 00:00:00"))
+                    skipCount++;
+                else
+                {
+                    LastDate = tempLastDate;
+                    break;
+                }
+            }
+            if (LastDate == DateTime.Parse("1-1-0001 00:00:00"))
+                return "";
+            return LastDate.ToString();
+        }
+        public static TimeSpan GetCompanyTimePeriod(CompanyType argCompany, List<CallData> argList)
+        {
+            string tempCompanyName = argCompany.strCompany;
+            List<DateTime> tempDateList = new List<DateTime>();
+            foreach (var item in argList)
+            {
+                if (item.Bedrijf == tempCompanyName)
+                {
+                    tempDateList.Add(item.Date);
+                }
+            }
+            int skipCount = 0;
+            DateTime FirstDate = DateTime.Parse("1-1-0001 00:00:00");
+            foreach (DateTime dateTime in tempDateList)
+            {
+                DateTime tempFirstDate = tempDateList.OrderBy(a => a.Date).Skip(skipCount).First();
+                if (tempFirstDate == DateTime.Parse("1-1-0001 00:00:00"))
+                    skipCount++;
+                else
+                {
+                    FirstDate = tempFirstDate;
+                    break;
+                }
+            }
+            if (FirstDate == DateTime.Parse("1-1-0001 00:00:00"))
+                return TimeSpan.Parse("00:00:00");
+            DateTime LastDate = tempDateList.OrderBy(a => a.Date).Last();
+            TimeSpan tempTimeBetween = LastDate.Subtract(FirstDate);
+
+            var tempTotalDays = Math.Floor(tempTimeBetween.TotalDays);
+            var tempHours = tempTimeBetween.Hours;
+            var tempMinutes = tempTimeBetween.Minutes;
+            var tempSeconds = tempTimeBetween.Seconds;
+
+            return tempTimeBetween;
+        }
+
+        public static SortedPhoneCalls GetCompanyCallRates(CompanyType argCompany, List<CallData> argCompanyCallsList)
+        {
+            string tempCompanyName = argCompany.strCompany;
+
+            var tempSortedPhoneCalls = new SortedPhoneCalls();
+
+            foreach (var tempCall in argCompanyCallsList)
+            {
+                if (tempCall.Bedrijf == tempCompanyName)
+                {
+                    if (tempCall.Direction == "out")
+                    {
+                        if (tempCall.Termination.StartsWith("31"))
+                        {
+                            // Mobiel nummer
+                            if (tempCall.Termination.StartsWith("316"))
+                            {
+                                tempSortedPhoneCalls.MobielNummers.Add(tempCall);
+                                continue;
+                            }
+                            // Kantoor nummer
+                            if (tempCall.Termination.StartsWith("313"))
+                            {
+                                tempSortedPhoneCalls.KantoorNummers.Add(tempCall);
+                                continue;
+                            }
+                            // 0900 nummer
+                            else if (tempCall.Termination.StartsWith("319"))
+                            {
+                                tempSortedPhoneCalls.BetaaldNummers.Add(tempCall);
+                                continue;
+                            }
+                            // 0800 nummer
+                            else if (tempCall.Termination.StartsWith("318"))
+                            {
+                                tempSortedPhoneCalls.GratisNummers.Add(tempCall);
+                                continue;
+                            }
+                            //Binnenlands nummer
+                            else
+                            {
+                                tempSortedPhoneCalls.BinnenLandNummers.Add(tempCall);
+                                continue;
+                            }
+                        }
+                        //Buitelands nummer
+                        else
+                        {
+                            tempSortedPhoneCalls.BuitlandNummers.Add(tempCall);
+                            continue;
+                        }
+                    }
+                }
+            }
+
+            var tempHighestMobile = GetHighestNumber(tempSortedPhoneCalls.MobielNummers);
+            var tempBinnenland = GetHighestNumber(tempSortedPhoneCalls.BinnenLandNummers);
+
+            if (tempHighestMobile != null)
+            {
+                try
+                {
+                    // Functie aanroepen om beltarieven uit te reken.
+                    tempSortedPhoneCalls.belTariefMobiel = BelTarievenManager.CalculateTarieven(tempHighestMobile[0].Duration, tempHighestMobile[0].Cost, tempHighestMobile[1].Duration, tempHighestMobile[1].Cost);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+            }
+            if (tempBinnenland != null)
+            {
+                try
+                {
+                    // Functie aanroepen om beltarieven uit te reken.
+                    tempSortedPhoneCalls.belTariefBinnenland = BelTarievenManager.CalculateTarieven(tempBinnenland[0].Duration, tempBinnenland[0].Cost, tempBinnenland[1].Duration, tempBinnenland[1].Cost);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+
+            }
+
+            return tempSortedPhoneCalls;
+        }
+
+        private static List<CallData> GetHighestNumber(List<CallData> callDatasList)
+        {
+            if (callDatasList == null || callDatasList.Count < 2)
+                return null;
+
+            var tempDescendedCallList = callDatasList.OrderByDescending(x => x.Cost).ToList();
+
+            return tempDescendedCallList.GetRange(0, 2);
+        }
+    }
+}
